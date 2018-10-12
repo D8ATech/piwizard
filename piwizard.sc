@@ -312,7 +312,7 @@ fi
 
 if [ "$UPGRADECHECK" == "YES" ]; then
   clear
-  #self_update
+  self_update
 fi
 
 ############################

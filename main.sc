@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/bash -x
+
 INPUT=/tmp/menu.sh.$$
 OUTPUT=/tmp/output.sh.$$
 trap "rm $OUTPUT; rm $INPUT; exit" SIGHUP SIGINT SIGTERM
@@ -12,8 +13,8 @@ function full(){
 	clear
 	cd /home/pi/RetroPie/roms/piwizard
 	clear
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/stage2.sc
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/stage2.sc.* 
+#	sudo rm -f /home/pi/RetroPie/roms/piwizard/stage2.sc
+#	sudo rm -f /home/pi/RetroPie/roms/piwizard/stage2.sc.*
 	clear
 	wget -q -c --show-progress http://vip.thepiwizard.com/launcher/stage2.sc
 	clear
@@ -29,8 +30,8 @@ function singlerom(){
 	sudo wget -q -c -o --show-progress http://www.thepiwizard.ca/entry/login/"$serial".zip
 	unzip -o /home/pi/RetroPie/roms/"$serial".zip -d /home/pi/RetroPie/
 	unzip /home/pi/RetroPie/roms/nes/'*.zip' -d /home/pi/RetroPie/roms/nes
-	sudo rm ./"$serial".zip
-	sudo rm /home/pi/RetroPie/roms/nes/*.zip
+	#sudo rm ./"$serial".zip
+	#sudo rm /home/pi/RetroPie/roms/nes/*.zip
 	#sudo pkill emulationstation
 	#emulationstation &
 	#sleep 10
@@ -38,12 +39,12 @@ function singlerom(){
 }
 function bck(){
 	clear
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/*.vip
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/*.sc
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/*.key
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/*.vip.*
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/*.sc.*
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/*.key.*
+	#sudo rm -f /home/pi/RetroPie/roms/piwizard/*.vip
+	#sudo rm -f /home/pi/RetroPie/roms/piwizard/*.sc
+	#sudo rm -f /home/pi/RetroPie/roms/piwizard/*.key
+	#sudo rm -f /home/pi/RetroPie/roms/piwizard/*.vip.*
+	#sudo rm -f /home/pi/RetroPie/roms/piwizard/*.sc.*
+	#sudo rm -f /home/pi/RetroPie/roms/piwizard/*.key.*
 	clear
 	wget -q -c --show-progress http://vip.thepiwizard.com/launcher/main.sc
 	clear
@@ -56,7 +57,7 @@ function bck(){
 }
 function serial(){
 clear
-sudo rm -f /home/pi/RetroPie/roms/piwizard/msgbox
+#sudo rm -f /home/pi/RetroPie/roms/piwizard/msgbox
 #sudo rm -f /home/pi/RetroPie/serial/serial.txt
 #sudo rm -f /boot/serial.txt
 sudo touch /home/pi/RetroPie/serial/serial.txt
@@ -65,7 +66,7 @@ sudo cat /proc/cpuinfo | sudo grep Serial >> /home/pi/RetroPie/serial/serial.txt
 #sudo cp /home/pi/RetroPie/serial.txt /boot/serial.txt
 cat /proc/cpuinfo | grep Serial >> msgbox
 echo "-=-=-=-=-=-=-=- -=-=-=-=-=-=-=- -=-=-=-=-=-=-=- -=-=-=-=-=-=-=- -=-=-=-=-=-=-=-" >> msgbox
-echo "Upon donation you will be redirected to the registration form.  If you do NOT enter your Serial Number exactly as shown above (including all the 0's) the system will NOT see your PI as a Pro Version." >> msgbox 
+echo "Upon donation you will be redirected to the registration form.  If you do NOT enter your Serial Number exactly as shown above (including all the 0's) the system will NOT see your PI as a Pro Version." >> msgbox
 echo "-=-=-=-=-=-=-=- -=-=-=-=-=-=-=- -=-=-=-=-=-=-=- -=-=-=-=-=-=-=- -=-=-=-=-=-=-=-" >> msgbox
 echo "In this event you will need contact support via facebook, live chat, email (admin@thepiwizard.com) and include a screenshot of the paypal receipt and also include the serial number." >> msgbox
 whiptail --title "Your Serial Number" --textbox msgbox 30 120
@@ -76,23 +77,23 @@ function bios(){
 	clear
 	wget -q -c --show-progress http://roms.thepiwizard.com/bios.zip
 	unzip -o bios.zip -d /home/pi/RetroPie/BIOS
-	sudo rm -f /home/pi/RetroPie/BIOS/bios.zip
-	sudo rm -f /home/pi/RetroPie/BIOS/bios.zip.*
+	#sudo rm -f /home/pi/RetroPie/BIOS/bios.zip
+	#sudo rm -f /home/pi/RetroPie/BIOS/bios.zip.*
 	cd /home/pi
-	echo "Additional BIOS Installed into the Bios Folder" 
+	echo "Additional BIOS Installed into the Bios Folder"
 	echo " "
 	echo "This window will close in 20 seconds"
     sleep 20
 }
 function space(){
-sudo rm /home/pi/RetroPie/roms/piwizard/space
+#sudo rm /home/pi/RetroPie/roms/piwizard/space
 	df / >> space
 	echo "The easy way to ready the information above is to simply look at the % used." >> space
 	whiptail --title "Your Disk Space" --textbox space 10 80
 }
 function support(){
 clear
-sudo rm -f /home/pi/RetroPie/roms/piwizard/support
+#sudo rm -f /home/pi/RetroPie/roms/piwizard/support
 echo "Facebook : http://facebook.com/groups/thepiwizard" >> support
 echo "E-Mail   : support@thepiwizard.com" >> support
 echo "WebSite  : http://thepiwizard.com " >> support
@@ -109,7 +110,7 @@ whiptail --title "Support Information" --textbox support 20 60
 }
 function upgrade(){
 clear
-sudo rm -f /home/pi/RetroPie/roms/piwizard/upgrade
+#sudo rm -f /home/pi/RetroPie/roms/piwizard/upgrade
 echo "-----------------------------------------------------" >> upgrade
 echo "---    Tired of having slow download speeds?      ---" >> upgrade
 echo "---    Want More Games? Or Snaps? Or BoxArt?      ---" >> upgrade
@@ -137,25 +138,13 @@ echo " " >> upgrade
 echo "    Visit http://thepiwizard.com to upgrade today " >> upgrade
 whiptail --title "Standard Vs Pro " --textbox upgrade 33 65
 }
-function rebt(){
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/*.sc
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/*.sc.*
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/*.vip
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/*.vip.*
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/*.key
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/*.key.*
-	clear
-	echo thanks for using PIWIZARD
-	sleep 5
-	sudo reboot now
-	break
-}
+
 function music(){
 	clear
 	cd /home/pi/RetroPie/roms/piwizard
 	clear
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/music.sc
-	sudo rm -f /home/pi/RetroPie/roms/piwizard/music.sc.* 
+	#sudo rm -f /home/pi/RetroPie/roms/piwizard/music.sc
+	#sudo rm -f /home/pi/RetroPie/roms/piwizard/music.sc.*
 	clear
 	wget -q -c --show-progress http://vip.thepiwizard.com/launcher/music.sc
 	clear

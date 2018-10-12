@@ -27,7 +27,7 @@ visit_items = OFF
 use_shadow = ON
 
 # Turn color support ON or OFF
-use_colors = OFF
+use_colors = ON
 
 # Screen color
 screen_color = (WHITE,GREEN,ON)

@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 . inc/variables.inc
 . $SCRIPTPATH/inc/helper.inc
 ################################################################################
@@ -312,7 +312,7 @@ fi
 
 if [ "$UPGRADECHECK" == "YES" ]; then
   clear
-  #self_update
+  self_update
 fi
 
 ############################

@@ -22,8 +22,7 @@ self_update() {
     elif [ $LOCAL = $BASE ]; then
         echo "Found a new version, updating..."
         git pull --force
-        echo "New version installed.  Press <RETURN> to restart..."
-        read
+        read "New version installed.  Press <RETURN> to restart..."
         cd $SCRIPTPATH
         exec "$SCRIPTNAME ${ARGS[@]}"
         exit 1
@@ -170,7 +169,7 @@ function licensecheck(){
 			dialog --textbox inc/piwizard.expiredvip.txt 12 81
   else
     apicall=$(curl http://api.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
-    apicall="VIP"
+    #apicall="VIP"
     if [[ $apicall = "VIP" ]]; then
         VIP="Yes"
         dialog --textbox inc/piwizard.validvip.txt 32 81
@@ -199,33 +198,37 @@ sn=$(cat /proc/cpuinfo | grep Serial)
   dialog --title "Your Serial Number - $sn" --textbox inc/one.serial.txt 15 80
 }
 
-function music(){
+function setupmusic(){
   if [ ! -d "/home/pi/RetroPie/roms/music" ]; then
-	   sudo mkdir /home/pi/RetroPie/roms/music
+    mkdir /home/pi/RetroPie/roms/music
+  else
+    cd /home/pi/RetroPie/roms/music
+    if [ -f "*.zip" ]; then
+      rm -f *.zip
+    fi
+    if [ -f ".zip.*" ]; then
+      rm -f *.zip.*
+    fi
   fi
-	cd /home/pi/RetroPie/roms/music
+}
+
+function music(){
+  setupmusic
   case $1 in
     80)
-      sudo rm -f /home/pi/RetroPie/roms/music/80.zip.*
-      sudo rm -f /home/pi/RetroPie/roms/music/80.zip
-      clear
       echo Currently Downloading 80s Music Pack
       wget -q -c --show-progress --trust-server-names http://music.thepiwizard.com/80.zip
       unzip -o /home/pi/RetroPie/roms/music/80.zip -d /home/pi/RetroPie/roms/music
-      sudo rm -f /home/pi/RetroPie/roms/music/80.zip
-      clear
-      echo "80's Music Installed!";;
-
+      rm -f /home/pi/RetroPie/roms/music/80.zip
+      display_output 10 40 "80's Music Installed!"
+      ;;
     90)
-      sudo rm -f /home/pi/RetroPie/roms/music/90.zip.*
-      sudo rm -f /home/pi/RetroPie/roms/music/90.zip
-      clear
       echo Currently Downloading 90s Music Pack
       wget -q -c --show-progress --trust-server-names http://music.thepiwizard.com/90.zip
       unzip -o /home/pi/RetroPie/roms/music/90.zip -d /home/pi/RetroPie/roms/music
-      sudo rm -f /home/pi/RetroPie/roms/music/90.zip
-      clear
-      echo "90s Music Installed!";;
+      rm -f /home/pi/RetroPie/roms/music/90.zip
+      display_output 10 40 "90s Music Installed!"
+      ;;
     00) display_output 10 40 "The 2000's music pack will be coming soon";;
     T40) display_output 10 40 "The Top 40's music pack will be coming soon";;
     Arcade) display_output 10 40 "The Arcade music pack will be coming soon";;
@@ -250,7 +253,7 @@ function closeAllDialogs(){
 
 function rebt(){
   	dialog --textbox inc/thanks.txt 12 80
-  	#sudo reboot now
+  	clear
   	echo "This is where we would reboot but for now we are just going to exit"
     closeAllDialogs
     # sudo reboot now

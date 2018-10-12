@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/bin/bash -x
 . inc/variables.inc
 . $SCRIPTPATH/inc/helper.inc
+DIALOGRC="$SCRIPTPATH/.dialogrc"
+export DIALOGRC
 ################################################################################
 ####
 #### Pi Wizard v1.0
@@ -47,7 +49,7 @@ function main(){
 	while [ "$MAINRUNNING" == "TRUE" ];	do
 		#160 character per line
 		#47 lines free
-		$DIALOG  --keep-window --begin 2 50 --tailboxbg inc/piwizard.main.txt 25 62 \
+		$DIALOG  --keep-window --begin 2 45 --tailboxbg inc/piwizard.main.txt 25 62 \
 		--and-widget --begin 2 1 \
 		--backtitle "PI WIZARD - Automatic Installer" \
 		--title "[ D I S C L A I M E R ]" \
@@ -107,7 +109,7 @@ function mainmenu(){
 
 	while [ "$ONERUNNING" == "TRUE" ];	do
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGONE  --keep-window --begin 2 55 --tailboxbg inc/one.pro.txt 25 62 \
+				$DIALOGONE  --keep-window --begin 2 55 --tailboxbg inc/one.pro.txt 25 55 \
 				--and-widget --begin 2 1 \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION INSTALLER]" \
@@ -124,7 +126,7 @@ function mainmenu(){
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceOne"
 		else
-				$DIALOGONE  --keep-window --begin 2 55 --tailboxbg inc/one.standard.txt 25 62 \
+				$DIALOGONE  --keep-window --begin 2 55 --tailboxbg inc/one.standard.txt 25 55 \
 				--and-widget --begin 2 1 \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
@@ -213,11 +215,9 @@ function musicmenu(){
 	choiceMusic=/tmp/dialogmusic-$$.$RANDOM; > $choiceMusic
 	trap "rm -f $choiceMusic" 0 1 2 5 15
 
-	#cd $SCRIPTROOT
-
 	while [ "$MUSICRUNNING" == "TRUE" ];	do
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGMUSIC --keep-window --begin 2 55 --tailboxbg inc/music.pro.txt 25 62 \
+				$DIALOGMUSIC --keep-window --begin 2 55 --tailboxbg inc/music.pro.txt 25 55 \
 				--and-widget --begin 2 1 \
 				--backtitle "PI WIZARD PRO MUSIC INSTALLER" \
 				--title "[ PI WIZARD PRO MUSIC SERVER ]" \
@@ -233,7 +233,7 @@ function musicmenu(){
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceMusic"
 		else
-				$DIALOGMUSIC --keep-window --begin 2 55 --tailboxbg inc/music.standard.txt 25 62 \
+				$DIALOGMUSIC --keep-window --begin 2 55 --tailboxbg inc/music.standard.txt 25 55 \
 				--and-widget --begin 2 1 \
 				--backtitle "PIWIZARD STANDARD MUSIC INSTALLER" \
 				--title "[ PI WIZARD STANDARD MUSIC SERVER ]" \

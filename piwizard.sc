@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 . inc/variables.inc
 . $SCRIPTPATH/inc/helper.inc
 ################################################################################

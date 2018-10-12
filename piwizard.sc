@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/bin/bash -x
 . inc/variables.inc
 . $SCRIPTPATH/inc/helper.inc
+DIALOGRC="$SCRIPTPATH/.dialogrc"
+export DIALOGRC
 ################################################################################
 ####
 #### Pi Wizard v1.0

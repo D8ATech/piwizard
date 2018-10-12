@@ -8,40 +8,7 @@ function display_output(){
 	local t=${3-Output}
 	dialog --backtitle  "Music Pack Installation" --title "${t}" --msgbox "$(<$OUTPUT)" ${h} ${w}
 }
-function 80(){
-	clear
-	mkdir /home/pi/RetroPie/roms/music
-	cd /home/pi/RetroPie/roms/music
-	sudo rm -f /home/pi/RetroPie/roms/music/80.zip.*
-	sudo rm -f /home/pi/RetroPie/roms/music/80.zip
-	clear
-	echo Currently Downloading 80's Music Pack
-	wget -q -c --show-progress --trust-server-names http://music.thepiwizard.com/80.zip
-	unzip -o /home/pi/RetroPie/roms/music/80.zip -d /home/pi/RetroPie/roms/music
-	sudo rm -f /home/pi/RetroPie/roms/music/80.zip
-	clear
-	echo 80's Music Installed!
-	sleep 3
-	###sudo reboot now
-	cd /home/pi
-}
-function music90(){
-	clear
-	mkdir /home/pi/RetroPie/roms/music
-	cd /home/pi/RetroPie/roms/music
-	sudo rm -f /home/pi/RetroPie/roms/music/90.zip.*
-	sudo rm -f /home/pi/RetroPie/roms/music/90.zip
-	clear
-	echo Currently Downloading 90s Music Pack
-	wget -q -c --show-progress --trust-server-names http://music.thepiwizard.com/90.zip
-	unzip -o /home/pi/RetroPie/roms/music/90.zip -d /home/pi/RetroPie/roms/music
-	sudo rm -f /home/pi/RetroPie/roms/music/90.zip
-	clear
-	echo 90s Music Installed!
-	sleep 3
-	###sudo reboot now
-	cd /home/pi
-}
+
 function bck(){
 	sudo rm -f /home/pi/RetroPie/roms/piwizard/main.sc
 	sudo rm -f /home/pi/RetroPie/roms/piwizard/main.sc.*
@@ -76,13 +43,13 @@ Reboot "Reboot to save changes" \
 Back "Back to Main Menu" 2>"${INPUT}"
 menuitem=$(<"${INPUT}")
 case $menuitem in
-	Year-1980) music80;;
-    Year-1990) music90;;
-	Year-2000) music00;;
-	Top40) top40;;
-	Arcade) arcade;;
-	Game-Soundtrack) soundtrack;;
-	Game-Soundtrack) soundtrack;;
+	Year-1980) music "80";;
+  Year-1990) music "90";;
+	Year-2000) music "00";;
+	Top40) music "T40";;
+	Arcade) Music "Arcade";;
+	Game-Soundtrack) music "GS1";;
+	Game-Soundtrack) music "GS2";;
 	Back) bck;;
 esac
 done

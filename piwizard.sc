@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 . inc/variables.inc
 . $SCRIPTPATH/inc/helper.inc
 DIALOGRC="$SCRIPTPATH/.dialogrc"
@@ -212,7 +212,7 @@ function gamesmenu(){
 				__ "= Nintendo Systems =" \
 				nes "Nintendo Entertainment System" \
 				snes "Super Nintendo" \
-				snesclassic "Super Nintedo Classic"
+				snesclassic "Super Nintedo Classic" \
 				n64 "Nintendo 64" \
 				gb "Nintendo GameBoy" \
 				gbc "Nintendo GameBoy Color" \

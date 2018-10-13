@@ -240,6 +240,76 @@ function music(){
 	cd $SCRIPTPATH
 }
 
+function downloader(){
+  if [ ! -d "/home/pi/RetroPie/roms/$1" ]; then
+    mkdir /home/pi/RetroPie/roms/$1
+  fi
+
+  cd /home/pi/RetroPie/roms/$1
+
+  if [ -f "/home/pi/RetroPie/roms/$1/$2.*" ]; then
+    rm '/home/pi/RetroPie/roms/$1/$2.*'
+  fi
+
+  if [ -f "/home/pi/RetroPie/roms/$1/$2" ]; then
+    rm '/home/pi/RetroPie/roms/$1/$2'
+  fi
+
+  clear
+  echo "Currently Downloading $1 Rom Pack"
+
+  if [ "$VIP" == "Yes" ]; then
+      wget -q -c --show-progress --trust-server-names "http://roms.thepiwizard.com/pro/$2"
+  else
+      wget -q -c --show-progress --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com"
+  fi
+
+  unzip -o /home/pi/RetroPie/roms/$1/$2 -d /home/pi/RetroPie/roms/$1
+
+  if [ -f "/home/pi/RetroPie/roms/$1/$2"]; then
+    rm -f /home/pi/RetroPie/roms/$1/$2
+  fi
+
+  clear
+  echo "$1 Rom Pack Installed"
+  sleep 3
+
+  cd $SCRIPTPATH
+}
+
+function downloadroms(){
+  case $1 in
+    atari2600) downloader "atari2600" "atari2600.zip";;
+    atari5200) downloader "atari5200" "atari5200.zip";;
+    atari7800) downloader "atari7800" "atari7800.zip";;
+    atarijaguar) downloader "atarijaguar" "atarijaguar.zip";;
+    atarilynxs) downloader "atarilynks" "atarilynks.zip";;
+    coleco) downloader "coleco" "coleco.zip";;
+    famicom) downloader "famicom" "famicom.zip";;
+    fba) downloader "fba" "fba.zip";;
+    fds) downloader "fds" "fds.zip";;
+    gameandwatch) downloader "gameandwatch" "gameandwatch.zip";;
+    gamegear) downloader "gamegear" "gamegear.zip";;
+    gb) downloader "gb" "gb.zip";;
+    gba) downloader "gba" "gba.zip";;
+    gbc) downloader "gbc" "gbc.zip";;
+    mame2003) downloader "mame2003" "mame2003.zip";;
+    markiii) downloader "markiii" "markiii.zip";;
+    mastersystem) downloader "mastersystem" "mastersystem.zip";;
+    megadrive) downloader "megadrive" "megadrive.zip";;
+    msx2) downloader "msx2" "msx2.zip";;
+    msx2plus) downloader "msx2+" "msx2+.zip";;
+    n64) downloader "n64" "n64.zip";;
+    neogeo) downloader "neogeo" "neogeo.zip";;
+    nes) downloader "nes" "nes.zip";;
+    snes) downloader "snes" "snes.zip";;
+    snesclasic) downloader "snes-classic" "snes-classic.zip";;
+    *) display_output 10 40 "Somehow an incorrect value was sent to the download function";;
+
+  esac
+
+}
+
 function closeAllDialogs(){
   RUNNING="FALSE"
   MAINRUNNING="FALSE"

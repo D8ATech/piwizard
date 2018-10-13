@@ -240,7 +240,7 @@ function music(){
 	cd $SCRIPTPATH
 }
 
-function closeAllDialogs(){
+functioncloseAllDialogs(){
   RUNNING="FALSE"
   MAINRUNNING="FALSE"
   S1RUNNING="FALSE"

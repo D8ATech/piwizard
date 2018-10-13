@@ -97,7 +97,7 @@ function main(){
 
 ############################################################
 ##
-##  STAGE 2
+##  Main Menu
 ##
 ############################################################
 
@@ -153,7 +153,9 @@ function mainmenu(){
 			$DIALOG_ACTION)
 				if [ ! -z "$choice" ]; then
 					case $choice in
-						Rom-Downloads) full;;
+						Rom-Downloads)
+							gamesmenu
+							GAMESRUNNING=TRUE;;
 						Music)
 							musicmenu
 							MUSICRUNNING="TRUE";;
@@ -183,30 +185,112 @@ function mainmenu(){
 	done
 }
 
-
-
-
-
-
-
-
-
-
 ############################################################
 ##
-##  STAGE 3
+##  Games
 ##
 ############################################################
 
+function gamesmenu(){
+	DIALOGGAMES=${DIALOGGAMES=dialog}
+	choiceGames=/tmp/dialoggames-$$.$RANDOM; > $choiceGames
+	trap "rm -f $choiceGames" 0 1 2 5 15
 
+	while [ "$GAMESRUNNING" == "TRUE" ];	do
+		if [ "$VIP" == "Yes" ]; then
+				$DIALOGGAMES  --keep-window --begin 2 55 --tailboxbg inc/game.pro.txt 25 55 \
+				--and-widget --begin 2 1 \
+				--backtitle "PI WIZARD PRO VERSION" \
+				--title "[ PI WIZARD PRO VERSION Downloader ]" \
+				--menu "Make your choice:" 22 50 25 \
+				__ "= Atari Systems =" \
+				atari2600 "Atari 2600" \
+				atari5200 "Atari 5200" \
+				atari7800 "Atari 7800" \
+				atarijaguar "Atari Jaguar" \
+				atarilynxs "Atari Lynxs" \
+				__ "= Nintendo Systems =" \
+				nes "Nintendo Entertainment System" \
+				snes "Super Nintendo" \
+				snesclassic "Super Nintedo Classic"
+				n64 "Nintendo 64" \
+				gb "Nintendo GameBoy" \
+				gbc "Nintendo GameBoy Color" \
+				gba "Nintendo GameBoy Advanced" \
+				famicom "Famicom" \
+				fds "Famicom Disk System" \
+				fba "FBA" \
+				__ "= Sega Systems =" \
+				gamegear "Sega Gamegear" \
+				megadrive "Sega Genesis" \
+				mastersystem "Sega MasterSytem" \
+				markiii "Sega MarkIII" \
+				__ "= Other Systems =" \
+				coleco "Coleco Vision" \
+				gameandwatch "Game and Watch" \
+				msx2 "MSX2" \
+				msx2plus "MSX2+" \
+				mame2003 "Mame" \
+				neogeo "NeoGeo" \
+ 				__ "  " \
+				Reboot "Reboot to save changes" \
+				Back "Back to Main Menu" 2>"$choiceGames"
+		else
+				$DIALOGGAMES  --keep-window --begin 2 55 --tailboxbg inc/game.standard.txt 25 55 \
+				--and-widget --begin 2 1 \
+				--backtitle "PI WIZARD STANDARD VERSION" \
+				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
+				--menu "Make your choice:" 22 50 25 \
+				__ "= Atari Systems =" \
+				atari2600 "Atari 2600" \
+				atari5200 "Atari 5200" \
+				atari7800 "Atari 7800" \
+				atarilynxs "Atari Lynxs" \
+				__ "= Nintendo Systems =" \
+				nes "Nintendo Entertainment System" \
+				snes "Super Nintendo" \
+				n64 "Nintendo 64" \
+				gb "Nintendo GameBoy" \
+				gbc "Nintendo GameBoy Color" \
+				gba "Nintendo GameBoy Advanced" \
+				__ "= Sega Systems =" \
+				gamegear "Sega Gamegear" \
+				megadrive "Sega Genesis" \
+				__ "= Other Systems =" \
+				neogeo "NeoGeo" \
+				__ "  " \
+				Reboot "Reboot to save changes" \
+				Back "Back to Main Menu" 2>"$choiceGames"
+		fi
 
+		retval="$?"
+		choice=$(cat $choiceGames)
+		echo "" > $choiceGames
 
-
-
+		case $retval in
+			$DIALOG_ACTION)
+				if [ ! -z "$choice" ]; then
+					case $choice in
+						Reboot) rebt;;
+						Back) GAMESRUNNING="FALSE";;
+						*) downloadroms "$choice"
+							;;
+					esac
+				fi
+				choice=""
+				;;
+			$DIALOG_CANCEL)
+				GAMESRUNNING="FALSE";;
+			$DIALOG_ESC)
+				[ -s $choiceGames ] && cat $choiceGames || echo "ESC Pressed"
+				GAMESRUNNING="FALSE";;
+		esac
+	done
+}
 
 ############################################################
 ##
-##  MUSIC
+##  Music Menu
 ##
 ############################################################
 

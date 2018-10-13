@@ -1,0 +1,27 @@
+                  ______________________________________________________
+                 | STANDARD ROMS | PRO ROMS | SIZE STANDARD | SIZE PRO |
+             NES |       100     |    750   |     10MB      |     NA   |
+       Super-NES |       100     |    850   |     78MB      |     NA   |
+     Nintendo-64 |       100     |    365   |     1.3GB     |     NA   |
+         GameBoy |       100     |    830   |     9.MB      |     NA   |
+   GameBoy-Color |       100     |    540   |     44MB      |     NA   |
+ GameBoy-Advance |       100     |  1,133   |     317MB     |     NA   |
+                 | x x x x x x x |  x x x x |  x x x x x x  |  x x x x |
+    Sega-Genesis |       100     |    940   |     62MB      |     NA   |
+   Sega-GameGear |       100     |    337   |     15MB      |     NA   |
+                 | x x x x x x x |  x x x x |  x x x x x x  |  x x x x |
+       Atari2600 |       100     |    669   |     445KB     |     NA   |
+       Atari5200 |        10     |     80   |     105KB     |     NA   |
+       Atari7800 |        20     |     60   |     612KB     |     NA   |
+     Atari-Lynxs |        10     |     80   |     2MB       |     NA   |
+                 | x x x x x x x |  x x x x |  x x x x x x  |  x x x x |
+          NeoGeo |        20     |    120   |     220MB     |     NA   |
+                 |_____________________________________________________|
+
+                  What are you able to get in you have PRO Membership?
+                  ~  Atari-Jaguar           ~  Super-Nintendo-Classic
+                  ~  Famicom                ~  Famicom-Disk-System
+                  ~  FBA                    ~  Sega-MasterSystem
+                  ~  Sega-MarkIII           ~  Coleco-Vision
+                  ~  Game-And-Watch         ~  MSX2
+                  ~  MSX2+                  ~  Mame      

@@ -22,9 +22,9 @@ self_update() {
     elif [ $LOCAL = $BASE ]; then
         echo "Found a new version, updating..."
         git pull --force
-        read "New version installed.  Press <RETURN> to restart..."
+        read -p "New version installed.  Press Enter to restart..."
         cd $SCRIPTPATH
-        exec "$SCRIPTNAME ${ARGS[@]}"
+        bash "$SCRIPTNAME ${ARGS[@]}" &
         exit 1
     elif [ $REMOTE = $BASE ]; then
         echo "There are unpushed changes on client that would be lost.  Exiting"
@@ -246,19 +246,22 @@ function downloader(){
     mkdir /home/pi/RetroPie/roms/$1
   fi
   cd /home/pi/RetroPie/roms/$1
-  if [ -f "/home/pi/RetroPie/roms/$1/$2.*" ]; then
 
-  rm '/home/pi/RetroPie/roms/$1/$2.*'
+  if [ -f "/home/pi/RetroPie/roms/$1/$2.*" ]; then
+    rm '/home/pi/RetroPie/roms/$1/$2.*'
   fi
+
   if [ -f "/home/pi/RetroPie/roms/$1/$2" ]; then
     rm '/home/pi/RetroPie/roms/$1/$2'
   fi
+
   clear
   echo "Currently Downloading $1 Rom Pack"
+
   if [ "$VIP" == "Yes" ]; then
       wget -q -c --show-progress --trust-server-names "http://roms.thepiwizard.com/pro/$2"
   else
-      wget -q -c --show-progress --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com"
+      wget -q -c --show-progress --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com/$2"
   fi
   unzip -o /home/pi/RetroPie/roms/$1/$2 -d /home/pi/RetroPie/roms/$1
   if [ -f "/home/pi/RetroPie/roms/$1/$2"]; then

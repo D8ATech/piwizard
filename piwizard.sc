@@ -107,6 +107,7 @@ function mainmenu(){
 	choiceOne=/tmp/dialogone-$$.$RANDOM; > $choiceOne
 	trap "rm -f $choiceOne" 0 1 2 5 15
 
+
 	while [ "$ONERUNNING" == "TRUE" ];	do
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGONE  --keep-window --begin 2 70 --tailboxbg inc/one.pro.txt 25 80 \
@@ -198,8 +199,12 @@ function gamesmenu(){
 
 	while [ "$GAMESRUNNING" == "TRUE" ];	do
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGGAMES  --keep-window --begin 2 55 --tailboxbg inc/game.pro.txt 35 80 \
-				--and-widget --begin 2 1 \
+				findcenter 190 86
+				infotextline=$MENUY
+				infotextcol=$(expr MENUX + 67)
+				menutextcol=$MENUX
+				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.pro.txt 50 120 \
+				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
 				--menu "Make your choice:" 27 50 35 \

@@ -315,6 +315,22 @@ function closeAllDialogs(){
   S2BRUNNING="FALSE"
 }
 
+function findcenter(){
+  menuwidth=$1
+  menuheight=$2
+
+  if [ $menuwidth >= $MAXWIDTH ]; then
+    MENUX=2
+  else
+    MENUX=$(expr $(expr $MAXWIDTH / 2) - $(expr $menuwidth / 2))
+  fi
+
+  if [ $menuheight >= $MAXHEIGHT ]; then
+    MENUY=2
+  else
+    MENUY=$(expr $(expr $MAXHEIGHT / 2) - $(expr $menuheight / 2))
+}
+
 function rebt(){
   	dialog --textbox inc/thanks.txt 12 80
   	clear

@@ -109,11 +109,11 @@ function mainmenu(){
 
 	while [ "$ONERUNNING" == "TRUE" ];	do
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGONE  --keep-window --begin 2 55 --tailboxbg inc/one.pro.txt 25 55 \
+				$DIALOGONE  --keep-window --begin 2 70 --tailboxbg inc/one.pro.txt 25 80 \
 				--and-widget --begin 2 1 \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION INSTALLER]" \
-				--menu "Make your choice:" 22 50 25 \
+				--menu "Make your choice:" 22 65 30 \
 				Rom-Downloads "Get your Roms " \
 				Single-Rom-Download "Coming Soon!" \
 				Emulator-Bios "Download all the extra Emulator Bios" \
@@ -126,11 +126,11 @@ function mainmenu(){
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceOne"
 		else
-				$DIALOGONE  --keep-window --begin 2 55 --tailboxbg inc/one.standard.txt 25 55 \
+				$DIALOGONE  --keep-window --begin 2 70 --tailboxbg inc/one.standard.txt 25 80 \
 				--and-widget --begin 2 1 \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
-				--menu "Make your choice:" 22 50 25 \
+				--menu "Make your choice:" 22 65 30 \
 				Rom-Downloads "Get your Roms " \
 				Single-Rom-Download "Coming Soon to PRO" \
 				Emulator-Bios "Download all the extra Emulator Bios" \
@@ -198,11 +198,11 @@ function gamesmenu(){
 
 	while [ "$GAMESRUNNING" == "TRUE" ];	do
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGGAMES  --keep-window --begin 2 55 --tailboxbg inc/game.pro.txt 25 55 \
+				$DIALOGGAMES  --keep-window --begin 2 55 --tailboxbg inc/game.pro.txt 35 80 \
 				--and-widget --begin 2 1 \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
-				--menu "Make your choice:" 22 50 25 \
+				--menu "Make your choice:" 27 50 35 \
 				__ "= Atari Systems =" \
 				atari2600 "Atari 2600" \
 				atari5200 "Atari 5200" \
@@ -236,11 +236,11 @@ function gamesmenu(){
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceGames"
 		else
-				$DIALOGGAMES  --keep-window --begin 2 55 --tailboxbg inc/game.standard.txt 25 55 \
+				$DIALOGGAMES  --keep-window --begin 2 55 --tailboxbg inc/game.standard.txt 35 80 \
 				--and-widget --begin 2 1 \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
-				--menu "Make your choice:" 22 50 25 \
+				--menu "Make your choice:" 27 50 35 \
 				__ "= Atari Systems =" \
 				atari2600 "Atari 2600" \
 				atari5200 "Atari 5200" \

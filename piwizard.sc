@@ -207,7 +207,7 @@ function gamesmenu(){
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
-				--menu "Make your choice:" 27 50 35 \
+				--menu "Make your choice:" 27 60 50 \
 				__ "= Atari Systems =" \
 				atari2600 "Atari 2600" \
 				atari5200 "Atari 5200" \

@@ -217,7 +217,7 @@ function music(){
   case $1 in
     80)
       # echo Currently Downloading 80s Music Pack
-      wget -q -c --show-progress --trust-server-names http://music.thepiwizard.com/80.zip  2 > & 1;
+      wget -q -c --progress=dot --trust-server-names "http://music.thepiwizard.com/80.zip"  2 > & 1;
       grep "%" |\
       sed -u -e "s,\.,,g" | awk '{print $2}' | sed -u -e "s,\%,,g" | dialog --gauge "Download 80.zip" 10 100
       unzip -o /home/pi/RetroPie/roms/music/80.zip -d /home/pi/RetroPie/roms/music
@@ -226,7 +226,7 @@ function music(){
       ;;
     90)
       # echo Currently Downloading 90s Music Pack
-      wget -q -c --show-progress --trust-server-names http://music.thepiwizard.com/90.zip 2 > & 1;
+      wget -q -c --progress=dot --trust-server-names "http://music.thepiwizard.com/90.zip" 2 > & 1;
       grep "%" |\
       sed -u -e "s,\.,,g" | awk '{print $2}' | sed -u -e "s,\%,,g" | dialog --gauge "Download 90.zip" 10 100
       unzip -o /home/pi/RetroPie/roms/music/90.zip -d /home/pi/RetroPie/roms/music
@@ -263,11 +263,11 @@ function downloader(){
   echo "Currently Downloading $1 Rom Pack"
 
   if [ "$VIP" == "Yes" ]; then
-      wget -q -c --show-progress --trust-server-names "http://roms.thepiwizard.com/pro/$2" 2 > & 1;
+      wget -q -c --progress=dot --trust-server-names "http://roms.thepiwizard.com/pro/$2" 2 > & 1;
       grep "%" |\
       sed -u -e "s,\.,,g" | awk '{print $2}' | sed -u -e "s,\%,,g" | dialog --gauge "Download $2" 10 100
   else
-      wget -q -c --show-progress --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com/$2" 2 > & 1;
+      wget -q -c --progress=dot --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com/$2" 2 > & 1;
       grep "%" |\
       sed -u -e "s,\.,,g" | awk '{print $2}' | sed -u -e "s,\%,,g" | dialog --gauge "Download $2" 10 100
   fi
@@ -395,7 +395,7 @@ function bios(){
 
   cd /home/pi/RetroPie/BIOS
 
-  wget -q -c --show-progress http://roms.thepiwizard.com/bios.zip 2 > & 1;
+  wget -q -c --progress=dot "http://roms.thepiwizard.com/bios.zip" 2 > & 1;
   grep "%" |\
   sed -u -e "s,\.,,g" | awk '{print $2}' | sed -u -e "s,\%,,g" | dialog --gauge "Download bios.zip" 10 100
 	unzip -o bios.zip -d /home/pi/RetroPie/BIOS

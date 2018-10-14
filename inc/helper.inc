@@ -319,16 +319,29 @@ function findcenter(){
   menuwidth=$1
   menuheight=$2
 
-  if [ $menuwidth >= $MAXWIDTH ]; then
+  display_output 10 40 "menuwidth: $1 - menuheight $2 - MAX WIDTH: $MAXWIDTH - MAX HEIGHT: $MAXHEIGHT"
+
+  #Calculate Width
+  if [ $menuwidth -gt $MAXWIDTH ]; then
     MENUX=2
   else
     MENUX=$(expr $(expr $MAXWIDTH / 2) - $(expr $menuwidth / 2))
   fi
 
-  if [ $menuheight >= $MAXHEIGHT ]; then
+  if [ $MENUX -lt 1 ]; then
+    MENUX=2
+  fi
+
+  #Calculate Height
+  if [ $menuheight -gt $MAXHEIGHT ]; then
     MENUY=2
   else
     MENUY=$(expr $(expr $MAXHEIGHT / 2) - $(expr $menuheight / 2))
+  fi
+
+  if [ $MENUY -lt 1 ]; then
+    MENUY=2
+  fi
 }
 
 function rebt(){

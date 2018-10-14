@@ -6,7 +6,7 @@ GAMESRUNNING="TRUE"
 
 # Screen
 MAXWIDTH=$(tput cols)
-MAXHEIGHT=$(tpt lines)
+MAXHEIGHT=$(tput lines)
 
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")

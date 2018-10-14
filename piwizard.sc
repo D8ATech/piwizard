@@ -49,16 +49,17 @@ function main(){
 	while [ "$MAINRUNNING" == "TRUE" ];	do
 		#160 character per line
 		#47 lines free
-		$DIALOG  --keep-window --begin 2 45 --tailboxbg inc/piwizard.main.txt 25 62 \
-		--and-widget --begin 2 1 \
+		$DIALOG  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/piwizard.main.txt 50 120 \
+		--and-widget --begin $infotextline $menutextcol \
 		--backtitle "PI WIZARD - Automatic Installer" \
 		--title "[ D I S C L A I M E R ]" \
-		--menu "Make your choice:" 12 40 25 \
+		--no-cancel \
+		--menu "Make your choice:" 50 60 50 \
 		Accept "Agree to the EULA" \
 		Decline "Decline the EULA" \
 		Reboot  "Reboot my Pi" \
 		Exit "Exit" 2>"$choiceMain"
-		#--no-cancel was removed for testing
+
 		retval="$?"
 		choice=$(cat $choiceMain)
 		echo "" > $choiceMain
@@ -110,11 +111,11 @@ function mainmenu(){
 
 	while [ "$ONERUNNING" == "TRUE" ];	do
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGONE  --keep-window --begin 2 70 --tailboxbg inc/one.pro.txt 25 80 \
-				--and-widget --begin 2 1 \
+				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.pro.txt 50 120 \
+				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION INSTALLER]" \
-				--menu "Make your choice:" 22 65 30 \
+				--menu "Make your choice:" 50 60 50 \
 				Rom-Downloads "Get your Roms " \
 				Single-Rom-Download "Coming Soon!" \
 				Emulator-Bios "Download all the extra Emulator Bios" \
@@ -127,11 +128,11 @@ function mainmenu(){
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceOne"
 		else
-				$DIALOGONE  --keep-window --begin 2 70 --tailboxbg inc/one.standard.txt 25 80 \
-				--and-widget --begin 2 1 \
+				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.standard.txt 50 120 \
+				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
-				--menu "Make your choice:" 22 65 30 \
+				--menu "Make your choice:" 50 60 50 \
 				Rom-Downloads "Get your Roms " \
 				Single-Rom-Download "Coming Soon to PRO" \
 				Emulator-Bios "Download all the extra Emulator Bios" \
@@ -199,15 +200,11 @@ function gamesmenu(){
 
 	while [ "$GAMESRUNNING" == "TRUE" ];	do
 		if [ "$VIP" == "Yes" ]; then
-				findcenter 190 86
-				infotextline=$MENUY
-				infotextcol=$(expr MENUX + 67)
-				menutextcol=$MENUX
 				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.pro.txt 50 120 \
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
-				--menu "Make your choice:" 27 60 50 \
+				--menu "Make your choice:" 50 60 50 \
 				__ "= Atari Systems =" \
 				atari2600 "Atari 2600" \
 				atari5200 "Atari 5200" \
@@ -241,11 +238,11 @@ function gamesmenu(){
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceGames"
 		else
-				$DIALOGGAMES  --keep-window --begin 2 55 --tailboxbg inc/game.standard.txt 35 80 \
-				--and-widget --begin 2 1 \
+				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.standard.txt 50 120 \
+				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
-				--menu "Make your choice:" 27 50 35 \
+				--menu "Make your choice:" 50 60 50 \
 				__ "= Atari Systems =" \
 				atari2600 "Atari 2600" \
 				atari5200 "Atari 5200" \
@@ -278,6 +275,7 @@ function gamesmenu(){
 					case $choice in
 						Reboot) rebt;;
 						Back) GAMESRUNNING="FALSE";;
+						__);;
 						*) downloadroms "$choice"
 							;;
 					esac
@@ -306,11 +304,11 @@ function musicmenu(){
 
 	while [ "$MUSICRUNNING" == "TRUE" ];	do
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGMUSIC --keep-window --begin 2 55 --tailboxbg inc/music.pro.txt 25 55 \
-				--and-widget --begin 2 1 \
+				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.pro.txt 50 120 \
+				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD PRO MUSIC INSTALLER" \
 				--title "[ PI WIZARD PRO MUSIC SERVER ]" \
-				--menu "Make your choice:" 22 50 25 \
+				--menu "Make your choice:" 50 60 50 \
 				Year-1980 "1980's" \
 				Year-1990 "1990's" \
 				Year-2000 "2000's" \
@@ -322,11 +320,11 @@ function musicmenu(){
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceMusic"
 		else
-				$DIALOGMUSIC --keep-window --begin 2 55 --tailboxbg inc/music.standard.txt 25 55 \
-				--and-widget --begin 2 1 \
+				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.standard.txt 50 120 \
+				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PIWIZARD STANDARD MUSIC INSTALLER" \
 				--title "[ PI WIZARD STANDARD MUSIC SERVER ]" \
-				--menu "Make your choice:" 22 50 25 \
+				--menu "Make your choice:" 50 60 50 \
 				__ "  " \
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceMusic"
@@ -374,6 +372,11 @@ function musicmenu(){
 #
 UPGRADECHECK="YES"
 POSITIONAL=()
+findcenter 190 86
+infotextline=$MENUY
+infotextcol=$(expr $MENUX + 67)
+menutextcol=$MENUX
+
 
 while [[ $# -gt 0 ]]
 	do

@@ -110,6 +110,7 @@ function mainmenu(){
 
 
 	while [ "$ONERUNNING" == "TRUE" ];	do
+		findcenter 190 86
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.pro.txt 50 120 \
 				--and-widget --begin $infotextline $menutextcol \
@@ -199,6 +200,7 @@ function gamesmenu(){
 	trap "rm -f $choiceGames" 0 1 2 5 15
 
 	while [ "$GAMESRUNNING" == "TRUE" ];	do
+		findcenter 190 86
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.pro.txt 50 120 \
 				--and-widget --begin $infotextline $menutextcol \
@@ -303,6 +305,7 @@ function musicmenu(){
 	trap "rm -f $choiceMusic" 0 1 2 5 15
 
 	while [ "$MUSICRUNNING" == "TRUE" ];	do
+		findcenter 190 86
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.pro.txt 50 120 \
 				--and-widget --begin $infotextline $menutextcol \
@@ -373,9 +376,6 @@ function musicmenu(){
 UPGRADECHECK="YES"
 POSITIONAL=()
 findcenter 190 86
-infotextline=$MENUY
-infotextcol=$(expr $MENUX + 67)
-menutextcol=$MENUX
 
 
 while [[ $# -gt 0 ]]

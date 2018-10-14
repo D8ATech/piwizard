@@ -25,14 +25,6 @@ function loading(){
 
 	mainmenu
 	ONERUNNING="TRUE"
-
-	#bashreturn=$?
-	#if [ $bashreturn == 91 ]; then
-	#	exit
-	#fi
-
-	#exitcheck "BASE"
-	#cd $SCRIPTPATH
 }
 
 ###################################################
@@ -41,14 +33,12 @@ function loading(){
 ##
 ###################################################
 function main(){
-	exitcheck "BASE"
 	DIALOG=${DIALOG=dialog}
 	choiceMain=/tmp/dialogmain-$$.$RANDOM; > $choiceMain
 	trap "rm -f $choiceMain" 0 1 2 5 15
 
 	while [ "$MAINRUNNING" == "TRUE" ];	do
-		#160 character per line
-		#47 lines free
+		findcenter 190 86
 		$DIALOG  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/piwizard.main.txt 50 120 \
 		--and-widget --begin $infotextline $menutextcol \
 		--backtitle "PI WIZARD - Automatic Installer" \
@@ -91,7 +81,6 @@ function main(){
 				[ -s $choiceMain ] && cat $choiceMain || echo "ESC Pressed"
 				exit 1;;
 	  esac
-		#exitcheck "BASE"
 	done
 }
 
@@ -184,7 +173,6 @@ function mainmenu(){
 				[ -s $choiceOne ] && cat $choiceOne || echo "ESC Pressed"
 				ONERUNNING="FALSE";;
 	  esac
-		#exitcheck "BASE"
 	done
 }
 
@@ -364,7 +352,6 @@ function musicmenu(){
 				[ -s $choiceOne ] && cat $choiceOne || echo "ESC Pressed"
 				MUSICRUNNING="FALSE";;
 		esac
-		#exitcheck "BASE"
 	done
 
 }
@@ -375,8 +362,6 @@ function musicmenu(){
 #
 UPGRADECHECK="YES"
 POSITIONAL=()
-findcenter 190 86
-
 
 while [[ $# -gt 0 ]]
 	do

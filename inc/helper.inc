@@ -216,15 +216,19 @@ function music(){
   setupmusic
   case $1 in
     80)
-      echo Currently Downloading 80s Music Pack
-      wget -q -c --show-progress --trust-server-names http://music.thepiwizard.com/80.zip
+      # echo Currently Downloading 80s Music Pack
+      wget -q -c --show-progress --trust-server-names http://music.thepiwizard.com/80.zip  2 > & 1;
+      grep "%" |\
+      sed -u -e "s,\.,,g" | awk '{print $2}' | sed -u -e "s,\%,,g" | dialog --gauge "Download 80.zip" 10 100
       unzip -o /home/pi/RetroPie/roms/music/80.zip -d /home/pi/RetroPie/roms/music
       rm -f /home/pi/RetroPie/roms/music/80.zip
       display_output 10 40 "80's Music Installed!"
       ;;
     90)
-      echo Currently Downloading 90s Music Pack
-      wget -q -c --show-progress --trust-server-names http://music.thepiwizard.com/90.zip
+      # echo Currently Downloading 90s Music Pack
+      wget -q -c --show-progress --trust-server-names http://music.thepiwizard.com/90.zip 2 > & 1;
+      grep "%" |\
+      sed -u -e "s,\.,,g" | awk '{print $2}' | sed -u -e "s,\%,,g" | dialog --gauge "Download 90.zip" 10 100
       unzip -o /home/pi/RetroPie/roms/music/90.zip -d /home/pi/RetroPie/roms/music
       rm -f /home/pi/RetroPie/roms/music/90.zip
       display_output 10 40 "90s Music Installed!"
@@ -259,17 +263,19 @@ function downloader(){
   echo "Currently Downloading $1 Rom Pack"
 
   if [ "$VIP" == "Yes" ]; then
-      wget -q -c --show-progress --trust-server-names "http://roms.thepiwizard.com/pro/$2"
+      wget -q -c --show-progress --trust-server-names "http://roms.thepiwizard.com/pro/$2" 2 > & 1;
+      grep "%" |\
+      sed -u -e "s,\.,,g" | awk '{print $2}' | sed -u -e "s,\%,,g" | dialog --gauge "Download $2" 10 100
   else
-      wget -q -c --show-progress --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com/$2"
+      wget -q -c --show-progress --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com/$2" 2 > & 1;
+      grep "%" |\
+      sed -u -e "s,\.,,g" | awk '{print $2}' | sed -u -e "s,\%,,g" | dialog --gauge "Download $2" 10 100
   fi
   unzip -o /home/pi/RetroPie/roms/$1/$2 -d /home/pi/RetroPie/roms/$1
-  if [ -f "/home/pi/RetroPie/roms/$1/$2"]; then
+  # if [ -f "/home/pi/RetroPie/roms/$1/$2"]; then
     rm -f /home/pi/RetroPie/roms/$1/$2
-  fi
-  clear
-  echo "$1 Rom Pack Installed"
-  sleep 3
+  #fi
+  display_output 10 40 "$1 Rom Pack Installed"
   cd $SCRIPTPATH
 }
 function downloadroms(){
@@ -307,12 +313,9 @@ function downloadroms(){
 function closeAllDialogs(){
   RUNNING="FALSE"
   MAINRUNNING="FALSE"
-  S1RUNNING="FALSE"
-  S1ARUNNING="FALSE"
-  S1BRUNNING="FALSE"
-  S2RUNNING="FALSE"
-  S2ARUNNING="FALSE"
-  S2BRUNNING="FALSE"
+  ONERUNNING="FALSE"
+  MUSICRUNNING="FALSE"
+  GAMESRUNNING="FALSE"
 }
 
 function findcenter(){
@@ -350,9 +353,9 @@ function findcenter(){
 
 function rebt(){
   	dialog --textbox inc/thanks.txt 12 80
-  	clear
-  	echo "This is where we would reboot but for now we are just going to exit"
+  	display_output 10 80 "This is where we would reboot but for now we are just going to exit"
     closeAllDialogs
+    clear
     # sudo reboot now
   	exit 91
   	break
@@ -361,33 +364,6 @@ function rebt(){
 function ext(){ #clean and delete function
 	dialog --textbox inc/tocdenied.txt 12 80
 	exit
-}
-
-function exitcheck(){
-  if [ -z $1 ]; then
-    echo "there  is a parameter passed"
-    baselevel="$1"
-  else
-    baselevel="BASE"
-  fi
-
-  # echo "baselevel: $baselevel"
-
-  if [ -f "./library/exitnow" ] || [ -f "exitnow" ]; then
-    if [ "$baselevel" == "BASE" ]; then
-      rmfile "./library/exitnow"
-      rmfile "exitnow"
-    fi
-    closeAllDialogs
-  fi
-
-  if [ -f "./library/rebootnow" ] || [ -f "rebootnow" ]; then
-    if [ "$baselevel" == "BASE" ]; then
-      rmfile "./library/rebootnow"
-      rmfile "rebootnow"
-    fi
-    rebt
-  fi
 }
 
 #function dev(){
@@ -418,17 +394,14 @@ function bios(){
   fi
 
   cd /home/pi/RetroPie/BIOS
-	clear
 
-  wget -q -c --show-progress http://roms.thepiwizard.com/bios.zip
+  wget -q -c --show-progress http://roms.thepiwizard.com/bios.zip 2 > & 1;
+  grep "%" |\
+  sed -u -e "s,\.,,g" | awk '{print $2}' | sed -u -e "s,\%,,g" | dialog --gauge "Download bios.zip" 10 100
 	unzip -o bios.zip -d /home/pi/RetroPie/BIOS
-	sudo rm -f /home/pi/RetroPie/BIOS/bios.zip
-	sudo rm -f /home/pi/RetroPie/BIOS/bios.zip.*
-	clear
- 	echo "Additional BIOS Installed into the Bios Folder"
-	echo " "
-	echo "We will return to the main application in 10 seconds"
-    sleep 10
+	rm -f /home/pi/RetroPie/BIOS/bios.zip
+	rm -f /home/pi/RetroPie/BIOS/bios.zip.*
+ 	display_output 10 40 "Additional BIOS Installed into the Bios Folder"
 	cd $SCRIPTPATH
 }
 

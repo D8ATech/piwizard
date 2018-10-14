@@ -38,13 +38,13 @@ function main(){
 	trap "rm -f $choiceMain" 0 1 2 5 15
 
 	while [ "$MAINRUNNING" == "TRUE" ];	do
-		findcenter 190 86
-		$DIALOG  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/piwizard.main.txt 50 120 \
+		findcenter $DIALOGWIDTH $DIALOGHEIGHT
+		$DIALOG  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/piwizard.main.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 		--and-widget --begin $infotextline $menutextcol \
 		--backtitle "PI WIZARD - Automatic Installer" \
 		--title "[ D I S C L A I M E R ]" \
 		--no-cancel \
-		--menu "Make your choice:" 50 60 50 \
+		--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 		Accept "Agree to the EULA" \
 		Decline "Decline the EULA" \
 		Reboot  "Reboot my Pi" \
@@ -99,42 +99,42 @@ function mainmenu(){
 
 
 	while [ "$ONERUNNING" == "TRUE" ];	do
-		findcenter 190 86
+		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.pro.txt 50 120 \
+				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION INSTALLER]" \
-				--menu "Make your choice:" 50 60 50 \
+				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Rom-Downloads "Get your Roms " \
 				Single-Rom-Download "Coming Soon!" \
-				Emulator-Bios "Download all the extra Emulator Bios" \
+				Emulator-Bios "Download extra Emulator Bios" \
 				__ " " \
-				Serial-Number "A simple way to view your Serial Number of your PI" \
-				Disk-Space "View your SD Card Disk Space" \
+				Serial-Number "The Serial Number of your PI" \
+				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack" \
-				Get-Support "View Multiple Support Methods" \
+				Get-Support "View Support Methods" \
 				__ "  " \
 				Reboot "Reboot to save changes" \
-				Back "Back to Main Menu" 2>"$choiceOne"
+				Back "Back One Menu" 2>"$choiceOne"
 		else
-				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.standard.txt 50 120 \
+				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
-				--menu "Make your choice:" 50 60 50 \
+				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Rom-Downloads "Get your Roms " \
 				Single-Rom-Download "Coming Soon to PRO" \
-				Emulator-Bios "Download all the extra Emulator Bios" \
+				Emulator-Bios "Download extra Emulator Bios" \
 				__ "  " \
-				Serial-Number "View the Serial Number of your PI" \
-				Disk-Space "View your SD Card Disk Space" \
+				Serial-Number "The Serial Number of your PI" \
+				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack - PRO" \
 				Upgrade-to-Pro "Compare Standard to Pro" \
-				Get-Support "View Multiple Support Methods" \
+				Get-Support "View Support Methods" \
 				__ "  " \
 				Reboot "Reboot to save changes" \
-				Back "Back to Main Menu" 2>"$choiceOne"
+				Back "Back One Menu" 2>"$choiceOne"
 		fi
 
 		retval="$?"
@@ -188,13 +188,13 @@ function gamesmenu(){
 	trap "rm -f $choiceGames" 0 1 2 5 15
 
 	while [ "$GAMESRUNNING" == "TRUE" ];	do
-		findcenter 190 86
+		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.pro.txt 50 120 \
+				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
-				--menu "Make your choice:" 50 60 50 \
+				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				__ "= Atari Systems =" \
 				atari2600 "Atari 2600" \
 				atari5200 "Atari 5200" \
@@ -228,11 +228,11 @@ function gamesmenu(){
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceGames"
 		else
-				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.standard.txt 50 120 \
+				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
-				--menu "Make your choice:" 50 60 50 \
+				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				__ "= Atari Systems =" \
 				atari2600 "Atari 2600" \
 				atari5200 "Atari 5200" \
@@ -293,13 +293,13 @@ function musicmenu(){
 	trap "rm -f $choiceMusic" 0 1 2 5 15
 
 	while [ "$MUSICRUNNING" == "TRUE" ];	do
-		findcenter 190 86
+		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.pro.txt 50 120 \
+				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD PRO MUSIC INSTALLER" \
 				--title "[ PI WIZARD PRO MUSIC SERVER ]" \
-				--menu "Make your choice:" 50 60 50 \
+				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Year-1980 "1980's" \
 				Year-1990 "1990's" \
 				Year-2000 "2000's" \
@@ -311,11 +311,11 @@ function musicmenu(){
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceMusic"
 		else
-				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.standard.txt 50 120 \
+				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PIWIZARD STANDARD MUSIC INSTALLER" \
 				--title "[ PI WIZARD STANDARD MUSIC SERVER ]" \
-				--menu "Make your choice:" 50 60 50 \
+				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				__ "  " \
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceMusic"

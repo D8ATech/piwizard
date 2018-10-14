@@ -18,19 +18,20 @@ self_update() {
     BASE=$(git merge-base @ "refs/heads/master")
 
     if [  $LOCAL = $REMOTE ]; then
+        display_output 10 40 "VERSION = $LOCAL"
         debugwrite "Already Up to Date.  Continuing..."
     elif [ $LOCAL = $BASE ]; then
         echo "Found a new version, updating..."
         git pull --force
         read -p "New version installed.  Press Enter to restart..."
         cd $SCRIPTPATH
-        bash "$SCRIPTNAME ${ARGS[@]}" &
+        bash "$SCRIPTNAME ${ARGS[@]}"
         exit 1
     elif [ $REMOTE = $BASE ]; then
         echo "There are unpushed changes on client that would be lost.  Exiting"
         exit 1
     else
-        echo "Code has diverged.  Delete this directory structure, reclone the repository and try again. Exiting Now"
+        echo "Code has diverged.  Delete this directory structure, re-clone the repository and try again. Exiting Now"
         exit 99
     fi
 }
@@ -324,7 +325,7 @@ function findcenter(){
   menuwidth=$1
   menuheight=$2
 
-  display_output 10 80 "menuwidth: $1 - menuheight $2 - MAX WIDTH: $MAXWIDTH - MAX HEIGHT: $MAXHEIGHT"
+  # 10 80 "menuwidth: $1 - menuheight $2 - MAX WIDTH: $MAXWIDTH - MAX HEIGHT: $MAXHEIGHT"
 
   #Calculate Width
   if [ $menuwidth -gt $MAXWIDTH ]; then
@@ -349,7 +350,7 @@ function findcenter(){
   fi
 
   infotextline=$MENUY
-  infotextcol=$(expr $MENUX + 67)
+  infotextcol=$(expr $MENUX + 58)
   menutextcol=$MENUX
 }
 

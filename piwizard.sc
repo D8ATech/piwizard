@@ -40,7 +40,7 @@ function main(){
 	while [ "$MAINRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		$DIALOG  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/piwizard.main.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-		--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "$currentStatus" 5 55 \
+		--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --tailboxbg inc/downloadstatus 5 55 \
 		--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --tailboxbg inc/announce 7 102 \
 		--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 		--and-widget --begin $infotextline $menutextcol \

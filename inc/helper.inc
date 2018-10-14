@@ -362,8 +362,9 @@ function findcenter(){
 }
 
 function getstatus(){
-    currentStatus=$(wget http://thepiwizard.com/downloadstatus )
-
+    cd inc
+    currentStatus=$(wget http://thepiwizard.com/downloadstatus)
+    cd $SCRIPTPATH
 }
 
 function getannouncements(){

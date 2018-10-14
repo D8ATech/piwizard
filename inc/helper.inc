@@ -361,6 +361,17 @@ function findcenter(){
   #display_output 10 80 "infotextline: $infotextline - statustextline: $statustextline - infotextcol: $infotextcol - menutextcol: $menutextcol"
 }
 
+function getstatus(){
+    currentStatus=$(wget http://thepiwizard.com/downloadstatus )
+
+}
+
+function getannouncements(){
+    cd inc
+    announcements=$(wget http://thepiwizard.com/announce)
+    cd $SCRIPTPATH
+}
+
 function rebt(){
   	dialog --textbox inc/thanks.txt 12 80
   	display_output 10 80 "This is where we would reboot but for now we are just going to exit"

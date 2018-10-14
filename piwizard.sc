@@ -40,8 +40,8 @@ function main(){
 	while [ "$MAINRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		$DIALOG  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/piwizard.main.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-		--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "This is ROM download status." 5 55 \
-		--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "This is current announcments" 7 102 \
+		--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "$currentStatus" 5 55 \
+		--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --tailboxbg inc/announce 7 102 \
 		--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 		--and-widget --begin $infotextline $menutextcol \
 		--backtitle "PI WIZARD - Automatic Installer" \
@@ -106,6 +106,8 @@ function mainmenu(){
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "There are multiple widgets." 5 55 \
+				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "This is current announcments" 7 102 \
+				--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION INSTALLER]" \
@@ -124,6 +126,8 @@ function mainmenu(){
 		else
 				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "There are multiple widgets." 5 55 \
+				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "This is current announcments" 7 102 \
+				--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
@@ -197,6 +201,8 @@ function gamesmenu(){
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "There are multiple widgets." 5 55 \
+				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "This is current announcments" 7 102 \
+				--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
@@ -236,6 +242,8 @@ function gamesmenu(){
 		else
 				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "There are multiple widgets." 5 55 \
+				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "This is current announcments" 7 102 \
+				--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
@@ -304,6 +312,8 @@ function musicmenu(){
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "There are multiple widgets." 5 55 \
+				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "This is current announcments" 7 102 \
+				--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PI WIZARD PRO MUSIC INSTALLER" \
 				--title "[ PI WIZARD PRO MUSIC SERVER ]" \
@@ -320,6 +330,9 @@ function musicmenu(){
 				Back "Back to Main Menu" 2>"$choiceMusic"
 		else
 				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "There are multiple widgets." 5 55 \
+				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "This is current announcments" 7 102 \
+				--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 				--and-widget --begin $infotextline $menutextcol \
 				--backtitle "PIWIZARD STANDARD MUSIC INSTALLER" \
 				--title "[ PI WIZARD STANDARD MUSIC SERVER ]" \
@@ -403,6 +416,7 @@ fi
 ############################
 # Run the script
 #
-
+getstatus
+getannouncements
 main
 	cleanupExit

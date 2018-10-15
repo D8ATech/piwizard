@@ -383,7 +383,8 @@ function rebt(){
   	# display_output 10 80 "This is where we would reboot but for now we are just going to exit"
     closeAllDialogs
     clear
-    $echo "clover" | sudo -S reboot now
+    echo "If prompted please provide the password for the user pi on this Raspberry Pi"
+    sudo reboot now
   	exit 91
   	break
 }

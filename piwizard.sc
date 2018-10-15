@@ -285,6 +285,7 @@ function gamesmenu(){
 					case $choice in
 						Reboot) rebt;;
 						Back) GAMESRUNNING="FALSE";;
+						mame2003) display_output 10 60 "MAME ROMS will be available 10/22"
 						__);;
 						*) downloadroms "$choice"
 							;;

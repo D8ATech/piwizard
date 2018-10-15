@@ -91,6 +91,24 @@ function cleanupExit(){
   sleep 5
 }
 
+function smallscreencheck(){
+  if [ $MAXWIDTH -lt 160 ]; then
+  	displaymsg=" The screen width is $MAXWIDTH which is less than 160.\n"
+  else
+  	displaymsg=""
+  fi
+
+  if [ $MAXHEIGHT -lt 55 ]; then
+  	displaymsg="$displaymsg The screen height is $MAXHEIGHT which is less than 55.\n"
+  fi
+
+  if [ ! -z "$displaymsg" ]; then
+  	displaymsg="\n$displaymsg Some of the screen may be cut off. The menus should all\n"
+  	displaymsg="$displaymsg work fine but much of the extra information could be hidden\n or jumbled on the right and bottom of the screen"
+  	display_output 11 70 "$displaymsg"
+  fi
+}
+
 function licensecheck(){
   sn=$(cat /proc/cpuinfo | grep Serial| cut -d ' ' -f 2) #store the serial in the $sn value
 

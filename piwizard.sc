@@ -425,22 +425,8 @@ fi
 ############################
 # Run the script
 #
-if [ $MAXWIDTH -lt 160 ]; then
-	displaymsg=" The screen width is $MAXWIDTH which is less than 160.\n"
-else
-	displaymsg=""
-fi
 
-if [ $MAXHEIGHT -lt 61 ]; then
-	displaymsg="$displaymsg The screen height is $MAXHEIGHT which is less than 61.\n"
-fi
-
-if [ ! -z "$displaymsg" ]; then
-	displaymsg="\n$displaymsg Some of the screen may be cut off. The menus should all\n"
-	displaymsg="$displaymsg work fine but much of the extra information could be hidden\n or jumbled on the right and bottom of the screen"
-	display_output 11 70 "$displaymsg"
-fi
-
+smallscreencheck
 getscreeninfo
 licensecheck
 main

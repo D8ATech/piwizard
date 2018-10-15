@@ -1,15 +1,4 @@
 
-#INPUT=/tmp/menu.sh.$$
-#OUTPUT=/tmp/output.sh.$$
-#trap "rm $OUTPUT; rm $INPUT; exit" SIGHUP SIGINT SIGTERM
-#function display_output(){
-#	local h=${1-82}
-#	local w=${2-82}
-#	local t=${3-Output}
-#	dialog --backtitle " Automatic Installer " --title "${t}" --clear --msgbox "$(<$OUTPUT)" ${h} ${w}
-#}
-
-
 self_update() {
     cd $SCRIPTPATH
     echo "Checking for lastest version of Pi Wizard. One moment please."
@@ -163,13 +152,19 @@ function cleanupExit(){
 function licensecheck(){
   sn=$(cat /proc/cpuinfo | grep Serial| cut -d ' ' -f 2) #store the serial in the $sn value
 
-  expiredvip=$(curl http://expire.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
+  if [  -z "$sn" ]; then
+    sn="NOT DETECTED"
+  fi
+
+  FOOTERTEXT=" http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - http://forum.thepiwizard.com - http://paypal.me/thepiwizard \n Serial Number of this device: $sn          Version: $LOCAL"
+
+  expiredvip=$(curl -s http://expire.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
 
 	if [[ $expiredvip = "VIP" ]]; then
       VIP="No"
 			dialog --textbox inc/piwizard.expiredvip.txt 12 81
   else
-    apicall=$(curl http://api.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
+    apicall=$(curl -s http://api.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
     #apicall="VIP"
     if [[ $apicall = "VIP" ]]; then
         VIP="Yes"
@@ -195,7 +190,12 @@ function support(){
 }
 
 function serial(){
-sn=$(cat /proc/cpuinfo | grep Serial)
+  sn=$(cat /proc/cpuinfo | grep Serial)
+
+  if [ "$sn" -eq "" ]; then
+    sn="NOT DETECTED"
+  fi
+
   dialog --title "Your Serial Number - $sn" --textbox inc/one.serial.txt 15 80
 }
 
@@ -275,9 +275,8 @@ function downloader(){
       dialog --gauge "Download $2" 10 100
   fi
   unzip -o /home/pi/RetroPie/roms/$1/$2 -d /home/pi/RetroPie/roms/$1
-  # if [ -f "/home/pi/RetroPie/roms/$1/$2" ]; then
-    rm -f /home/pi/RetroPie/roms/$1/$2
-  #fi
+  rm -f /home/pi/RetroPie/roms/$1/$2
+
   display_output 10 40 "$1 Rom Pack Installed"
   cd $SCRIPTPATH
 }
@@ -353,25 +352,20 @@ function findcenter(){
   statustextline=$(expr $MENUY + 33)
   infotextcol=$(expr $MENUX + 58)
   menutextcol=$MENUX
+  countertextcol=$MENUX
+  countertextline=$(expr $statustextline + 6)
   announcetxtcol=$infotextcol
   announcetxtline=$statustextline
   footercol=$menutextcol
   footerline=$(expr $MAXHEIGHT - 7)
-
-  #display_output 10 80 "infotextline: $infotextline - statustextline: $statustextline - infotextcol: $infotextcol - menutextcol: $menutextcol"
+  romcounter=$(curl -s http://thepiwizard.com/counter.txt)
 }
 
-function getstatus(){
-    cd inc
-    currentStatus=$(wget http://thepiwizard.com/downloadstatus)
-    cd $SCRIPTPATH
+function getscreeninfo(){
+    currentStatus=$(curl -s http://thepiwizard.com/downloadstatus)
+    announcements=$(curl -s http://thepiwizard.com/announce)
 }
 
-function getannouncements(){
-    cd inc
-    announcements=$(wget http://thepiwizard.com/announce)
-    cd $SCRIPTPATH
-}
 
 function rebt(){
   	dialog --textbox inc/thanks.txt 12 80

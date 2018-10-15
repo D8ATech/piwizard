@@ -28,5 +28,3 @@ DIALOG_ESC=255
 HEIGHT=0
 WIDTH=0
 REBOOTREQUIRED="FALSE"
-
-FOOTERTEXT="http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - http://forum.thepiwizard.com - http://paypal.me/thepiwizard"

@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 . inc/variables.inc
 . $SCRIPTPATH/inc/helper.inc
 DIALOGRC="$SCRIPTPATH/.dialogrc"
@@ -21,8 +21,6 @@ export DIALOGRC
 ##
 ############################################################
 function loading(){
-	licensecheck
-
 	mainmenu
 	ONERUNNING="TRUE"
 }
@@ -40,10 +38,11 @@ function main(){
 	while [ "$MAINRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		$DIALOG  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/piwizard.main.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-		--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --tailboxbg inc/downloadstatus 5 55 \
-		--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --tailboxbg inc/announce 7 102 \
+		--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+		--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+		--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 7 102 \
 		--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-		--and-widget --begin $infotextline $menutextcol \
+		--and-widget --begin $infotextline $menutextcol --shadow \
 		--backtitle "PI WIZARD - Automatic Installer" \
 		--title "[ D I S C L A I M E R ]" \
 		--no-cancel \
@@ -81,6 +80,7 @@ function main(){
 				#cleanup
 				exit;;
 			$DIALOG_ESC)
+				clear
 				[ -s $choiceMain ] && cat $choiceMain || echo "ESC Pressed"
 				exit 1;;
 	  esac
@@ -105,10 +105,11 @@ function mainmenu(){
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "There are multiple widgets." 5 55 \
-				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "This is current announcments" 7 102 \
+				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 7 102 \
 				--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol \
+				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION INSTALLER]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -125,10 +126,11 @@ function mainmenu(){
 				Back "Back One Menu" 2>"$choiceOne"
 		else
 				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "There are multiple widgets." 5 55 \
-				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "This is current announcments" 7 102 \
+				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 7 102 \
 				--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol \
+				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -179,6 +181,7 @@ function mainmenu(){
 			$DIALOG_CANCEL)
 				ONERUNNING="FALSE";;
 			$DIALOG_ESC)
+				clear
 				[ -s $choiceOne ] && cat $choiceOne || echo "ESC Pressed"
 				ONERUNNING="FALSE";;
 	  esac
@@ -200,10 +203,11 @@ function gamesmenu(){
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "There are multiple widgets." 5 55 \
-				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "This is current announcments" 7 102 \
+				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 7 102 \
 				--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol \
+				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -212,7 +216,7 @@ function gamesmenu(){
 				atari5200 "Atari 5200" \
 				atari7800 "Atari 7800" \
 				atarijaguar "Atari Jaguar" \
-				atarilynxs "Atari Lynxs" \
+				atarilynx "Atari Lynxs" \
 				__ "= Nintendo Systems =" \
 				nes "Nintendo Entertainment System" \
 				snes "Super Nintendo" \
@@ -241,10 +245,11 @@ function gamesmenu(){
 				Back "Back to Main Menu" 2>"$choiceGames"
 		else
 				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "There are multiple widgets." 5 55 \
-				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "This is current announcments" 7 102 \
+				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 7 102 \
 				--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol \
+				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -252,7 +257,7 @@ function gamesmenu(){
 				atari2600 "Atari 2600" \
 				atari5200 "Atari 5200" \
 				atari7800 "Atari 7800" \
-				atarilynxs "Atari Lynxs" \
+				atarilynx "Atari Lynx" \
 				__ "= Nintendo Systems =" \
 				nes "Nintendo Entertainment System" \
 				snes "Super Nintendo" \
@@ -290,6 +295,7 @@ function gamesmenu(){
 			$DIALOG_CANCEL)
 				GAMESRUNNING="FALSE";;
 			$DIALOG_ESC)
+				clear
 				[ -s $choiceGames ] && cat $choiceGames || echo "ESC Pressed"
 				GAMESRUNNING="FALSE";;
 		esac
@@ -311,10 +317,11 @@ function musicmenu(){
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "There are multiple widgets." 5 55 \
-				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "This is current announcments" 7 102 \
+				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 7 102 \
 				--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol \
+				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PI WIZARD PRO MUSIC INSTALLER" \
 				--title "[ PI WIZARD PRO MUSIC SERVER ]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -330,10 +337,11 @@ function musicmenu(){
 				Back "Back to Main Menu" 2>"$choiceMusic"
 		else
 				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM DOWNLOAD STATUS" --infobox "There are multiple widgets." 5 55 \
-				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "This is current announcments" 7 102 \
+				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 7 102 \
 				--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol \
+				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PIWIZARD STANDARD MUSIC INSTALLER" \
 				--title "[ PI WIZARD STANDARD MUSIC SERVER ]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -370,6 +378,7 @@ function musicmenu(){
 			$DIALOG_CANCEL)
 				MUSICRUNNING="FALSE";;
 			$DIALOG_ESC)
+				clear
 				[ -s $choiceOne ] && cat $choiceOne || echo "ESC Pressed"
 				MUSICRUNNING="FALSE";;
 		esac
@@ -416,7 +425,7 @@ fi
 ############################
 # Run the script
 #
-getstatus
-getannouncements
+getscreeninfo
+licensecheck
 main
 	cleanupExit

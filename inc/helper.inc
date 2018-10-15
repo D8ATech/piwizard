@@ -176,33 +176,33 @@ function setupmusic(){
 function music(){
   setupmusic
   case $1 in
-    80)
+    80) display_output 10 60 "The 1980's music pack will be availalbe 10/22/2018";;
       # echo Currently Downloading 80s Music Pack
-      wget --trust-server-names "http://music.thepiwizard.com/80.zip" 2>& 1 | \
-      stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-      dialog --gauge "Downloading 80.zip" 10 100
+      #wget --trust-server-names "http://music.thepiwizard.com/80.zip" 2>& 1 | \
+      #stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
+      #dialog --gauge "Downloading 80.zip" 10 100
 
-      unzipprogress /home/pi/RetroPie/roms/music/80.zip /home/pi/RetroPie/roms/music
+      #unzipprogress /home/pi/RetroPie/roms/music/80.zip /home/pi/RetroPie/roms/music
       # unzip -o /home/pi/RetroPie/roms/music/80.zip -d /home/pi/RetroPie/roms/music
-      rm -f /home/pi/RetroPie/roms/music/80.zip
-      display_output 10 40 "80's Music Installed!"
-      ;;
-    90)
+      #rm -f /home/pi/RetroPie/roms/music/80.zip
+      #display_output 10 40 "80's Music Installed!"
+      #;;
+    90) display_output 10 60 "The 1990's music pack will be availalbe 10/22/2018";;
       # echo Currently Downloading 90s Music Pack
-      wget -q -c --progress=dot --trust-server-names "http://music.thepiwizard.com/90.zip" 2>& 1 | \
-      stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-      dialog --gauge "Downloading 90.zip" 10 100
+      #wget -q -c --progress=dot --trust-server-names "http://music.thepiwizard.com/90.zip" 2>& 1 | \
+      #stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
+      #dialog --gauge "Downloading 90.zip" 10 100
 
-      unzip -o /home/pi/RetroPie/roms/music/90.zip -d /home/pi/RetroPie/roms/music
-      rm -f /home/pi/RetroPie/roms/music/90.zip
-      display_output 10 40 "90s Music Installed!"
-      ;;
-    00) display_output 10 40 "The 2000's music pack will be coming soon";;
-    T40) display_output 10 40 "The Top 40's music pack will be coming soon";;
-    Arcade) display_output 10 40 "The Arcade music pack will be coming soon";;
-    GS1) display_output 10 40 "The Game Soundtrack 1 music pack will be coming soon";;
-    GS2) display_output 10 40 "The Game Soundtrack 2 music pack will be coming soon";;
-    *) display_output 10 40 "Somehow an incorrect value was sent to the music function";;
+      #unzip -o /home/pi/RetroPie/roms/music/90.zip -d /home/pi/RetroPie/roms/music
+      #rm -f /home/pi/RetroPie/roms/music/90.zip
+      #display_output 10 40 "90s Music Installed!"
+      #;;
+    00) display_output 10 60 "The 2000's music pack will be availalbe 10/22/2018";;
+    T40) display_output 10 60 "The Top 40's music pack will be availalbe 10/22/2018";;
+    Arcade) display_output 10 60 "The Arcade music pack will be availalbe 10/22/2018";;
+    GS1) display_output 10 60 "The Game Soundtrack 1 music pack will be availalbe 10/22/2018";;
+    GS2) display_output 10 60 "The Game Soundtrack 2 music pack will be availalbe 10/22/2018";;
+    *) display_output 10 60 "Somehow an incorrect value was sent to the music function";;
   esac
 
 	cd $SCRIPTPATH

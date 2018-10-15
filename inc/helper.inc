@@ -383,7 +383,7 @@ function rebt(){
   	# display_output 10 80 "This is where we would reboot but for now we are just going to exit"
     closeAllDialogs
     clear
-    $echo rasberry | sudo -S reboot now
+    $echo "clover" | sudo -S reboot now
   	exit 91
   	break
 }

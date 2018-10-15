@@ -180,7 +180,7 @@ function music(){
       # echo Currently Downloading 80s Music Pack
       wget --trust-server-names "http://music.thepiwizard.com/80.zip" 2>& 1 | \
       stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-      dialog --gauge "Download 80.zip" 10 100
+      dialog --gauge "Downloading 80.zip" 10 100
 
       unzipprogress /home/pi/RetroPie/roms/music/80.zip /home/pi/RetroPie/roms/music
       # unzip -o /home/pi/RetroPie/roms/music/80.zip -d /home/pi/RetroPie/roms/music
@@ -191,7 +191,7 @@ function music(){
       # echo Currently Downloading 90s Music Pack
       wget -q -c --progress=dot --trust-server-names "http://music.thepiwizard.com/90.zip" 2>& 1 | \
       stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-      dialog --gauge "Download 90.zip" 10 100
+      dialog --gauge "Downloading 90.zip" 10 100
 
       unzip -o /home/pi/RetroPie/roms/music/90.zip -d /home/pi/RetroPie/roms/music
       rm -f /home/pi/RetroPie/roms/music/90.zip
@@ -228,11 +228,11 @@ function downloader(){
   if [ "$VIP" == "Yes" ]; then
       wget --trust-server-names "http://roms.thepiwizard.com/pro/$2" 2>& 1 | \
       stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-      dialog --gauge "Download $2" 10 100
+      dialog --gauge "Downloading $2" 10 100
   else
       wget --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com/$2" 2>& 1 | \
       stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-      dialog --gauge "Download $2" 10 100
+      dialog --gauge "Downloading $2" 10 100
   fi
   unzipprogress "/home/pi/RetroPie/roms/$1/$2" "/home/pi/RetroPie/roms/$1"
   #unzip -o /home/pi/RetroPie/roms/$1/$2 -d /home/pi/RetroPie/roms/$1
@@ -269,7 +269,7 @@ function downloadroms(){
     nes) downloader "nes" "nes.zip";;
     snes) downloader "snes" "snes.zip";;
     snesclassic) downloader "snes-classic" "snes-classic.zip";;
-    *) display_output 10 65 "Somehow an incorrect value was sent to the download function";;
+    *) display_output 10 65 "Somehow an incorrect value was sent to the downloading function";;
   esac
 }
 
@@ -364,7 +364,7 @@ function bios(){
 
   wget -q -c --progress=dot "http://roms.thepiwizard.com/bios.zip" 2>& 1 | \
   stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-  dialog --gauge "Download bios.zip" 10 100
+  dialog --gauge "Downloading bios.zip" 10 100
 
 	unzip -o bios.zip -d /home/pi/RetroPie/BIOS
 	rm -f /home/pi/RetroPie/BIOS/bios.zip

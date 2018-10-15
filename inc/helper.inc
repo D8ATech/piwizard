@@ -156,7 +156,7 @@ function licensecheck(){
     sn="NOT DETECTED"
   fi
 
-  FOOTERTEXT=" http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - http://forum.thepiwizard.com - http://paypal.me/thepiwizard \n Serial Number of this device: $sn          Version: $LOCAL"
+  FOOTERTEXT=" http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - http://forum.thepiwizard.com - http://paypal.me/thepiwizard \n\n Serial Number of this device: $sn          Version: $LOCAL"
 
   expiredvip=$(curl -s http://expire.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
 
@@ -368,6 +368,13 @@ function findcenter(){
 function getscreeninfo(){
     currentStatus=$(curl -s http://thepiwizard.com/downloadstatus)
     announcements=$(curl -s http://thepiwizard.com/announce)
+    #statusLevel=$(echo $currentStatus | head -n1)
+    #case $statusLevel in
+    #  RED) currentStatus="\Z1$currentStatus\Zn";;
+    #  YELLOW) currentStatus="\Z3$currentStatus\Zn";;
+    #  GREEN) currentStatus="\Z2$currentStatus\Zn";;
+    #  *) currentStatus="\Z1$currentStatus\Zn";;
+    #esac
 }
 
 

@@ -12,9 +12,8 @@ self_update() {
     elif [ $LOCAL = $BASE ]; then
         echo "Found a new version, updating..."
         git pull --force
-        read -p "New version installed.  Press Enter to restart..."
-        cd $SCRIPTPATH
-        bash "$SCRIPTNAME ${ARGS[@]}"
+        display_output 10 60 "New version installed.  Press Enter to reboot.."
+        rebt "silent"
         exit 1
     elif [ $REMOTE = $BASE ]; then
         echo "There are unpushed changes on client that would be lost.  Exiting"
@@ -379,11 +378,13 @@ function getscreeninfo(){
 
 
 function rebt(){
-  	dialog --textbox inc/thanks.txt 12 80
+    if [ ! z $1 ]; then
+      dialog --textbox inc/thanks.txt 12 80
+    fi
   	# display_output 10 80 "This is where we would reboot but for now we are just going to exit"
     closeAllDialogs
     clear
-    echo "If prompted please provide the password for the user pi on this Raspberry Pi"
+    echo "Pi Wizard in now rebooting..."
     sudo reboot now
   	exit 91
   	break

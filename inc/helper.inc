@@ -1,4 +1,4 @@
-
+# Helper script with functions used by piwizard.sc.  Not diectly runnable
 self_update() {
     cd $SCRIPTPATH
     echo "Checking for lastest version of Pi Wizard. One moment please."
@@ -77,63 +77,6 @@ function rmfile (){
   if [ -f $1 ]; then
       rm $1
   fi
-}
-
-function clearfiles(){
-    if [ "$DEBUG" == "PROD" ]; then
-        case $1 in
-          SPLASH)
-            #rmfile "/$SCRIPTPATH/inc/splash.sc"
-            #rmfile "/$SCRIPTPATH/inc/splash.sc.*"
-            ;;
-          THEMES)
-            #rmfile "/$SCRIPTPATH/inc/theme.vip"
-          	#rmfile "/$SCRIPTPATH/inc/theme.vip.*"
-            ;;
-          KEY)
-            rmfile "/$SCRIPTPATH/*.key"
-            rmfile "/$SCRIPTPATH/*.key.*"
-            ;;
-          ZIP)
-            rmfile "gamelistfullset.zip"
-            rmfile "gamelistfullset.zip.*"
-            ;;
-          RPI)
-            #rmfile "/$SCRIPTPATH/inc/rpiloc.vip"
-            #rmfile "/$SCRIPTPATH/inc/rpiloc.vip.*"
-            ;;
-          SH)
-            #rmfile "/$SCRIPTPATH/inc/*.sh"
-            #rmfile "/$SCRIPTPATH/inc/*.sh.*"
-            ;;
-          BIOS)
-            rmfile "/home/pi/RetroPie/BIOS/bios.zip"
-            rmfile "/home/pi/RetroPie/BIOS/bios.zip.*"
-            ;;
-          ALL)
-           clearAllFiles
-           ;;
-          *)
-            #rmfile "/$SCRIPTPATH/inc/*.sc"
-            #rmfile "/$SCRIPTPATH/inc/*.sc.*"
-            #rmfile "/$SCRIPTPATH/inc/*.vip"
-            #rmfile "/$SCRIPTPATH/inc/*.vip.*"
-            #rmfile "/$SCRIPTPATH/inc/*.dev"
-            #rmfile "/$SCRIPTPATH/inc/*.dev.*"
-          ;;
-        esac
-    fi
-}
-
-function clearAllFiles(){
-    clearfiles "BIOS"
-    clearfiles "SH"
-    clearfiles "RPI"
-    clearfiles "ZIP"
-    clearfiles "KEY"
-    clearfiles "THEMES"
-    clearfiles "SPLASH"
-    clearfiles
 }
 
 function cleanupExit(){
@@ -247,7 +190,6 @@ function music(){
 	cd $SCRIPTPATH
 }
 
-
 function downloader(){
   if [ ! -d "/home/pi/RetroPie/roms/$1" ]; then
     mkdir /home/pi/RetroPie/roms/$1
@@ -282,7 +224,6 @@ function downloader(){
   cd $SCRIPTPATH
 }
 
-
 function downloadroms(){
   case $1 in
     atari2600) downloader "atari2600" "atari2600.zip";;
@@ -309,11 +250,10 @@ function downloadroms(){
     neogeo) downloader "neogeo" "neogeo.zip";;
     nes) downloader "nes" "nes.zip";;
     snes) downloader "snes" "snes.zip";;
-    snesclasic) downloader "snes-classic" "snes-classic.zip";;
-    *) display_output 10 40 "Somehow an incorrect value was sent to the download function";;
+    snesclassic) downloader "snes-classic" "snes-classic.zip";;
+    *) display_output 10 65 "Somehow an incorrect value was sent to the download function";;
   esac
 }
-
 
 function closeAllDialogs(){
   RUNNING="FALSE"
@@ -367,18 +307,11 @@ function findcenter(){
 function getscreeninfo(){
     currentStatus=$(curl -s http://thepiwizard.com/downloadstatus)
     announcements=$(curl -s http://thepiwizard.com/announce)
-    #statusLevel=$(echo $currentStatus | head -n1)
-    #case $statusLevel in
-    #  RED) currentStatus="\Z1$currentStatus\Zn";;
-    #  YELLOW) currentStatus="\Z3$currentStatus\Zn";;
-    #  GREEN) currentStatus="\Z2$currentStatus\Zn";;
-    #  *) currentStatus="\Z1$currentStatus\Zn";;
-    #esac
+
 }
 
-
 function rebt(){
-    if [ ! z $1 ]; then
+    if [ ! -z "$1" ]; then
       dialog --textbox inc/thanks.txt 12 80
     fi
   	# display_output 10 80 "This is where we would reboot but for now we are just going to exit"
@@ -395,15 +328,6 @@ function ext(){
 	exit
 }
 
-#function dev(){
-#      msgtxt=$(cat inc/developer)
-#      display_output $HEIGHT $WIDTH "$msgtxt"
-#}
-
-#function uninstall(){
-  ######    TO DO    ######
-#}
-
 function disk(){
 	df -lh > diskinfo
 	echo " " >> diskinfo
@@ -412,10 +336,6 @@ function disk(){
 	dialog --textbox diskinfo $HEIGHT $WIDTH
 	rmfile "./diskinfo"
 }
-
-#function splash(){
-  ######    TO DO    ######
-#}
 
 function bios(){
   if [ ! -d "/home/pi/RetroPie/BIOS" ]; then
@@ -435,57 +355,12 @@ function bios(){
 	cd $SCRIPTPATH
 }
 
-#function drv(){
-  ######    TO DO    ######
-#}
-
-#function scrpt(){
-  ######    TO DO    ######
-#}
-
-
-#function thm(){
-  ######    TO DO    ######
-
-	#cd /home/pi/RetroPie/roms/gamewizard
-	#sudo rm -f /home/pi/RetroPie/roms/gamewizard/theme.sc
-	#sudo rm -f /home/pi/RetroPie/roms/gamewizard/theme.sc.*
-	#wget -q -c --show-progress http://pi.gamewizard.ca/gamewizard-rc3/theme.sc
-	#sudo chmod a+x /home/pi/RetroPie/roms/gamewizard/theme.sc
-	#sudo chown pi:pi /home/pi/RetroPie/roms/gamewizard/theme.sc
-	#bash /home/pi/RetroPie/roms/gamewizard/theme.sc
-  #cd $SCRIPTPATH
-#}
-
 function display_output(){
 	local h="$1"
 	local w="$2"
   local m="$3"
 	dialog --backtitle "Pi Wizard Autonomous Romset Installation" --title "Pi Wizard Message" --msgbox "$m" "$h" "$w"
 }
-
-#function wgetfile(){
-##  if [ ! -z $1 ]; then
-##    URL="$1"
-##    filename=${URL##*/}  # retain the part after the last slash
-##    if [ ! -z $2 ]; then
-##      transfervip=$2
-##    else
-##      transfervip="FALSE"
-##    fi
-##    if [ "$transfervip" == "TRUE" ]; then
-##        wget "$URL" 2>& 1 | \
-##        stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-##        dialog --gauge "Download $filename" 10 100
-##    else
-##        wget --limit-rate 1024k "$URL" 2>& 1 | \
-##        stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-##        dialog --gauge "Download $filename" 10 100
-##    fi
-##  else
-##    #debugwrite "oops! shouldn't have got here"
-##  fi
-#}
 
 function unzipprogress(){
   debugwrite "Made it to unzipprogress - $1 : $2"
@@ -501,30 +376,3 @@ function unzipprogress(){
     debugwrite "no filename passed"
   fi
 }
-
-#function romset(){
-#
-#   ######    TO DO    ######
-#
-#  cd $SCRIPTPATH
-#  getGameList
-#	bash ./rpiloc.sc "$VIP"
-#  bashreturn=$?
-#  if [ $bashreturn == 91 ]; then
-#    exit
-#  fi
-#}
-
-#function getGameList(){
-
-#    ######    TO DO    ######
-#
-#  #wgetfile "http://pi.piwizard.ca/gamelistxml/gamelistfullset.zip" "$VIP"
-#  #rmfile "gamelistfullset.zip"
-#
-#  #debugwrite "Going to unzip now"
-#  #unzipprogress "gamelistfullset.zip" "/opt/retropie/configs/all/emulationstation/gamelists"
-#  #rmfile "gamelistfullset.zip"
-#  #clearfiles "ZIP"
-#  #sudo chown -R pi:pi /opt/retropie/configs/all/emulationstation/gamelists
-#}

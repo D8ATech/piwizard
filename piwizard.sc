@@ -40,7 +40,7 @@ function main(){
 		$DIALOG  --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/piwizard.main.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 		--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 		--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-		--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 7 102 \
+		--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 		--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 		--and-widget --begin $infotextline $menutextcol --shadow \
 		--backtitle "PI WIZARD - Automatic Installer" \
@@ -339,7 +339,7 @@ function musicmenu(){
 				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 7 102 \
+				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 8 102 \
 				--and-widget --keep-window --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PIWIZARD STANDARD MUSIC INSTALLER" \
@@ -425,6 +425,22 @@ fi
 ############################
 # Run the script
 #
+if [ $MAXWIDTH -lt 160 ]; then
+	displaymsg=" The screen width is $MAXWIDTH which is less than 160.\n"
+else
+	displaymsg=""
+fi
+
+if [ $MAXHEIGHT -lt 61 ]; then
+	displaymsg="$displaymsg The screen height is $MAXHEIGHT which is less than 61.\n"
+fi
+
+if [ -z "$displaymsg" ]; then
+	displaymsg="\n$displaymsg Some of the screen may be cut off. The menus should all\n"
+	displaymsg="$displaymsg work fine but much of the extra information could be hidden"
+	display_output 15 $MAXWIDTH "$displaymsg"
+fi
+
 getscreeninfo
 licensecheck
 main

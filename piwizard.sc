@@ -216,7 +216,7 @@ function gamesmenu(){
 				atari5200 "Atari 5200" \
 				atari7800 "Atari 7800" \
 				atarijaguar "Atari Jaguar" \
-				atarilynx "Atari Lynxs" \
+				atarilynxs "Atari Lynxs" \
 				__ "= Nintendo Systems =" \
 				nes "Nintendo Entertainment System" \
 				snes "Super Nintendo" \
@@ -257,7 +257,7 @@ function gamesmenu(){
 				atari2600 "Atari 2600" \
 				atari5200 "Atari 5200" \
 				atari7800 "Atari 7800" \
-				atarilynx "Atari Lynx" \
+				atarilynxs "Atari Lynxs" \
 				__ "= Nintendo Systems =" \
 				nes "Nintendo Entertainment System" \
 				snes "Super Nintendo" \

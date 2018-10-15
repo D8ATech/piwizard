@@ -7,7 +7,7 @@ self_update() {
     BASE=$(git merge-base @ "refs/heads/master")
 
     if [  $LOCAL = $REMOTE ]; then
-        display_output 10 40 "VERSION = $LOCAL"
+        # display_output 10 40 "VERSION = $LOCAL"
         debugwrite "Already Up to Date.  Continuing..."
     elif [ $LOCAL = $BASE ]; then
         echo "Found a new version, updating..."
@@ -222,7 +222,8 @@ function music(){
       stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
       dialog --gauge "Download 80.zip" 10 100
 
-      unzip -o /home/pi/RetroPie/roms/music/80.zip -d /home/pi/RetroPie/roms/music
+      unzipprogress /home/pi/RetroPie/roms/music/80.zip /home/pi/RetroPie/roms/music
+      # unzip -o /home/pi/RetroPie/roms/music/80.zip -d /home/pi/RetroPie/roms/music
       rm -f /home/pi/RetroPie/roms/music/80.zip
       display_output 10 40 "80's Music Installed!"
       ;;
@@ -274,19 +275,22 @@ function downloader(){
       stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
       dialog --gauge "Download $2" 10 100
   fi
-  unzip -o /home/pi/RetroPie/roms/$1/$2 -d /home/pi/RetroPie/roms/$1
+  unzipprogress "/home/pi/RetroPie/roms/$1/$2" "/home/pi/RetroPie/roms/$1"
+  #unzip -o /home/pi/RetroPie/roms/$1/$2 -d /home/pi/RetroPie/roms/$1
   rm -f /home/pi/RetroPie/roms/$1/$2
 
   display_output 10 40 "$1 Rom Pack Installed"
   cd $SCRIPTPATH
 }
+
+
 function downloadroms(){
   case $1 in
     atari2600) downloader "atari2600" "atari2600.zip";;
     atari5200) downloader "atari5200" "atari5200.zip";;
     atari7800) downloader "atari7800" "atari7800.zip";;
     atarijaguar) downloader "atarijaguar" "atarijaguar.zip";;
-    atarilynxs) downloader "atarilynks" "atarilynks.zip";;
+    atarilynxs) downloader "atarilynxs" "atarilynxs.zip";;
     coleco) downloader "coleco" "coleco.zip";;
     famicom) downloader "famicom" "famicom.zip";;
     fba) downloader "fba" "fba.zip";;
@@ -369,15 +373,15 @@ function getscreeninfo(){
 
 function rebt(){
   	dialog --textbox inc/thanks.txt 12 80
-  	display_output 10 80 "This is where we would reboot but for now we are just going to exit"
+  	# display_output 10 80 "This is where we would reboot but for now we are just going to exit"
     closeAllDialogs
     clear
-    # sudo reboot now
+    $echo rasberry | sudo -S reboot now
   	exit 91
   	break
 }
 
-function ext(){ #clean and delete function
+function ext(){
 	dialog --textbox inc/tocdenied.txt 12 80
 	exit
 }
@@ -474,20 +478,20 @@ function display_output(){
 ##  fi
 #}
 
-#function unzipprogress(){
-#  debugwrite "Made it to unzipprogress - $1 : $2"
-#  if [ ! -z $1 ]; then
-#    filename=$1
-#    if [ ! -z $2 ]; then
-#      destination=$2
-#      # pv -n $filename | unzip -o $filename -d $destination 2 > & 1; | dialog --gauge "Extracting $filename" 6 50
-#    else
-#      debugwrite "no destination passed"
-#    fi
-#  else
-#    debugwrite "no filename passed"
-#  fi
-#}
+function unzipprogress(){
+  debugwrite "Made it to unzipprogress - $1 : $2"
+  if [ ! -z $1 ]; then
+    filename=$1
+    if [ ! -z $2 ]; then
+      destination=$2
+      pv -n $filename | unzip -o "$filename" -d "$destination" 2>&1 | dialog --gauge "Extracting $filename" 6 50 #;
+    else
+      debugwrite "no destination passed"
+    fi
+  else
+    debugwrite "no filename passed"
+  fi
+}
 
 #function romset(){
 #

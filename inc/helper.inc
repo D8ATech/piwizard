@@ -12,7 +12,7 @@ self_update() {
     elif [ $LOCAL = $BASE ]; then
         echo "Found a new version, updating..."
         git pull --force
-        display_output 10 60 "New version installed.  Press Enter to reboot.."
+        display_output 10 60 "New version of the launcher has been installed.\n Press a buton on your controller to reboot.."
         rebt "silent"
         exit 1
     elif [ $REMOTE = $BASE ]; then

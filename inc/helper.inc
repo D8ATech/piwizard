@@ -248,7 +248,7 @@ function downloadroms(){
     atari5200) downloader "atari5200" "atari5200.zip";;
     atari7800) downloader "atari7800" "atari7800.zip";;
     atarijaguar) downloader "atarijaguar" "atarijaguar.zip";;
-    atarilynxs) downloader "atarilynxs" "atarilynxs.zip";;
+    atarilynx) downloader "atarilynx" "atarilynx.zip";;
     coleco) downloader "coleco" "coleco.zip";;
     famicom) downloader "famicom" "famicom.zip";;
     fba) downloader "fba" "fba.zip";;

@@ -268,7 +268,7 @@ function downloadroms(){
     neogeo) downloader "neogeo" "neogeo.zip";;
     nes) downloader "nes" "nes.zip";;
     snes) downloader "snes" "snes.zip";;
-    snesclassic) downloader "snes-classic" "snes-classic.zip";;
+    snesclassic) downloader "snes" "snes-classic.zip";;
     *) display_output 10 65 "Somehow an incorrect value was sent to the downloading function";;
   esac
 }

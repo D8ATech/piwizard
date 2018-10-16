@@ -2,25 +2,37 @@
 self_update() {
     cd $SCRIPTPATH
     echo "Checking for lastest version of Pi Wizard. One moment please."
+
     LOCAL=$(git rev-parse master)
     REMOTE=$(git ls-remote | grep HEAD | awk -F ' ' '{print $1}')
     BASE=$(git merge-base @ "refs/heads/master")
 
-    if [  $LOCAL = $REMOTE ]; then
-        # display_output 10 40 "VERSION = $LOCAL"
-        debugwrite "Already Up to Date.  Continuing..."
-    elif [ $LOCAL = $BASE ]; then
-        echo "Found a new version, updating..."
-        git pull --force
-        display_output 10 60 "New version of the launcher has been installed.\n Press a buton on your controller to reboot.."
-        rebt "silent"
-        exit 1
-    elif [ $REMOTE = $BASE ]; then
-        echo "There are unpushed changes on client that would be lost.  Exiting"
-        exit 1
+    if [ -z $REMOTE ]; then
+      ONLINE=0
     else
-        echo "Code has diverged.  Delete this directory structure, re-clone the repository and try again. Exiting Now"
-        exit 99
+      ONLINE=1
+    fi
+    #read -p "check values"
+
+    if [ $ONLINE -gt 0 ]; then
+      if [  $LOCAL = $REMOTE ]; then
+          # display_output 10 40 "VERSION = $LOCAL"
+          debugwrite "Already Up to Date.  Continuing..."
+      elif [ $LOCAL = $BASE ]; then
+          echo "Found a new version, updating..."
+          git pull --force
+          display_output 10 60 "New version of the launcher has been installed.\n Press a buton on your controller to reboot.."
+          rebt "silent"
+          exit 1
+      elif [ $REMOTE = $BASE ]; then
+          echo "There are unpushed changes on client that would be lost.  Exiting"
+          exit 1
+      else
+          echo "Code has diverged.  Delete this directory structure, re-clone the repository and try again. Exiting Now"
+          exit 99
+      fi
+    else
+      display_output 10 60 "Pi Wizard was not able connect to the Internet.\nSome functionality will not be available"
     fi
 }
 
@@ -118,21 +130,26 @@ function licensecheck(){
 
   FOOTERTEXT=" http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - http://forum.thepiwizard.com - http://paypal.me/thepiwizard \n\n Serial Number of this device: $sn          Version: $LOCAL"
 
-  expiredvip=$(curl -s http://expire.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
+  if [ $ONLINE -gt 0 ]; then
+    expiredvip=$(curl -s http://expire.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
 
-	if [[ $expiredvip = "VIP" ]]; then
-      VIP="No"
-			dialog --textbox inc/piwizard.expiredvip.txt 12 81
-  else
-    apicall=$(curl -s http://api.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
-    #apicall="VIP"
-    if [[ $apicall = "VIP" ]]; then
-        VIP="Yes"
-        dialog --textbox inc/piwizard.validvip.txt 32 81
-    else
+  	if [[ $expiredvip = "VIP" ]]; then
         VIP="No"
-        dialog --textbox inc/piwizard.standard.txt 38 81
+  			dialog --textbox inc/piwizard.expiredvip.txt 12 81
+    else
+      apicall=$(curl -s http://api.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
+      #apicall="VIP"
+      if [[ $apicall = "VIP" ]]; then
+          VIP="Yes"
+          dialog --textbox inc/piwizard.validvip.txt 32 81
+      else
+          VIP="No"
+          dialog --textbox inc/piwizard.standard.txt 38 81
+      fi
     fi
+  else
+    VIP="No"
+    dialog --textbox inc/piwizard.standard.txt 38 81
   fi
 }
 
@@ -209,37 +226,41 @@ function music(){
 }
 
 function downloader(){
-  if [ ! -d "/home/pi/RetroPie/roms/$1" ]; then
-    mkdir /home/pi/RetroPie/roms/$1
-  fi
-  cd /home/pi/RetroPie/roms/$1
+  if [ $ONLINE -gt 0 ]; then
+    if [ ! -d "/home/pi/RetroPie/roms/$1" ]; then
+      mkdir /home/pi/RetroPie/roms/$1
+    fi
+    cd /home/pi/RetroPie/roms/$1
 
-  if [ -f "/home/pi/RetroPie/roms/$1/$2.*" ]; then
-    rm '/home/pi/RetroPie/roms/$1/$2.*'
-  fi
+    if [ -f "/home/pi/RetroPie/roms/$1/$2.*" ]; then
+      rm '/home/pi/RetroPie/roms/$1/$2.*'
+    fi
 
-  if [ -f "/home/pi/RetroPie/roms/$1/$2" ]; then
-    rm '/home/pi/RetroPie/roms/$1/$2'
-  fi
+    if [ -f "/home/pi/RetroPie/roms/$1/$2" ]; then
+      rm '/home/pi/RetroPie/roms/$1/$2'
+    fi
 
-  clear
-  echo "Currently Downloading $1 Rom Pack"
+    clear
+    echo "Currently Downloading $1 Rom Pack"
 
-  if [ "$VIP" == "Yes" ]; then
-      wget --trust-server-names "http://roms.thepiwizard.com/pro/$2" 2>& 1 | \
-      stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-      dialog --gauge "Downloading $2" 10 100
+    if [ "$VIP" == "Yes" ]; then
+        wget --trust-server-names "http://roms.thepiwizard.com/pro/$2" 2>& 1 | \
+        stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
+        dialog --gauge "Downloading $2" 10 100
+    else
+        wget --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com/$2" 2>& 1 | \
+        stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
+        dialog --gauge "Downloading $2" 10 100
+    fi
+    unzipprogress "/home/pi/RetroPie/roms/$1/$2" "/home/pi/RetroPie/roms/$1"
+    #unzip -o /home/pi/RetroPie/roms/$1/$2 -d /home/pi/RetroPie/roms/$1
+    rm -f /home/pi/RetroPie/roms/$1/$2
+
+    display_output 10 40 "$1 Rom Pack Installed"
+    cd $SCRIPTPATH
   else
-      wget --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com/$2" 2>& 1 | \
-      stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-      dialog --gauge "Downloading $2" 10 100
+    display_output 10 40 "Launcher is currently offline so downloading is disabled"
   fi
-  unzipprogress "/home/pi/RetroPie/roms/$1/$2" "/home/pi/RetroPie/roms/$1"
-  #unzip -o /home/pi/RetroPie/roms/$1/$2 -d /home/pi/RetroPie/roms/$1
-  rm -f /home/pi/RetroPie/roms/$1/$2
-
-  display_output 10 40 "$1 Rom Pack Installed"
-  cd $SCRIPTPATH
 }
 
 function downloadroms(){
@@ -323,9 +344,13 @@ function findcenter(){
 }
 
 function getscreeninfo(){
-    currentStatus=$(curl -s http://thepiwizard.com/downloadstatus)
-    announcements=$(curl -s http://thepiwizard.com/announce)
-
+    if [ $ONLINE -gt 0 ]; then
+      currentStatus=$(curl -s http://thepiwizard.com/downloadstatus)
+      announcements=$(curl -s http://thepiwizard.com/announce)
+    else
+      currentStatus="Currently Offline"
+      announcements="Currently Offline"
+    fi
 }
 
 function rebt(){
@@ -356,21 +381,25 @@ function disk(){
 }
 
 function bios(){
-  if [ ! -d "/home/pi/RetroPie/BIOS" ]; then
-    mkdir /home/pi/RetrpPie/BIOS
+  if [ $ONLINE -gt 0 ]; then
+    if [ ! -d "/home/pi/RetroPie/BIOS" ]; then
+      mkdir /home/pi/RetrpPie/BIOS
+    fi
+
+    cd /home/pi/RetroPie/BIOS
+
+    wget -q -c --progress=dot "http://roms.thepiwizard.com/bios.zip" 2>& 1 | \
+    stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
+    dialog --gauge "Downloading bios.zip" 10 100
+
+  	unzip -o bios.zip -d /home/pi/RetroPie/BIOS
+  	rm -f /home/pi/RetroPie/BIOS/bios.zip
+  	rm -f /home/pi/RetroPie/BIOS/bios.zip.*
+   	display_output 10 40 "Additional BIOS Installed into the Bios Folder"
+  	cd $SCRIPTPATH
+  else
+    display_output 10 40 "Downloading disabled because no internet detected"
   fi
-
-  cd /home/pi/RetroPie/BIOS
-
-  wget -q -c --progress=dot "http://roms.thepiwizard.com/bios.zip" 2>& 1 | \
-  stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-  dialog --gauge "Downloading bios.zip" 10 100
-
-	unzip -o bios.zip -d /home/pi/RetroPie/BIOS
-	rm -f /home/pi/RetroPie/BIOS/bios.zip
-	rm -f /home/pi/RetroPie/BIOS/bios.zip.*
- 	display_output 10 40 "Additional BIOS Installed into the Bios Folder"
-	cd $SCRIPTPATH
 }
 
 function display_output(){

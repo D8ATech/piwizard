@@ -386,7 +386,7 @@ function unzipprogress(){
     filename=$1
     if [ ! -z $2 ]; then
       destination=$2
-      pv -n $filename | unzip -o "$filename" -d "$destination" 2>&1 | dialog --gauge "Extracting $filename" 6 50 #;
+      pv -n $filename | unzip -o "$filename" -d "$destination" 2>&1 | dialog --colors --title "\Zu\Z5Percentage will not increment\Zn" --gauge "Extracting $filename" 6 60 #;
     else
       debugwrite "no destination passed"
     fi

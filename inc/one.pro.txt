@@ -2,11 +2,11 @@
 *                                                                   *
 *  Thank you for supporting the PI Wizard Project.  It is because   *
 *  of your donation that keeps this project alive.  Please note     *
-*  the intial release was meant to be 100% perfect we may have      *
+*  the initial release was meant to be 100% perfect we may have     *
 *  missed a few things.  If you log any issues or bugs found on our *
 *  support forum I will ensure they are resolved quickly.  As a Pro *
 *  Version member You will receive priority support so please feel  *
-*  free to reach out to one of us on facebook or through our        *
+*  free to reach out to one of us on Facebook or through our        *
 *  website.                                                         *
 *                                                                   *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

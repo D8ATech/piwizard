@@ -2,12 +2,19 @@
 self_update() {
     cd $SCRIPTPATH
     echo "Checking for lastest version of Pi Wizard. One moment please."
+
     LOCAL=$(git rev-parse master)
     REMOTE=$(git ls-remote | grep HEAD | awk -F ' ' '{print $1}')
     BASE=$(git merge-base @ "refs/heads/master")
-    ONLINE=$(cat $REMOTE | grep "Could not resolve" | wc -l)
 
-    if [ ! $ONLINE -gt 0 ]; then
+    if [ -z $REMOTE ]; then
+      ONLINE=0
+    else
+      ONLINE=1
+    fi
+    #read -p "check values"
+
+    if [ $ONLINE -gt 0 ]; then
       if [  $LOCAL = $REMOTE ]; then
           # display_output 10 40 "VERSION = $LOCAL"
           debugwrite "Already Up to Date.  Continuing..."
@@ -25,7 +32,7 @@ self_update() {
           exit 99
       fi
     else
-      display_output 10 60 "Pi Wizard was not able connect to the Internet./nSome functionality will not be available"
+      display_output 10 60 "Pi Wizard was not able connect to the Internet.\nSome functionality will not be available"
     fi
 }
 
@@ -123,7 +130,7 @@ function licensecheck(){
 
   FOOTERTEXT=" http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - http://forum.thepiwizard.com - http://paypal.me/thepiwizard \n\n Serial Number of this device: $sn          Version: $LOCAL"
 
-  if [ ! $ONLINE -gt 0 ]; then
+  if [ $ONLINE -gt 0 ]; then
     expiredvip=$(curl -s http://expire.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
 
   	if [[ $expiredvip = "VIP" ]]; then
@@ -219,7 +226,7 @@ function music(){
 }
 
 function downloader(){
-  if [ ! $ONLINE -gt 0 ]; then
+  if [ $ONLINE -gt 0 ]; then
     if [ ! -d "/home/pi/RetroPie/roms/$1" ]; then
       mkdir /home/pi/RetroPie/roms/$1
     fi
@@ -253,6 +260,7 @@ function downloader(){
     cd $SCRIPTPATH
   else
     display_output 10 40 "Launcher is currently offline so downloading is disabled"
+  fi
 }
 
 function downloadroms(){
@@ -336,7 +344,7 @@ function findcenter(){
 }
 
 function getscreeninfo(){
-    if [ ! $ONLINE -gt 0 ]; then
+    if [ $ONLINE -gt 0 ]; then
       currentStatus=$(curl -s http://thepiwizard.com/downloadstatus)
       announcements=$(curl -s http://thepiwizard.com/announce)
     else
@@ -373,7 +381,7 @@ function disk(){
 }
 
 function bios(){
-  if [ ! $ONLINE -gt 0 ]; then
+  if [ $ONLINE -gt 0 ]; then
     if [ ! -d "/home/pi/RetroPie/BIOS" ]; then
       mkdir /home/pi/RetrpPie/BIOS
     fi
@@ -391,7 +399,7 @@ function bios(){
   	cd $SCRIPTPATH
   else
     display_output 10 40 "Downloading disabled because no internet detected"
-  fi 
+  fi
 }
 
 function display_output(){

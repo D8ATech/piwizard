@@ -31,9 +31,16 @@ self_update() {
           echo "Code has diverged.  Delete this directory structure, re-clone the repository and try again. Exiting Now"
           exit 99
       fi
-    else
-      display_output 10 60 "Pi Wizard was not able connect to the Internet.\nSome functionality will not be available"
     fi
+}
+
+function onlinecheck(){
+  pOnline=$(ping -c1 google.com | grep "1 packets transmitted, 1 received" | wc -l)
+  if [ $pOnline -eq 1 ]; then
+    ONLINE=1
+  else
+    display_output 10 60 "Pi Wizard was not able connect to the Internet.\nSome functionality will not be available"
+  fi
 }
 
 function output_help(){

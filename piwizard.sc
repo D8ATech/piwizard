@@ -430,5 +430,7 @@ fi
 smallscreencheck
 getscreeninfo
 licensecheck
+onlinecheck
+
 main
-	cleanupExit
+cleanupExit

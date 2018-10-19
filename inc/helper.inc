@@ -388,11 +388,14 @@ function bios(){
 
     cd /home/pi/RetroPie/BIOS
 
-    wget -q -c --progress=dot "http://roms.thepiwizard.com/bios.zip" 2>& 1 | \
+    wget -c --progress=dot "http://roms.thepiwizard.com/bios.zip" 2>& 1 | \
     stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
     dialog --gauge "Downloading bios.zip" 10 100
 
-  	unzip -o bios.zip -d /home/pi/RetroPie/BIOS
+     "/home/pi/RetroPie/roms/$1/$2" "/home/pi/RetroPie/roms/$1"
+
+
+  	unzipprogress "/home/pi/RetroPie/BIOS/bios.zip" "/home/pi/RetroPie/BIOS"
   	rm -f /home/pi/RetroPie/BIOS/bios.zip
   	rm -f /home/pi/RetroPie/BIOS/bios.zip.*
    	display_output 10 40 "Additional BIOS Installed into the Bios Folder"

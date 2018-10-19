@@ -399,9 +399,6 @@ function bios(){
     stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
     dialog --gauge "Downloading bios.zip" 10 100
 
-     "/home/pi/RetroPie/roms/$1/$2" "/home/pi/RetroPie/roms/$1"
-
-
   	unzipprogress "/home/pi/RetroPie/BIOS/bios.zip" "/home/pi/RetroPie/BIOS"
   	rm -f /home/pi/RetroPie/BIOS/bios.zip
   	rm -f /home/pi/RetroPie/BIOS/bios.zip.*

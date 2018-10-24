@@ -276,16 +276,20 @@ function downloader(){
               dialog --gauge "Downloading $2-$i.zip" 10 100
           fi
           unzipprogress "/home/pi/RetroPie/roms/$1/$2-$i.zip" "/home/pi/RetroPie/roms/$1"
-          #unzip -o /home/pi/RetroPie/roms/$1/$2 -d /home/pi/RetroPie/roms/$1
-
-          if [ "$unzipsuccess" == "True" ]; then
-            rm -f /home/pi/RetroPie/roms/$1/$2-$i.zip
-            display_output 10 40 "$1 Rom Pack Installed"
+          if [ "$unzipsuccess" != "True" ]; then
+            displayerror="True"
           else
-            display_output 10 102 "$unzipmessage"
+            rm -f /home/pi/RetroPie/roms/$1/$2-$i.zip
           fi
+          unzipsuccess="True"
           ((i++))
         done
+
+        if [ "$displayerror" != "True" ]; then
+          display_output 10 40 "$1 Rom Pack Installed"
+        else
+          display_output 10 102 "$unzipmessage"
+        fi
     else
       display_output 10 40 "Download canceled per your request"
     fi
@@ -469,16 +473,16 @@ function unzipprogress(){
         retcode=$?
         if [ $retcode -ne 0 ]; then
           unzipsuccess="False"
-          unzipmessage=$(printf "unzip '$1' failed with exit code [%d]." $retcode)
+          unzipmessage+=$(printf "unzip '$1' failed with exit code [%d]." $retcode)
           #printf "Error : [%d] when executing command: '$cmnd'" $ret_code
         else
           unzipsuccess="True"
-          unzipmessage="success"
+          #unzipmessage="success"
         fi
         #pv -n $filename | unzip -o "$filename" -d "$destination" 2>&1 | dialog --colors --title "\Zu\Z5Percentage will not increment\Zn" --gauge "Extracting $filename" 6 60 #;
       else
         unzipsuccess="False"
-        unzipmessage=$(printf "unzip '$1' failed becuase the file was not found")
+        unzipmessage+=$(printf "unzip '$1' failed becuase the file was not found")
       fi
     else
       debugwrite "no destination passed"

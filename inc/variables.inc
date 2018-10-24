@@ -16,7 +16,7 @@ TXTBOXWIDTH=102
 TXTBOXHEIGHT=30
 
 unzipsuccess="True"
-unzipmessage="Success"
+unzipmessage="Unzip :"
 
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")

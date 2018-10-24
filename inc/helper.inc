@@ -145,7 +145,7 @@ function licensecheck(){
   			dialog --textbox inc/piwizard.expiredvip.txt 12 81
     else
       apicall=$(curl -s http://api.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
-      #apicall="VIP"
+      apicall="VIP"
       if [[ $apicall = "VIP" ]]; then
           VIP="Yes"
           dialog --textbox inc/piwizard.validvip.txt 32 81
@@ -233,37 +233,63 @@ function music(){
 }
 
 function downloader(){
+  if [ -z $3 ]; then
+    count=1
+  else
+    count=$3
+  fi
+
   if [ $ONLINE -gt 0 ]; then
-    if [ ! -d "/home/pi/RetroPie/roms/$1" ]; then
-      mkdir /home/pi/RetroPie/roms/$1
-    fi
-    cd /home/pi/RetroPie/roms/$1
+    download="False"
+    filesexist=$(ls -al /home/pi/RetroPie/roms/$1 | grep -v "drw" | grep -v "total" | wc -l)
 
-    if [ -f "/home/pi/RetroPie/roms/$1/$2.*" ]; then
-      rm '/home/pi/RetroPie/roms/$1/$2.*'
-    fi
-
-    if [ -f "/home/pi/RetroPie/roms/$1/$2" ]; then
-      rm '/home/pi/RetroPie/roms/$1/$2'
-    fi
-
-    clear
-    echo "Currently Downloading $1 Rom Pack"
-
-    if [ "$VIP" == "Yes" ]; then
-        wget --trust-server-names "http://roms.thepiwizard.com/pro/$2" 2>& 1 | \
-        stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-        dialog --gauge "Downloading $2" 10 100
+    if [ $filesexist -gt 0 ]; then
+      dialog --title "Download $2 again?" \
+        --yesno "This ROM was previously downloaded.\nAre you sure you want to download it again?" 7 60
+      response=$?
+      case $response in
+         0) rm -rf "/home/pi/RetroPie/roms/$1"
+            download="True";;
+         *) download="False";;
+      esac
     else
-        wget --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com/$2" 2>& 1 | \
-        stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
-        dialog --gauge "Downloading $2" 10 100
+      download="True"
     fi
-    unzipprogress "/home/pi/RetroPie/roms/$1/$2" "/home/pi/RetroPie/roms/$1"
-    #unzip -o /home/pi/RetroPie/roms/$1/$2 -d /home/pi/RetroPie/roms/$1
-    rm -f /home/pi/RetroPie/roms/$1/$2
 
-    display_output 10 40 "$1 Rom Pack Installed"
+    if [ "$download" == "True" ]; then
+
+      if [ ! -d "/home/pi/RetroPie/roms/$1" ]; then
+        mkdir /home/pi/RetroPie/roms/$1
+      fi
+
+      cd /home/pi/RetroPie/roms/$1
+      i=1
+      while [ $i -le $count ]
+        do
+          if [ "$VIP" == "Yes" ]; then
+              wget --trust-server-names "http://roms.thepiwizard.com/pro/$2-$i.zip" 2>& 1 | \
+              stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
+              dialog --gauge "Downloading $2-$i.zip" 10 100
+          else
+              wget --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com/$2-$i.zip" 2>& 1 | \
+              stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
+              dialog --gauge "Downloading $2-$i.zip" 10 100
+          fi
+          unzipprogress "/home/pi/RetroPie/roms/$1/$2-$i.zip" "/home/pi/RetroPie/roms/$1"
+          #unzip -o /home/pi/RetroPie/roms/$1/$2 -d /home/pi/RetroPie/roms/$1
+
+          if [ "$unzipsuccess" == "True" ]; then
+            rm -f /home/pi/RetroPie/roms/$1/$2-$i.zip
+            display_output 10 40 "$1 Rom Pack Installed"
+          else
+            display_output 10 102 "$unzipmessage"
+          fi
+          ((i++))
+        done
+    else
+      display_output 10 40 "Download canceled per your request"
+    fi
+
     cd $SCRIPTPATH
   else
     display_output 10 40 "Launcher is currently offline so downloading is disabled"
@@ -272,31 +298,46 @@ function downloader(){
 
 function downloadroms(){
   case $1 in
-    atari2600) downloader "atari2600" "atari2600.zip";;
-    atari5200) downloader "atari5200" "atari5200.zip";;
-    atari7800) downloader "atari7800" "atari7800.zip";;
-    atarijaguar) downloader "atarijaguar" "atarijaguar.zip";;
-    atarilynx) downloader "atarilynx" "atarilynx.zip";;
-    coleco) downloader "coleco" "coleco.zip";;
-    famicom) downloader "famicom" "famicom.zip";;
-    fba) downloader "fba" "fba.zip";;
-    fds) downloader "fds" "fds.zip";;
-    gameandwatch) downloader "gameandwatch" "gameandwatch.zip";;
-    gamegear) downloader "gamegear" "gamegear.zip";;
-    gb) downloader "gb" "gameboy.zip";;
-    gba) downloader "gba" "gba.zip";;
-    gbc) downloader "gbc" "gbc.zip";;
-    mame2003) downloader "mame2003" "mame2003.zip";;
-    markiii) downloader "markiii" "markiii.zip";;
-    mastersystem) downloader "mastersystem" "mastersystem.zip";;
-    megadrive) downloader "megadrive" "megadrive.zip";;
-    msx2) downloader "msx2" "msx2.zip";;
-    msx2plus) downloader "msx2+" "msx2+.zip";;
-    n64) downloader "n64" "n64.zip";;
-    neogeo) downloader "neogeo" "neogeo.zip";;
-    nes) downloader "nes" "nes.zip";;
-    snes) downloader "snes" "snes.zip";;
-    snesclassic) downloader "snes" "snes-classic.zip";;
+    atari2600p) downloader "atari2600" "atari2600";;
+    atari5200p) downloader "atari5200" "atari5200";;
+    atari7800p) downloader "atari7800" "atari7800";;
+    atarijaguarp) downloader "atarijaguar" "atarijaguar";;
+    atarilynxp) downloader "atarilynx" "atarilynx";;
+    colecop) downloader "coleco" "coleco";;
+    famicomp) downloader "famicom" "famicom";;
+    fbap) downloader "fba" "fba";;
+    fdsp) downloader "fds" "fds";;
+    gameandwatchp) downloader "gameandwatch" "gameandwatch";;
+    gamegearp) downloader "gamegear" "gamegear";;
+    gbp) downloader "gb" "gameboy";;
+    gbap) downloader "gba" "gba";;
+    gbcp) downloader "gbc" "gbc";;
+    mame2003p) downloader "mame2003" "mame2003";;
+    markiiip) downloader "markiii" "markiii";;
+    mastersystemp) downloader "mastersystem" "mastersystem";;
+    megadrivep) downloader "megadrive" "megadrive";;
+    msx2p) downloader "msx2" "msx2";;
+    msx2plusp) downloader "msx2+" "msx2+";;
+    n64p) downloader "n64" "n64" 3;;
+    neogeop) downloader "neogeo" "neogeo";;
+    nesp) downloader "nes" "nes";;
+    snesp) downloader "snes" "snes";;
+    snesclassicp) downloader "snes" "snes-classic";;
+
+    atari2600) downloader "atari2600" "atari2600" 1;;
+    atari5200) downloader "atari5200" "atari5200" 1;;
+    atari7800) downloader "atari7800" "atari7800" 1;;
+    atarilynx) downloader "atarilynx" "atarilynx" 1;;
+    nes) downloader "nes" "nes" 1;;
+    snes) downloader "snes" "snes" 1;;
+    n64) downloader "n64" "n64" 1;;
+    gb) downloader "gb" "gameboy" 1;;
+    gba) downloader "gba" "gba" 1;;
+    gbc) downloader "gbc" "gbc" 1;;
+    gamegear) downloader "gamegear" "gamegear" 1;;
+    megadrive) downloader "megadrive" "megadrive" 1;;
+    neogeo) downloader "neogeo" "neogeo" 1;;
+
     *) display_output 10 65 "Somehow an incorrect value was sent to the downloading function";;
   esac
 }
@@ -422,7 +463,23 @@ function unzipprogress(){
     filename=$1
     if [ ! -z $2 ]; then
       destination=$2
-      pv -n $filename | unzip -o "$filename" -d "$destination" 2>&1 | dialog --colors --title "\Zu\Z5Percentage will not increment\Zn" --gauge "Extracting $filename" 6 60 #;
+
+      if [ -f $filename ]; then
+        eval unzip -o "$filename" -d "$destination" &> /dev/null
+        retcode=$?
+        if [ $retcode -ne 0 ]; then
+          unzipsuccess="False"
+          unzipmessage=$(printf "unzip '$1' failed with exit code [%d]." $retcode)
+          #printf "Error : [%d] when executing command: '$cmnd'" $ret_code
+        else
+          unzipsuccess="True"
+          unzipmessage="success"
+        fi
+        #pv -n $filename | unzip -o "$filename" -d "$destination" 2>&1 | dialog --colors --title "\Zu\Z5Percentage will not increment\Zn" --gauge "Extracting $filename" 6 60 #;
+      else
+        unzipsuccess="False"
+        unzipmessage=$(printf "unzip '$1' failed becuase the file was not found")
+      fi
     else
       debugwrite "no destination passed"
     fi

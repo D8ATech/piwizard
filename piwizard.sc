@@ -212,34 +212,34 @@ function gamesmenu(){
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				__ "= Atari Systems =" \
-				atari2600 "Atari 2600" \
-				atari5200 "Atari 5200" \
-				atari7800 "Atari 7800" \
-				atarijaguar "Atari Jaguar" \
-				atarilynx "Atari Lynx" \
+				atari2600p "Atari 2600" \
+				atari5200p "Atari 5200" \
+				atari7800p "Atari 7800" \
+				atarijaguarp "Atari Jaguar" \
+				atarilynxp "Atari Lynx" \
 				__ "= Nintendo Systems =" \
-				nes "Nintendo Entertainment System" \
-				snes "Super Nintendo" \
-				snesclassic "Super Nintedo Classic" \
-				n64 "Nintendo 64" \
-				gb "Nintendo GameBoy" \
-				gbc "Nintendo GameBoy Color" \
-				gba "Nintendo GameBoy Advanced" \
-				famicom "Famicom" \
-				fds "Famicom Disk System" \
-				fba "FBA" \
+				nesp "Nintendo Entertainment System" \
+				snesp "Super Nintendo" \
+				snesclassicp "Super Nintedo Classic" \
+				n64p "Nintendo 64" \
+				gbp "Nintendo GameBoy" \
+				gbcp "Nintendo GameBoy Color" \
+				gbap "Nintendo GameBoy Advanced" \
+				famicomp "Famicom" \
+				fdsp "Famicom Disk System" \
+				fbap "FBA" \
 				__ "= Sega Systems =" \
-				gamegear "Sega Gamegear" \
-				megadrive "Sega Genesis" \
-				mastersystem "Sega MasterSytem" \
-				markiii "Sega MarkIII" \
+				gamegearp "Sega Gamegear" \
+				megadrivep "Sega Genesis" \
+				mastersystemp "Sega MasterSytem" \
+				markiiip "Sega MarkIII" \
 				__ "= Other Systems =" \
-				coleco "Coleco Vision" \
-				gameandwatch "Game and Watch" \
-				msx2 "MSX2" \
-				msx2plus "MSX2+" \
-				mame2003 "Mame" \
-				neogeo "NeoGeo" \
+				colecop "Coleco Vision" \
+				gameandwatchp "Game and Watch" \
+				msx2p "MSX2" \
+				msx2plusp "MSX2+" \
+				mame2003p "Mame" \
+				neogeop "NeoGeo" \
  				__ "  " \
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceGames"

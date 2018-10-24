@@ -15,6 +15,9 @@ MENUITEMS=30
 TXTBOXWIDTH=102
 TXTBOXHEIGHT=30
 
+unzipsuccess="True"
+unzipmessage="Success"
+
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 SCRIPTNAME="$0"

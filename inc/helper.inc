@@ -283,7 +283,7 @@ function downloadroms(){
     fds) downloader "fds" "fds.zip";;
     gameandwatch) downloader "gameandwatch" "gameandwatch.zip";;
     gamegear) downloader "gamegear" "gamegear.zip";;
-    gb) downloader "gb" "gb.zip";;
+    gb) downloader "gb" "gameboy.zip";;
     gba) downloader "gba" "gba.zip";;
     gbc) downloader "gbc" "gbc.zip";;
     mame2003) downloader "mame2003" "mame2003.zip";;

@@ -20,7 +20,7 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 SCRIPTNAME="$0"
 ARGS=( "$@" )
 DEBUG="FALSE"
-
+ONLINE=1
 WIZARDPATH="/home/pi/RetroPie/roms/piwizard"
 DIALOG_ACTION=0
 DIALOG_CANCEL=1

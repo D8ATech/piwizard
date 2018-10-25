@@ -268,11 +268,11 @@ function downloader(){
         do
           if [ "$VIP" == "Yes" ]; then
               wget --trust-server-names "http://games.thepiwizard.com/$2-$i.zip" 2>& 1 | \
-              stdbuf -o0 awk -F '\%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+              stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
               dialog --gauge "Downloading $2-$i.zip" 10 100
           else
               wget --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com/$2-$i.zip" 2>& 1 | \
-              stdbuf -o0 awk -F '\%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+              stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
               dialog --gauge "Downloading $2-$i.zip" 10 100
           fi
           unzipprogress "/home/pi/RetroPie/roms/$1/$2-$i.zip" "/home/pi/RetroPie/roms/$1"

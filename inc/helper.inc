@@ -267,12 +267,12 @@ function downloader(){
       while [ $i -le $count ]
         do
           if [ "$VIP" == "Yes" ]; then
-              wget --trust-server-names "http://roms.thepiwizard.com/pro/$2-$i.zip" 2>& 1 | \
-              stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
+              wget --trust-server-names "http://games.thepiwizard.com/$2-$i.zip" 2>& 1 | \
+              stdbuf -o0 awk -F '\%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
               dialog --gauge "Downloading $2-$i.zip" 10 100
           else
               wget --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com/$2-$i.zip" 2>& 1 | \
-              stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
+              stdbuf -o0 awk -F '\%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
               dialog --gauge "Downloading $2-$i.zip" 10 100
           fi
           unzipprogress "/home/pi/RetroPie/roms/$1/$2-$i.zip" "/home/pi/RetroPie/roms/$1"
@@ -441,7 +441,7 @@ function bios(){
     cd /home/pi/RetroPie/BIOS
 
     wget -c --progress=dot "http://roms.thepiwizard.com/bios.zip" 2>& 1 | \
-    stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
+    stdbuf -o0 awk -F '\%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
     dialog --gauge "Downloading bios.zip" 10 100
 
   	unzipprogress "/home/pi/RetroPie/BIOS/bios.zip" "/home/pi/RetroPie/BIOS"
@@ -469,7 +469,8 @@ function unzipprogress(){
       destination=$2
 
       if [ -f $filename ]; then
-        eval unzip -o "$filename" -d "$destination" &> /dev/null
+        #eval unzip -o "$filename" -d "$destination" &> /dev/null
+        eval unzip -o "$filename" -d "$destination" 2>&1 | dialog --title "Unzipping $filename" --progressbox 3 102 #;
         retcode=$?
         if [ $retcode -ne 0 ]; then
           unzipsuccess="False"

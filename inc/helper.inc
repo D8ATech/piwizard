@@ -20,7 +20,7 @@ self_update() {
           debugwrite "Already Up to Date.  Continuing..."
       elif [ $LOCAL = $BASE ]; then
           echo "Found a new version, updating..."
-          git pull --force
+          git pull --force &> /dev/null
           display_output 10 60 "New version of the launcher has been installed.\n Press a buton on your controller to reboot.."
           rebt "silent"
           exit 1
@@ -302,31 +302,31 @@ function downloader(){
 
 function downloadroms(){
   case $1 in
-    atari2600p) downloader "atari2600" "atari2600";;
-    atari5200p) downloader "atari5200" "atari5200";;
-    atari7800p) downloader "atari7800" "atari7800";;
-    atarijaguarp) downloader "atarijaguar" "atarijaguar";;
-    atarilynxp) downloader "atarilynx" "atarilynx";;
-    colecop) downloader "coleco" "coleco";;
-    famicomp) downloader "famicom" "famicom";;
-    fbap) downloader "fba" "fba";;
-    fdsp) downloader "fds" "fds";;
-    gameandwatchp) downloader "gameandwatch" "gameandwatch";;
-    gamegearp) downloader "gamegear" "gamegear";;
-    gbp) downloader "gb" "gameboy";;
-    gbap) downloader "gba" "gba";;
-    gbcp) downloader "gbc" "gbc";;
-    mame2003p) downloader "mame2003" "mame2003";;
-    markiiip) downloader "markiii" "markiii";;
-    mastersystemp) downloader "mastersystem" "mastersystem";;
-    megadrivep) downloader "megadrive" "megadrive";;
-    msx2p) downloader "msx2" "msx2";;
-    msx2plusp) downloader "msx2+" "msx2+";;
-    n64p) downloader "n64" "n64" 3;;
-    neogeop) downloader "neogeo" "neogeo";;
-    nesp) downloader "nes" "nes";;
-    snesp) downloader "snes" "snes";;
-    snesclassicp) downloader "snes" "snes-classic";;
+    atari2600_pro) downloader "atari2600" "atari2600";;
+    atari5200_pro) downloader "atari5200" "atari5200";;
+    atari7800_pro) downloader "atari7800" "atari7800";;
+    atarilynx_pro) downloader "atarilynx" "atarilynx";;
+    coleco_pro) downloader "coleco" "coleco";;
+    famicom_pro) downloader "famicom" "famicom";;
+    fds_pro) downloader "fds" "fds";;
+    gameandwatch_pro) downloader "gameandwatch" "gameandwatch";;
+    gamegear_pro) downloader "gamegear" "gamegear";;
+    gb_pro) downloader "gb" "gameboy";;
+    gba_pro) downloader "gba" "gba" 5;;
+    gbc_pro) downloader "gbc" "gbc";;
+    mame2003_pro) downloader "mame2003" "mame2003";;
+    markiii_pro) downloader "markiii" "markiii";;
+    mastersystem_pro) downloader "mastersystem" "mastersystem";;
+    megadrive_pro) downloader "megadrive" "megadrive";;
+    msx2_pro) downloader "msx2" "msx2";;
+    msx2plus_pro) downloader "msx2+" "msx2+";;
+    n64_pro) downloader "n64" "n64" 3;;
+    nes_pro) downloader "nes" "nes";;
+    snes_pro) downloader "snes" "snes";;
+    snesclassic_pro) downloader "snes" "snes-classic";;
+    pcengine_pro) downloader "pcengine" "pcengine" 1;;
+    tg16_pro) downloader "tg16" "tg16" 1;;
+    arcade_pro) downloader "arcade" "arcade" 6;;
 
     atari2600) downloader "atari2600" "atari2600" 1;;
     atari5200) downloader "atari5200" "atari5200" 1;;

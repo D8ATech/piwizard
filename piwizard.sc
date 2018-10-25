@@ -117,6 +117,7 @@ function mainmenu(){
 				Single-Rom-Download "Coming Soon!" \
 				Emulator-Bios "Download extra Emulator Bios" \
 				__ " " \
+				System-Update "Install System Updates" \
 				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack" \
@@ -138,6 +139,7 @@ function mainmenu(){
 				Single-Rom-Download "Coming Soon to PRO" \
 				Emulator-Bios "Download extra Emulator Bios" \
 				__ "  " \
+				System-Update "Install System Updates" \
 				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack - PRO" \
@@ -165,6 +167,7 @@ function mainmenu(){
 						Get-Support) support;;
 						Emulator-Bios) bios;;
 						Disk-Space) disk;;
+						System-Update) systemUpdate;;
 						Serial-Number) serial;;
 						Upgrade-to-Pro) upgrade;;
 						Single-Rom-Download) singlerom;;
@@ -238,7 +241,6 @@ function gamesmenu(){
 				gameandwatch_pro "Game and Watch" \
 				msx2_pro "MSX2" \
 				msx2plus_pro "MSX2+" \
-				mame2003_pro "Mame" \
 				tg16_pro "Tg16" \
  				__ "  " \
 				Reboot "Reboot to save changes" \
@@ -285,7 +287,6 @@ function gamesmenu(){
 					case $choice in
 						Reboot) rebt;;
 						Back) GAMESRUNNING="FALSE";;
-						mame2003) display_output 10 60 "MAME ROMS will be available 10/22";;
 						__);;
 						*) downloadroms "$choice"
 							;;

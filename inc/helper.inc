@@ -492,3 +492,7 @@ function unzipprogress(){
     debugwrite "no filename passed"
   fi
 }
+
+function systemUpdate(){
+  dispay_output 10 40 "Coming Soon"
+}

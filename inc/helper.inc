@@ -525,8 +525,8 @@ function systemupdate(){
 
   # determine what versions need to be installed
     toinstall=(`echo ${remoteversion[@]} ${localversion[@]} | tr ' ' '\n' | sort | uniq -u `)
-    declare -p toinstall
-    read -p "test"
+    #declare -p toinstall
+
 
   # if new version available ask if they want to install
     if [ ${#toinstall[@]} -gt 0 ]; then

@@ -167,7 +167,7 @@ function mainmenu(){
 						Get-Support) support;;
 						Emulator-Bios) bios;;
 						Disk-Space) disk;;
-						System-Update) systemUpdate;;
+						System-Update) systemupdate;;
 						Serial-Number) serial;;
 						Upgrade-to-Pro) upgrade;;
 						Single-Rom-Download) singlerom;;

@@ -440,8 +440,8 @@ function bios(){
 
     cd /home/pi/RetroPie/BIOS
 
-    wget -c --progress=dot "http://roms.thepiwizard.com/bios.zip" 2>& 1 | \
-    stdbuf -o0 awk -F '\%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+    wget --trust-server-names "http://roms.thepiwizard.com/bios.zip" 2>& 1 | \
+    stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
     dialog --gauge "Downloading bios.zip" 10 100
 
   	unzipprogress "/home/pi/RetroPie/BIOS/bios.zip" "/home/pi/RetroPie/BIOS"
@@ -469,8 +469,11 @@ function unzipprogress(){
       destination=$2
 
       if [ -f $filename ]; then
-        #eval unzip -o "$filename" -d "$destination" &> /dev/null
-        eval unzip -o "$filename" -d "$destination" 2>&1 | dialog --title "Unzipping $filename" --progressbox 3 102 #;
+        if [ ! -z $3 ]; then
+          eval unzip -o "$filename" -d "$destination" 2>&1 | dialog --title "Unzipping $filename" --progressbox 3 102 #;
+        else
+          eval sudo unzip -o "$filename" -d "$destination" 2>&1 | dialog --title "Unzipping $filename" --progressbox 3 102 #;
+        fi
         retcode=$?
         if [ $retcode -ne 0 ]; then
           unzipsuccess="False"
@@ -493,6 +496,86 @@ function unzipprogress(){
   fi
 }
 
-function systemUpdate(){
-  dispay_output 10 40 "Coming Soon"
+function systemupdate(){
+  declare -a localversion
+  declare -a remoteversion
+  toinstall=()
+
+  # Read local update.log
+    # If local upate.log doesn't exist assume 2.0
+    if [ ! -f "update.log" ]; then
+      echo "2.0 base" >> update.log
+    fi
+
+    readarray -t localversion < update.log
+
+  # Read Remote update.log
+    if [ -f "library/update.log" ]; then
+      rm library/update.log
+    fi
+    cd /home/pi/RetroPie/roms/piwizard/library
+
+    wget --trust-server-names "http://update.thepiwizard.com/upgrade.log" 2>& 1 | \
+    stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+    dialog --gauge "Checking For Updates" 10 100
+
+    readarray -t remoteversion < upgrade.log
+
+    cd $SCRIPTPATH
+
+  # determine what versions need to be installed
+    for remoteloop in "${remoteversion[@]}"; do
+      skip=
+      for localloop in "${localversion[@]}"; do
+        [[ $remoteloop == $localloop ]] && { skip=1; break; }
+      done
+      [[ -n $skip ]] || toinstall+=("$remoteloop")
+    done
+    #declare -p toinstall
+
+  # if new version available ask if they want to install
+    if [ ${#toinstall[@]} -gt 0 ]; then
+      dialog --title "Upgrades Available" \
+        --yesno "There are upgrades available to install.\nDo you want to download and install\nA reboot is required?" 7 60
+      response=$?
+      case $response in
+         0) upgradenow="True";;
+         *) upgradenow="False";;
+      esac
+    else
+      upgradenow="False"
+    fi
+
+  # If yes, go through loop of updating each version one at a time
+  if [ "$upgradenow" == "True" ]; then
+    for installloop in "${toinstall[@]}"; do
+      updatefile=$(echo installloop | awk '{ print $NF }')
+
+      cd /home/pi/RetroPie/roms/piwizard/library
+
+      wget --trust-server-names "http://update.thepiwizard.com/$updatefile" 2>& 1 | \
+      stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+      dialog --gauge "Downloading $updatefile" 10 100
+
+      unziprogress "/home/pi/RetroPie/roms/piwizard/library/$updatefile" "/" "sudo"
+
+      if [ "$unzipsuccess" != "True" ]; then
+        displayerror="True"
+      else
+        rm -f /home/pi/RetroPie/roms/piwizard/library/$updatefile
+        echo "$installloop" >> /home/pi/RetroPie/roms/piwizard/upgrade.log
+      fi
+    done
+    cd $SCRIPTPATH
+
+    if [ "$displayerror" != "True" ]; then
+      display_output 10 40 "Upgrade installed.  Time to reboot"
+      rm -f /home/pi/RetroPie/roms/piwizard/library/upgrade.log
+      rebt
+    else
+      display_output 10 102 "$unzipmessage"
+    fi
+  fi
+
+  read -p "Press enter: Don't forget to remove me before release"
 }

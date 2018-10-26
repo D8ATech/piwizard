@@ -25,6 +25,7 @@ ARGS=( "$@" )
 DEBUG="FALSE"
 ONLINE=1
 WIZARDPATH="/home/pi/RetroPie/roms/piwizard"
+MUSICFILE="/home/pi/RetroPie/roms/music/DisableMusic"
 DIALOG_ACTION=0
 DIALOG_CANCEL=1
 DIALOG_ESC=255

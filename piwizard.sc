@@ -5,15 +5,15 @@ DIALOGRC="$SCRIPTPATH/.dialogrc"
 export DIALOGRC
 ################################################################################
 ####
-#### Pi Wizard v1.0
+#### Pi Wizard v2.2
 ####
 ################################################################################
 #
 # Versions
 #
 # 0.0.1 - Initial version with self updating
-#
-
+#2.0.0 - First Released Version
+#2.2.0 - System Update and many fixes
 
 ############################################################
 ##
@@ -21,6 +21,7 @@ export DIALOGRC
 ##
 ############################################################
 function loading(){
+	debugwrite ">>> loading - piwizard"
 	mainmenu
 	ONERUNNING="TRUE"
 }
@@ -31,6 +32,7 @@ function loading(){
 ##
 ###################################################
 function main(){
+	debugwrite ">>> main - pizard"
 	DIALOG=${DIALOG=dialog}
 	choiceMain=/tmp/dialogmain-$$.$RANDOM; > $choiceMain
 	trap "rm -f $choiceMain" 0 1 2 5 15
@@ -95,11 +97,10 @@ function main(){
 ############################################################
 
 function mainmenu(){
-
+	debugwrite ">>> mainmenu - piwizard"
 	DIALOGONE=${DIALOGONE=dialog}
 	choiceOne=/tmp/dialogone-$$.$RANDOM; > $choiceOne
 	trap "rm -f $choiceOne" 0 1 2 5 15
-
 
 	while [ "$ONERUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
@@ -198,6 +199,7 @@ function mainmenu(){
 ############################################################
 
 function gamesmenu(){
+	debugwrite ">>> gamesmenu - piwizard"
 	DIALOGGAMES=${DIALOGGAMES=dialog}
 	choiceGames=/tmp/dialoggames-$$.$RANDOM; > $choiceGames
 	trap "rm -f $choiceGames" 0 1 2 5 15
@@ -311,6 +313,7 @@ function gamesmenu(){
 ############################################################
 
 function musicmenu(){
+	debugwrite ">>> musicmenu - piwizard"
 	DIALOGMUSIC=${DIALOGMUSIC=dialog}
 	choiceMusic=/tmp/dialogmusic-$$.$RANDOM; > $choiceMusic
 	trap "rm -f $choiceMusic" 0 1 2 5 15
@@ -388,10 +391,15 @@ function musicmenu(){
 
 }
 
-
 ############################
 # Initialization
 #
+############################
+# Run the script
+#
+
+debugwrite ">>> BEGIN <<<"
+turnoffMusic
 UPGRADECHECK="YES"
 POSITIONAL=()
 
@@ -424,14 +432,12 @@ if [ "$UPGRADECHECK" == "YES" ]; then
   self_update
 fi
 
-############################
-# Run the script
-#
-
 smallscreencheck
 getscreeninfo
 licensecheck
 onlinecheck
 
 main
+turnonMusic
 cleanupExit
+debugwrite ">>> END <<<"

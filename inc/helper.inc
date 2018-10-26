@@ -1,5 +1,6 @@
 # Helper script with functions used by piwizard.sc.  Not diectly runnable
 self_update() {
+    debugwrite ">>> self_update"
     cd $SCRIPTPATH
     echo "Checking for lastest version of Pi Wizard. One moment please."
 
@@ -34,7 +35,22 @@ self_update() {
     fi
 }
 
+function turnoffMusic(){
+  # turn off the music
+  debugwrite ">>> turnoffMusic"
+  if [ ! -f $MUSICFILE ]; then
+    touch "$MUSICFILE"
+  fi
+}
+
+function turnonMusic(){
+  # turn on the music
+  debugwrite ">>> turnonMusic"
+  rmfile "$MUSICFILE"
+}
+
 function onlinecheck(){
+  debugwrite ">>> onlinecheck"
   pOnline=$(ping -c1 google.com | grep "1 packets transmitted, 1 received" | wc -l)
   if [ $pOnline -eq 1 ]; then
     ONLINE=1
@@ -45,6 +61,7 @@ function onlinecheck(){
 
 function output_help(){
   clear
+  debugwrite ">>> output_help"
   echo "###########################################################################################################"
   echo "##                                                                                                      ##"
   echo "##         PPPPPPPPPP    IIIIIIIIIIII                                                                   ##"
@@ -81,7 +98,6 @@ function output_help(){
 function debugwrite(){
   if [ "$DEBUG" == "TRUE" ]; then
     echo $1
-    read
   fi
 }
 
@@ -92,25 +108,32 @@ function isVIP(){
   fi
 }
 
-function rmfile (){
-  if [ -f $1 ]; then
-      rm $1
+function rmfile(){
+  debugwrite ">>> rmfile"
+  if [ ! -z $1 ]; then
+    if [ -f $1 ]; then
+        rm $1
+    fi
+  fi
+}
+
+function rmdir(){
+  if [ ! -z $1 ]; then
+    rm -rf $1
   fi
 }
 
 function cleanupExit(){
-  if [ -f $OUTPUT ]; then
-  	rm $OUTPUT
-  fi
-  if [ -f $INPUT ]; then
-  	rm $INPUT
-  fi
+  debugwrite ">>> cleanupExit"
+  rmfile "$OUTPUT"
+  rmfile "$INPUT"
   clear
   echo "Thanks for using PI WIZARD"
   sleep 5
 }
 
 function smallscreencheck(){
+  debugwrite ">>> smallscreencheck"
   if [ $MAXWIDTH -lt 160 ]; then
   	displaymsg=" The screen width is $MAXWIDTH which is less than 160.\n"
   else
@@ -129,6 +152,7 @@ function smallscreencheck(){
 }
 
 function licensecheck(){
+  debugwrite ">>> licensecheck"
   sn=$(cat /proc/cpuinfo | grep Serial| cut -d ' ' -f 2) #store the serial in the $sn value
 
   if [  -z "$sn" ]; then
@@ -161,19 +185,23 @@ function licensecheck(){
 }
 
 function deny(){
+    debugwrite ">>> deny"
     dialog --textbox inc/tocdenied.txt 9 55
     closeAllDialogs
 }
 
 function upgrade(){
+  debugwrite ">>> upgrade"
 	dialog --textbox inc/one.upgrade.txt 32 75
 }
 
 function support(){
+  debugwrite ">>> support"
   dialog --textbox inc/one.support.txt 27 75
 }
 
 function serial(){
+  debugwrite ">>> serial"
   sn=$(cat /proc/cpuinfo | grep Serial)
 
   if [ "$sn" -eq "" ]; then
@@ -184,20 +212,18 @@ function serial(){
 }
 
 function setupmusic(){
+  debugwrite ">>> setupmusic"
   if [ ! -d "/home/pi/RetroPie/roms/music" ]; then
     mkdir /home/pi/RetroPie/roms/music
   else
     cd /home/pi/RetroPie/roms/music
-    if [ -f "*.zip" ]; then
-      rm -f *.zip
-    fi
-    if [ -f ".zip.*" ]; then
-      rm -f *.zip.*
-    fi
+    rmfile "*.zip"
+    rmfile "*.zip.*"
   fi
 }
 
 function music(){
+  debugwrite ">>> music"
   setupmusic
   case $1 in
     80) display_output 10 60 "The 1980's music pack will be availalbe 10/22/2018";;
@@ -208,7 +234,7 @@ function music(){
 
       #unzipprogress /home/pi/RetroPie/roms/music/80.zip /home/pi/RetroPie/roms/music
       # unzip -o /home/pi/RetroPie/roms/music/80.zip -d /home/pi/RetroPie/roms/music
-      #rm -f /home/pi/RetroPie/roms/music/80.zip
+      #rmfile "/home/pi/RetroPie/roms/music/80.zip"
       #display_output 10 40 "80's Music Installed!"
       #;;
     90) display_output 10 60 "The 1990's music pack will be availalbe 10/22/2018";;
@@ -218,7 +244,7 @@ function music(){
       #dialog --gauge "Downloading 90.zip" 10 100
 
       #unzip -o /home/pi/RetroPie/roms/music/90.zip -d /home/pi/RetroPie/roms/music
-      #rm -f /home/pi/RetroPie/roms/music/90.zip
+      #rmfile "/home/pi/RetroPie/roms/music/90.zip"
       #display_output 10 40 "90s Music Installed!"
       #;;
     00) display_output 10 60 "The 2000's music pack will be availalbe 10/22/2018";;
@@ -233,6 +259,7 @@ function music(){
 }
 
 function downloader(){
+  debugwrite ">>> downloader"
   if [ -z $3 ]; then
     count=1
   else
@@ -248,7 +275,7 @@ function downloader(){
         --yesno "This ROM was previously downloaded.\nAre you sure you want to download it again?" 7 60
       response=$?
       case $response in
-         0) rm -rf "/home/pi/RetroPie/roms/$1"
+         0) rmdir "/home/pi/RetroPie/roms/$1"
             download="True";;
          *) download="False";;
       esac
@@ -279,7 +306,7 @@ function downloader(){
           if [ "$unzipsuccess" != "True" ]; then
             displayerror="True"
           else
-            rm -f /home/pi/RetroPie/roms/$1/$2-$i.zip
+            rmfile "/home/pi/RetroPie/roms/$1/$2-$i.zip"
           fi
           unzipsuccess="True"
           ((i++))
@@ -301,6 +328,7 @@ function downloader(){
 }
 
 function downloadroms(){
+  debugwrite ">>> downloadroms"
   case $1 in
     atari2600_pro) downloader "atari2600" "atari2600";;
     atari5200_pro) downloader "atari5200" "atari5200";;
@@ -347,6 +375,7 @@ function downloadroms(){
 }
 
 function closeAllDialogs(){
+  debugwrite ">>> closeAllDialogs"
   RUNNING="FALSE"
   MAINRUNNING="FALSE"
   ONERUNNING="FALSE"
@@ -355,6 +384,7 @@ function closeAllDialogs(){
 }
 
 function findcenter(){
+  debugwrite ">>> findcenter"
   menuwidth=$1
   menuheight=$2
 
@@ -396,6 +426,7 @@ function findcenter(){
 }
 
 function getscreeninfo(){
+  debugwrite ">>> getscreeninfor"
     if [ $ONLINE -gt 0 ]; then
       currentStatus=$(curl -s http://thepiwizard.com/downloadstatus)
       announcements=$(curl -s http://thepiwizard.com/announce)
@@ -406,12 +437,14 @@ function getscreeninfo(){
 }
 
 function rebt(){
+    debugwrite ">>> rebt"
     if [ ! -z "$1" ]; then
       dialog --textbox inc/thanks.txt 12 80
     fi
   	# display_output 10 80 "This is where we would reboot but for now we are just going to exit"
     closeAllDialogs
     clear
+    turnonMusic
     echo "Pi Wizard in now rebooting..."
     sudo reboot now
   	exit 91
@@ -419,11 +452,13 @@ function rebt(){
 }
 
 function ext(){
+  debugwrite ">>> ext"
 	dialog --textbox inc/tocdenied.txt 12 80
 	exit
 }
 
 function disk(){
+  debugwrite ">>> disk"
 	df -lh > diskinfo
 	echo " " >> diskinfo
 	echo " Usually your sd card is named '/' and" >> diskinfo
@@ -433,6 +468,7 @@ function disk(){
 }
 
 function bios(){
+  debugwrite ">>> bios"
   if [ $ONLINE -gt 0 ]; then
     if [ ! -d "/home/pi/RetroPie/BIOS" ]; then
       mkdir /home/pi/RetrpPie/BIOS
@@ -445,8 +481,8 @@ function bios(){
     dialog --gauge "Downloading bios.zip" 10 100
 
   	unzipprogress "/home/pi/RetroPie/BIOS/bios.zip" "/home/pi/RetroPie/BIOS"
-  	rm -f /home/pi/RetroPie/BIOS/bios.zip
-  	rm -f /home/pi/RetroPie/BIOS/bios.zip.*
+  	rmfile "/home/pi/RetroPie/BIOS/bios.zip"
+  	rmfile "/home/pi/RetroPie/BIOS/bios.zip.*"
    	display_output 10 40 "Additional BIOS Installed into the Bios Folder"
   	cd $SCRIPTPATH
   else
@@ -455,6 +491,7 @@ function bios(){
 }
 
 function display_output(){
+  debugwrite ">>> display_output"
 	local h="$1"
 	local w="$2"
   local m="$3"
@@ -462,6 +499,7 @@ function display_output(){
 }
 
 function unzipprogress(){
+  debugwrite ">>> unzipprogress"
   debugwrite "Made it to unzipprogress - $1 : $2 : $3"
   if [ ! -z $1 ]; then
     filename=$1
@@ -497,6 +535,7 @@ function unzipprogress(){
 }
 
 function systemupdate(){
+  debugwrite ">>> systemupdate"
   declare -a localversion
   declare -a remoteversion
   toinstall=()
@@ -504,15 +543,12 @@ function systemupdate(){
   # Read local update.log
     # If local upate.log doesn't exist assume 2.0
     if [ ! -f "update.log" ]; then
-      echo "2.0 Base" >> update.log
+      echo "2.0-Base" >> update.log
     fi
-
     readarray -t localversion < update.log
 
   # Read Remote update.log
-    if [ -f "library/update.log" ]; then
-      rm library/update.log
-    fi
+    rmfile  "$SCRIPTPATH/library/update.log"
     cd /home/pi/RetroPie/roms/piwizard/library
 
     wget --trust-server-names "http://thepiwizard.com/upgrade/update.log" 2>& 1 | \
@@ -562,7 +598,7 @@ function systemupdate(){
       if [ "$unzipsuccess" != "True" ]; then
         displayerror="True"
       else
-        rm -f /home/pi/RetroPie/roms/piwizard/library/$updatefile
+        rmfile "/home/pi/RetroPie/roms/piwizard/library/$updatefile"
         echo "$installloop" >> /home/pi/RetroPie/roms/piwizard/update.log
       fi
 
@@ -572,7 +608,7 @@ function systemupdate(){
 
     if [ "$displayerror" != "True" ]; then
       display_output 10 40 "Upgrade installed.  Time to reboot"
-      rm -f /home/pi/RetroPie/roms/piwizard/library/update.log
+      rmfile  "$SCRIPTPATH/library/update.log"
       rebt
     else
       display_output 10 102 "$unzipmessage"
@@ -580,6 +616,5 @@ function systemupdate(){
   else
     display_output 5 102 "Already up to date"
   fi
-  rm -f /home/pi/RetroPie/roms/piwizard/library/update.log
-  #read -p "Press enter: Don't forget to remove me before release"
+  rmfile "$SCRIPTPATH/library/update.log"
 }

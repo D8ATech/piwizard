@@ -504,7 +504,7 @@ function systemupdate(){
   # Read local update.log
     # If local upate.log doesn't exist assume 2.0
     if [ ! -f "update.log" ]; then
-      echo "2.0 base" >> update.log
+      echo "2.0 Base" >> update.log
     fi
 
     readarray -t localversion < update.log
@@ -515,11 +515,11 @@ function systemupdate(){
     fi
     cd /home/pi/RetroPie/roms/piwizard/library
 
-    wget --trust-server-names "http://update.thepiwizard.com/upgrade.log" 2>& 1 | \
+    wget --trust-server-names "http://thepiwizard.com/upgrade/update.log" 2>& 1 | \
     stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
     dialog --gauge "Checking For Updates" 10 100
 
-    readarray -t remoteversion < upgrade.log
+    readarray -t remoteversion < update.log
 
     cd $SCRIPTPATH
 
@@ -549,33 +549,42 @@ function systemupdate(){
   # If yes, go through loop of updating each version one at a time
   if [ "$upgradenow" == "True" ]; then
     for installloop in "${toinstall[@]}"; do
-      updatefile=$(echo installloop | awk '{ print $NF }')
+      updatefile=$(echo $installloop | awk '{ print $NF }')
 
       cd /home/pi/RetroPie/roms/piwizard/library
 
-      wget --trust-server-names "http://update.thepiwizard.com/$updatefile" 2>& 1 | \
+      wget --trust-server-names "http://thepiwizard.com/upgrade/$updatefile" 2>& 1 | \
       stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
       dialog --gauge "Downloading $updatefile" 10 100
 
-      unziprogress "/home/pi/RetroPie/roms/piwizard/library/$updatefile" "/" "sudo"
+      if [ -f "$updatefile" ]; then
+        unzipprogress "/home/pi/RetroPie/roms/piwizard/library/$updatefile" "/" "sudo"
+      else
+        displayerror="True"
+        unzipmessage+="File Download Failure - $updatefile"
+      fi
 
       if [ "$unzipsuccess" != "True" ]; then
         displayerror="True"
       else
         rm -f /home/pi/RetroPie/roms/piwizard/library/$updatefile
-        echo "$installloop" >> /home/pi/RetroPie/roms/piwizard/upgrade.log
+        echo "$installloop" >> /home/pi/RetroPie/roms/piwizard/update.log
       fi
+
     done
+
     cd $SCRIPTPATH
 
     if [ "$displayerror" != "True" ]; then
       display_output 10 40 "Upgrade installed.  Time to reboot"
-      rm -f /home/pi/RetroPie/roms/piwizard/library/upgrade.log
-      rebt
+      rm -f /home/pi/RetroPie/roms/piwizard/library/update.log
+      #rebt
     else
       display_output 10 102 "$unzipmessage"
     fi
+  else
+    display_output 5 102 "Already up to date"
   fi
-
-  read -p "Press enter: Don't forget to remove me before release"
+  rm -f /home/pi/RetroPie/roms/piwizard/library/update.log
+  #read -p "Press enter: Don't forget to remove me before release"
 }

@@ -22,8 +22,7 @@ self_update() {
       elif [ $LOCAL = $BASE ]; then
           echo "Found a new version, updating..."
           git pull --force &> /dev/null
-          display_output 10 60 "New version of the launcher has been installed.\n Press a buton on your controller to reboot.."
-          rebt "silent"
+          display_output 10 60 "New version of the launcher has been installed.\n Press a buton on your controller to exit\n You will need to restart launcher."
           exit 1
       elif [ $REMOTE = $BASE ]; then
           echo "There are unpushed changes on client that would be lost.  Exiting"

@@ -524,14 +524,9 @@ function systemupdate(){
     cd $SCRIPTPATH
 
   # determine what versions need to be installed
-    for remoteloop in "${remoteversion[@]}"; do
-      skip=
-      for localloop in "${localversion[@]}"; do
-        [[ $remoteloop == $localloop ]] && { skip=1; break; }
-      done
-      [[ -n $skip ]] || toinstall+=("$remoteloop")
-    done
-    #declare -p toinstall
+    toinstall=(`echo ${remoteversion[@]} ${localversion[@]} | tr ' ' '\n' | sort | uniq -u `)
+    declare -p toinstall
+    read -p "test"
 
   # if new version available ask if they want to install
     if [ ${#toinstall[@]} -gt 0 ]; then
@@ -549,7 +544,7 @@ function systemupdate(){
   # If yes, go through loop of updating each version one at a time
   if [ "$upgradenow" == "True" ]; then
     for installloop in "${toinstall[@]}"; do
-      updatefile=$(echo $installloop | awk '{ print $NF }')
+      updatefile=$(echo $installloop | awk -F '-' '{ print $NF }')
 
       cd /home/pi/RetroPie/roms/piwizard/library
 
@@ -578,7 +573,7 @@ function systemupdate(){
     if [ "$displayerror" != "True" ]; then
       display_output 10 40 "Upgrade installed.  Time to reboot"
       rm -f /home/pi/RetroPie/roms/piwizard/library/update.log
-      #rebt
+      rebt
     else
       display_output 10 102 "$unzipmessage"
     fi

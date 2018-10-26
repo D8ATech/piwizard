@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 . inc/variables.inc
 . $SCRIPTPATH/inc/helper.inc
 DIALOGRC="$SCRIPTPATH/.dialogrc"
@@ -117,6 +117,7 @@ function mainmenu(){
 				Single-Rom-Download "Coming Soon!" \
 				Emulator-Bios "Download extra Emulator Bios" \
 				__ " " \
+				System-Update "Install System Updates" \
 				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack" \
@@ -138,6 +139,7 @@ function mainmenu(){
 				Single-Rom-Download "Coming Soon to PRO" \
 				Emulator-Bios "Download extra Emulator Bios" \
 				__ "  " \
+				System-Update "Install System Updates" \
 				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack - PRO" \
@@ -165,6 +167,7 @@ function mainmenu(){
 						Get-Support) support;;
 						Emulator-Bios) bios;;
 						Disk-Space) disk;;
+						System-Update) systemupdate;;
 						Serial-Number) serial;;
 						Upgrade-to-Pro) upgrade;;
 						Single-Rom-Download) singlerom;;
@@ -212,34 +215,33 @@ function gamesmenu(){
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				__ "= Atari Systems =" \
-				atari2600 "Atari 2600" \
-				atari5200 "Atari 5200" \
-				atari7800 "Atari 7800" \
-				atarijaguar "Atari Jaguar" \
-				atarilynx "Atari Lynx" \
+				atari2600_pro "Atari 2600" \
+				atari5200_pro "Atari 5200" \
+				atari7800_pro "Atari 7800" \
+				atarilynx_pro "Atari Lynx" \
 				__ "= Nintendo Systems =" \
-				nes "Nintendo Entertainment System" \
-				snes "Super Nintendo" \
-				snesclassic "Super Nintedo Classic" \
-				n64 "Nintendo 64" \
-				gb "Nintendo GameBoy" \
-				gbc "Nintendo GameBoy Color" \
-				gba "Nintendo GameBoy Advanced" \
-				famicom "Famicom" \
-				fds "Famicom Disk System" \
-				fba "FBA" \
+				nes_pro "Nintendo Entertainment System" \
+				snes_pro "Super Nintendo" \
+				snesclassic_pro "Super Nintedo Classic" \
+				n64_pro "Nintendo 64" \
+				gb_pro "Nintendo GameBoy" \
+				gbc_pro "Nintendo GameBoy Color" \
+				gba_pro "Nintendo GameBoy Advanced" \
+				famicom_pro "Famicom" \
+				fds_pro "Famicom Disk System" \
 				__ "= Sega Systems =" \
-				gamegear "Sega Gamegear" \
-				megadrive "Sega Genesis" \
-				mastersystem "Sega MasterSytem" \
-				markiii "Sega MarkIII" \
+				gamegear_pro "Sega Gamegear" \
+				megadrive_pro "Sega Genesis" \
+				mastersystem_pro "Sega MasterSytem" \
+				markiii_pro "Sega MarkIII" \
 				__ "= Other Systems =" \
-				coleco "Coleco Vision" \
-				gameandwatch "Game and Watch" \
-				msx2 "MSX2" \
-				msx2plus "MSX2+" \
-				mame2003 "Mame" \
-				neogeo "NeoGeo" \
+				arcade_pro "Arcade" \
+				pcengine_pro "PC Engine" \
+				coleco_pro "Coleco Vision" \
+				gameandwatch_pro "Game and Watch" \
+				msx2_pro "MSX2" \
+				msx2plus_pro "MSX2+" \
+				tg16_pro "Tg16" \
  				__ "  " \
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceGames"
@@ -285,7 +287,6 @@ function gamesmenu(){
 					case $choice in
 						Reboot) rebt;;
 						Back) GAMESRUNNING="FALSE";;
-						mame2003) display_output 10 60 "MAME ROMS will be available 10/22";;
 						__);;
 						*) downloadroms "$choice"
 							;;

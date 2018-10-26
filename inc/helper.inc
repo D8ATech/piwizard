@@ -145,7 +145,7 @@ function licensecheck(){
   			dialog --textbox inc/piwizard.expiredvip.txt 12 81
     else
       apicall=$(curl -s http://api.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
-      apicall="VIP"
+      #apicall="VIP"
       if [[ $apicall = "VIP" ]]; then
           VIP="Yes"
           dialog --textbox inc/piwizard.validvip.txt 32 81
@@ -462,7 +462,7 @@ function display_output(){
 }
 
 function unzipprogress(){
-  debugwrite "Made it to unzipprogress - $1 : $2"
+  debugwrite "Made it to unzipprogress - $1 : $2 : $3"
   if [ ! -z $1 ]; then
     filename=$1
     if [ ! -z $2 ]; then
@@ -470,9 +470,9 @@ function unzipprogress(){
 
       if [ -f $filename ]; then
         if [ ! -z $3 ]; then
-          eval unzip -o "$filename" -d "$destination" 2>&1 | dialog --title "Unzipping $filename" --progressbox 3 102 #;
-        else
           eval sudo unzip -o "$filename" -d "$destination" 2>&1 | dialog --title "Unzipping $filename" --progressbox 3 102 #;
+        else
+          eval unzip -o "$filename" -d "$destination" 2>&1 | dialog --title "Unzipping $filename" --progressbox 3 102 #;
         fi
         retcode=$?
         if [ $retcode -ne 0 ]; then

@@ -21,6 +21,7 @@ self_update() {
           debugwrite "Already Up to Date.  Continuing..."
       elif [ $LOCAL = $BASE ]; then
           echo "Found a new version, updating..."
+          git clean -f &> /dev/null
           git pull --force &> /dev/null
           display_output 10 60 "New version of the launcher has been installed.\n Press a buton on your controller to exit\n You will need to restart launcher."
           exit 1

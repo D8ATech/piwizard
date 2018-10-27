@@ -534,12 +534,15 @@ function unzipprogress(){
 }
 
 function processScript(){
+  debugwrite ">>> processScript"
   filetorun="/home/pi/RetroPie/roms/dev/updatecleanup.sc"
   if [ -f "$filetorun" ]; then
+    sudo chmod +x $filetorun
     source "$filetorun"
     retcode=$?
     if [ $retcode -eq 0 ]; then
-      DATE=`date +%Y-%m-%d
+      DATE=$(date +%Y-%m-%d)
+      sudo chmod -x $filetorun
       mv "$filetorun" "$filetorun.$DATE"
     else
       display_output 10 40 "The cleanup script failed to run with return code: $retcode"

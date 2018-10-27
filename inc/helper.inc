@@ -111,7 +111,7 @@ function rmfile(){
   debugwrite ">>> rmfile"
   if [ ! -z $1 ]; then
     if [ -f $1 ]; then
-        rm $1
+        sudo rm $1
     fi
   fi
 }

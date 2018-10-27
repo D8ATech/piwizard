@@ -543,7 +543,7 @@ function processScript(){
     if [ $retcode -eq 0 ]; then
       DATE=$(date +%Y-%m-%d)
       sudo chmod -x $filetorun
-      mv "$filetorun" "$filetorun.$DATE"
+      sudo mv "$filetorun" "$filetorun.$DATE"
     else
       display_output 10 40 "The cleanup script failed to run with return code: $retcode"
     fi

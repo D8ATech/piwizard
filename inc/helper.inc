@@ -329,28 +329,28 @@ function downloader(){
 function downloadroms(){
   debugwrite ">>> downloadroms"
   case $1 in
-    atari2600_pro) downloader "atari2600" "atari2600";;
-    atari5200_pro) downloader "atari5200" "atari5200";;
-    atari7800_pro) downloader "atari7800" "atari7800";;
-    atarilynx_pro) downloader "atarilynx" "atarilynx";;
-    coleco_pro) downloader "coleco" "coleco";;
-    famicom_pro) downloader "famicom" "famicom";;
-    fds_pro) downloader "fds" "fds";;
-    gameandwatch_pro) downloader "gameandwatch" "gameandwatch";;
-    gamegear_pro) downloader "gamegear" "gamegear";;
-    gb_pro) downloader "gb" "gameboy";;
+    atari2600_pro) downloader "atari2600" "atari2600" 1;;
+    atari5200_pro) downloader "atari5200" "atari5200" 1;;
+    atari7800_pro) downloader "atari7800" "atari7800" 1;;
+    atarilynx_pro) downloader "atarilynx" "atarilynx" 1;;
+    coleco_pro) downloader "coleco" "coleco" 1;;
+    famicom_pro) downloader "famicom" "famicom" 1;;
+    fds_pro) downloader "fds" "fds" 1;;
+    gameandwatch_pro) downloader "gameandwatch" "gameandwatch" 1;;
+    gamegear_pro) downloader "gamegear" "gamegear" 1;;
+    gb_pro) downloader "gb" "gb" 1;;
     gba_pro) downloader "gba" "gba" 5;;
-    gbc_pro) downloader "gbc" "gbc";;
-    mame2003_pro) downloader "mame2003" "mame2003";;
-    markiii_pro) downloader "markiii" "markiii";;
-    mastersystem_pro) downloader "mastersystem" "mastersystem";;
-    megadrive_pro) downloader "megadrive" "megadrive";;
-    msx2_pro) downloader "msx2" "msx2";;
-    msx2plus_pro) downloader "msx2+" "msx2+";;
+    gbc_pro) downloader "gbc" "gbc" 1;;
+    mame2003_pro) downloader "mame2003" "mame2003" 1;;
+    markiii_pro) downloader "markiii" "markiii" 1;;
+    mastersystem_pro) downloader "mastersystem" "mastersystem" 1;;
+    megadrive_pro) downloader "megadrive" "megadrive" 1;;
+    msx2_pro) downloader "msx2" "msx2" 1;;
+    msx2plus_pro) downloader "msx2+" "msx2+" 1;;
     n64_pro) downloader "n64" "n64" 3;;
-    nes_pro) downloader "nes" "nes";;
-    snes_pro) downloader "snes" "snes";;
-    snesclassic_pro) downloader "snes" "snes-classic";;
+    nes_pro) downloader "nes" "nes" 1;;
+    snes_pro) downloader "snes" "snes" 1;;
+    snesclassic_pro) downloader "snes-classic" "snesclassic" 1;;
     pcengine_pro) downloader "pcengine" "pcengine" 1;;
     tg16_pro) downloader "tg16" "tg16" 1;;
     arcade_pro) downloader "arcade" "arcade" 6;;
@@ -533,6 +533,21 @@ function unzipprogress(){
   fi
 }
 
+function processScript(){
+  filetorun="/home/pi/RetroPie/roms/dev/updatecleanup.sc"
+  if [ -f "$filetorun" ]; then
+    source "$filetorun"
+    retcode=$?
+    if [ $retcode -eq 0 ]; then
+      DATE=`date +%Y-%m-%d
+      mv "$filetorun" "$filetorun.$DATE"
+    else
+      display_output 10 40 "The cleanup script failed to run with return code: $retcode"
+    fi
+  fi
+}
+
+
 function systemupdate(){
   debugwrite ">>> systemupdate"
   declare -a localversion
@@ -599,6 +614,7 @@ function systemupdate(){
       else
         rmfile "/home/pi/RetroPie/roms/piwizard/library/$updatefile"
         echo "$installloop" >> /home/pi/RetroPie/roms/piwizard/update.log
+        processScript
       fi
 
     done

@@ -600,6 +600,7 @@ function systemupdate(){
       updatefile=$(echo $installloop | awk -F '-' '{ print $NF }')
 
       cd /home/pi/RetroPie/roms/piwizard/library
+      rmfile "/home/pi/RetroPie/roms/piwizard/library/$updatefile"
 
       wget --trust-server-names "http://thepiwizard.com/upgrade/$updatefile" 2>& 1 | \
       stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \

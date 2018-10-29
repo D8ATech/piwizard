@@ -350,7 +350,7 @@ function downloadroms(){
     msx2plus_pro) downloader "msx2+" "msx2+" 1;;
     n64_pro) downloader "n64" "n64" 3;;
     nes_pro) downloader "nes" "nes" 1;;
-    snes_pro) downloader "snes" "snes" 1;;
+    snes_pro) downloader "snes" "snes" 2;;
     snesclassic_pro) downloader "snes-classic" "snesclassic" 1;;
     pcengine_pro) downloader "pcengine" "pcengine" 1;;
     tg16_pro) downloader "tg16" "tg16" 1;;

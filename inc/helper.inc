@@ -21,6 +21,7 @@ self_update() {
           debugwrite "Already Up to Date.  Continuing..."
       elif [ $LOCAL = $BASE ]; then
           echo "Found a new version, updating..."
+          #git clean -f &> /dev/null
           git pull --force &> /dev/null
           display_output 10 60 "New version of the launcher has been installed.\n Press a buton on your controller to exit\n You will need to restart launcher."
           exit 1
@@ -293,7 +294,7 @@ function downloader(){
       while [ $i -le $count ]
         do
           if [ "$VIP" == "Yes" ]; then
-              wget --trust-server-names "http://games.thepiwizard.com/$2-$i.zip" 2>& 1 | \
+              wget --trust-server-names "http://roms.thepiwizard.com/pro/$2-$i.zip" 2>& 1 | \
               stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
               dialog --gauge "Downloading $2-$i.zip" 10 100
           else
@@ -349,7 +350,7 @@ function downloadroms(){
     msx2plus_pro) downloader "msx2+" "msx2+" 1;;
     n64_pro) downloader "n64" "n64" 3;;
     nes_pro) downloader "nes" "nes" 1;;
-    snes_pro) downloader "snes" "snes" 1;;
+    snes_pro) downloader "snes" "snes" 2;;
     snesclassic_pro) downloader "snes-classic" "snesclassic" 1;;
     pcengine_pro) downloader "pcengine" "pcengine" 1;;
     tg16_pro) downloader "tg16" "tg16" 1;;

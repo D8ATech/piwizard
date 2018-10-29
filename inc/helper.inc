@@ -294,7 +294,7 @@ function downloader(){
       while [ $i -le $count ]
         do
           if [ "$VIP" == "Yes" ]; then
-              wget --trust-server-names "http://games.thepiwizard.com/$2-$i.zip" 2>& 1 | \
+              wget --trust-server-names "http://roms.thepiwizard.com/pro/$2-$i.zip" 2>& 1 | \
               stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
               dialog --gauge "Downloading $2-$i.zip" 10 100
           else

@@ -353,7 +353,6 @@ function downloadroms(){
     snes_pro) downloader "snes" "snes" 2;;
     snesclassic_pro) downloader "snes-classic" "snesclassic" 1;;
     pcengine_pro) downloader "pcengine" "pcengine" 1;;
-    tg16_pro) downloader "tg16" "tg16" 1;;
     arcade_pro) downloader "arcade" "arcade" 6;;
 
     atari2600) downloader "atari2600" "atari2600" 1;;

@@ -243,7 +243,6 @@ function gamesmenu(){
 				gameandwatch_pro "Game and Watch" \
 				msx2_pro "MSX2" \
 				msx2plus_pro "MSX2+" \
-				tg16_pro "Tg16" \
  				__ "  " \
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceGames"

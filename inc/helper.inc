@@ -19,11 +19,13 @@ self_update() {
       if [  $LOCAL = $REMOTE ]; then
           # display_output 10 40 "VERSION = $LOCAL"
           debugwrite "Already Up to Date.  Continuing..."
+          systemupdate
       elif [ $LOCAL = $BASE ]; then
           echo "Found a new version, updating..."
           #git clean -f &> /dev/null
           git pull --force &> /dev/null
           display_output 10 60 "New version of the launcher has been installed.\n Press a buton on your controller to exit\n You will need to restart launcher."
+          systemupdate
           clear
           exit 1
       elif [ $REMOTE = $BASE ]; then
@@ -152,6 +154,18 @@ function smallscreencheck(){
   fi
 }
 
+function getVersion(){
+  imgVersion=$(tail -n 1 update.log | awk -F '-' '{ print $1 }')
+  lVersion=$(git tag | tail -n 1)
+  read -p "enter"
+  if [ -z $lVersion ]; then
+    lVersion=$LAUNCHERVERSION
+  fi
+
+  FOOTERTEXT=" http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - http://forum.thepiwizard.com - http://paypal.me/thepiwizard \n\n Serial Number of this device: \Zb\Z1$sn\Zn  Image Version: \Zb\Z1$imgVersion\Zn Launcher Version: \Zb\Z1$lVersion\Zn Build: \Zb\Z1$LOCAL\Zn"
+
+}
+
 function licensecheck(){
   debugwrite ">>> licensecheck"
   sn=$(cat /proc/cpuinfo | grep Serial| cut -d ' ' -f 2) #store the serial in the $sn value
@@ -160,7 +174,7 @@ function licensecheck(){
     sn="NOT DETECTED"
   fi
 
-  FOOTERTEXT=" http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - http://forum.thepiwizard.com - http://paypal.me/thepiwizard \n\n Serial Number of this device: $sn          Version: $LOCAL"
+  getVersion
 
   if [ $ONLINE -gt 0 ]; then
     expiredvip=$(curl -s http://expire.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
@@ -587,13 +601,14 @@ function systemupdate(){
 
   # if new version available ask if they want to install
     if [ ${#toinstall[@]} -gt 0 ]; then
-      dialog --title "Upgrades Available" \
-        --yesno "There are upgrades available to install.\nDo you want to download and install\nA reboot is required?" 7 60
-      response=$?
-      case $response in
-         0) upgradenow="True";;
-         *) upgradenow="False";;
-      esac
+    #  dialog --title "Upgrades Available" \
+    #    --yesno "There are upgrades available to install.\nDo you want to download and install\nA reboot is required?" 7 60
+    #    response=$?
+    #  case $response in
+    #     0) upgradenow="True";;
+    #     *) upgradenow="False";;
+    #  esac
+      upgradenow="True"
     else
       upgradenow="False"
     fi
@@ -635,9 +650,10 @@ function systemupdate(){
       rebt
     else
       display_output 10 102 "$unzipmessage"
+      return 99
     fi
-  else
-    display_output 5 102 "Already up to date"
+  #else
+    #display_output 5 102 "Already up to date"
   fi
   rmfile "$SCRIPTPATH/library/update.log"
 }

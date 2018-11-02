@@ -273,6 +273,10 @@ function music(){
 	cd $SCRIPTPATH
 }
 
+function config(){
+  display_output 10 40 "Comming Soon"
+}
+
 function downloader(){
   debugwrite ">>> downloader"
   if [ -z $3 ]; then

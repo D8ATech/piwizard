@@ -2,7 +2,7 @@
 self_update() {
     debugwrite ">>> self_update"
     cd $SCRIPTPATH
-    echo "Checking for lastest version of Pi Wizard. One moment please."
+    #echo "Checking for lastest version of Pi Wizard. One moment please."
 
     LOCAL=$(git rev-parse master)
     REMOTE=$(git ls-remote | grep HEAD | awk -F ' ' '{print $1}')
@@ -294,14 +294,15 @@ function downloader(){
       while [ $i -le $count ]
         do
           if [ "$VIP" == "Yes" ]; then
-              wget --trust-server-names "http://roms.thepiwizard.com/pro/$2-$i.zip" 2>& 1 | \
-              stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
-              dialog --gauge "Downloading $2-$i.zip" 10 100
+              downloadserver="http://roms.thepiwizard.com/pro"
           else
-              wget --limit-rate 500k --trust-server-names "http://roms.thepiwizard.com/$2-$i.zip" 2>& 1 | \
-              stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
-              dialog --gauge "Downloading $2-$i.zip" 10 100
+              downloadserver="http://roms.thepiwizard.com"
           fi
+
+          wget --trust-server-names "$downloadserver/$2-$i.zip" 2>& 1 | \
+          stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+          dialog --gauge "Downloading $2-$i.zip" 10 100
+
           unzipprogress "/home/pi/RetroPie/roms/$1/$2-$i.zip" "/home/pi/RetroPie/roms/$1"
           if [ "$unzipsuccess" != "True" ]; then
             displayerror="True"
@@ -316,6 +317,8 @@ function downloader(){
           display_output 10 40 "$1 Rom Pack Installed"
         else
           display_output 10 102 "$unzipmessage"
+          unzipmessage=""
+          displayerror="False"
         fi
     else
       display_output 10 40 "Download canceled per your request"
@@ -362,7 +365,7 @@ function downloadroms(){
     nes) downloader "nes" "nes" 1;;
     snes) downloader "snes" "snes" 1;;
     n64) downloader "n64" "n64" 1;;
-    gb) downloader "gb" "gameboy" 1;;
+    gb) downloader "gb" "gb" 1;;
     gba) downloader "gba" "gba" 1;;
     gbc) downloader "gbc" "gbc" 1;;
     gamegear) downloader "gamegear" "gamegear" 1;;

@@ -41,8 +41,8 @@ function main(){
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		$DIALOG  --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/piwizard.main.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 		--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-		--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-		--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+		--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+		--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 		--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 		--and-widget --begin $infotextline $menutextcol --shadow \
 		--backtitle "PI WIZARD - Automatic Installer" \
@@ -107,8 +107,8 @@ function mainmenu(){
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
@@ -116,9 +116,9 @@ function mainmenu(){
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Rom-Downloads "Get your Roms " \
 				Single-Rom-Download "Coming Soon!" \
-				Emulator-Bios "Download extra Emulator Bios" \
 				__ " " \
-				System-Update "Install System Updates" \
+				Configure "Customize Your Launcher" \
+				Backup-Restore "Backup or Restore ROMS from HDD" \
 				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack" \
@@ -129,8 +129,8 @@ function mainmenu(){
 		else
 				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
@@ -139,6 +139,8 @@ function mainmenu(){
 				Rom-Downloads "Get your Roms " \
 				Single-Rom-Download "Coming Soon to PRO" \
 				__ "  " \
+				Configure "Customize Your Launcher" \
+				Backup-Restore "Backup or Restore ROMS from HDD" \
 				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack - PRO" \
@@ -166,7 +168,8 @@ function mainmenu(){
 						Get-Support) support;;
 						Emulator-Bios) bios;;
 						Disk-Space) disk;;
-						System-Update) systemupdate;;
+						Configure) config;;
+						Backup-Restore) mnuBackupRestore;;
 						Serial-Number) serial;;
 						Upgrade-to-Pro) upgrade;;
 						Single-Rom-Download) singlerom;;
@@ -190,6 +193,11 @@ function mainmenu(){
 	done
 }
 
+function mnuBackupRestore(){
+	display_output 10 40 " COMMING SOON!"
+}
+
+
 ############################################################
 ##
 ##  Games
@@ -207,8 +215,8 @@ function gamesmenu(){
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
@@ -247,8 +255,8 @@ function gamesmenu(){
 		else
 				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
@@ -318,8 +326,8 @@ function musicmenu(){
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PI WIZARD PRO MUSIC INSTALLER" \
@@ -338,8 +346,8 @@ function musicmenu(){
 		else
 				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
 				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PIWIZARD STANDARD MUSIC INSTALLER" \

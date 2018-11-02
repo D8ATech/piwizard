@@ -429,7 +429,6 @@ if [ "$UPGRADECHECK" == "YES" ]; then
   self_update
 fi
 
-rmfile "/home/pi/RetroPie/music/video-game-soundtrack.mp3"
 smallscreencheck
 getscreeninfo
 licensecheck

@@ -271,8 +271,6 @@ function gamesmenu(){
 				__ "= Sega Systems =" \
 				gamegear "Sega Gamegear" \
 				megadrive "Sega Genesis" \
-				__ "= Other Systems =" \
-				neogeo "NeoGeo" \
 				__ "  " \
 				Reboot "Reboot to save changes" \
 				Back "Back to Main Menu" 2>"$choiceGames"
@@ -398,6 +396,7 @@ function musicmenu(){
 #
 
 debugwrite ">>> BEGIN <<<"
+for i in $(seq 0 1 100) ; do echo $i | dialog --guage "Please wait" 10 70 0; done
 turnoffMusic
 UPGRADECHECK="YES"
 POSITIONAL=()
@@ -427,7 +426,6 @@ if [ "$DISPLAYHELP" == "YES" ]; then
 fi
 
 if [ "$UPGRADECHECK" == "YES" ]; then
-  clear
   self_update
 fi
 

@@ -154,6 +154,18 @@ function smallscreencheck(){
   fi
 }
 
+function getVersion(){
+  imgVersion=$(tail -n 1 update.log | awk -F '-' '{ print $1 }')
+  lVersion=$(git tag | tail -n 1)
+  read -p "enter"
+  if [ -z $lVersion ]; then
+    lVersion=$LAUNCHERVERSION
+  fi
+
+  FOOTERTEXT=" http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - http://forum.thepiwizard.com - http://paypal.me/thepiwizard \n\n Serial Number of this device: \Zb\Z1$sn\Zn  Image Version: \Zb\Z1$imgVersion\Zn Launcher Version: \Zb\Z1$lVersion\Zn Build: \Zb\Z1$LOCAL\Zn"
+
+}
+
 function licensecheck(){
   debugwrite ">>> licensecheck"
   sn=$(cat /proc/cpuinfo | grep Serial| cut -d ' ' -f 2) #store the serial in the $sn value
@@ -162,7 +174,7 @@ function licensecheck(){
     sn="NOT DETECTED"
   fi
 
-  FOOTERTEXT=" http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - http://forum.thepiwizard.com - http://paypal.me/thepiwizard \n\n Serial Number of this device: $sn          Version: $LOCAL"
+  getVersion
 
   if [ $ONLINE -gt 0 ]; then
     expiredvip=$(curl -s http://expire.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)

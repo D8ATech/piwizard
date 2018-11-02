@@ -19,11 +19,13 @@ self_update() {
       if [  $LOCAL = $REMOTE ]; then
           # display_output 10 40 "VERSION = $LOCAL"
           debugwrite "Already Up to Date.  Continuing..."
+          systemupdate
       elif [ $LOCAL = $BASE ]; then
           echo "Found a new version, updating..."
           #git clean -f &> /dev/null
           git pull --force &> /dev/null
           display_output 10 60 "New version of the launcher has been installed.\n Press a buton on your controller to exit\n You will need to restart launcher."
+          systemupdate
           clear
           exit 1
       elif [ $REMOTE = $BASE ]; then
@@ -587,13 +589,14 @@ function systemupdate(){
 
   # if new version available ask if they want to install
     if [ ${#toinstall[@]} -gt 0 ]; then
-      dialog --title "Upgrades Available" \
-        --yesno "There are upgrades available to install.\nDo you want to download and install\nA reboot is required?" 7 60
-      response=$?
-      case $response in
-         0) upgradenow="True";;
-         *) upgradenow="False";;
-      esac
+    #  dialog --title "Upgrades Available" \
+    #    --yesno "There are upgrades available to install.\nDo you want to download and install\nA reboot is required?" 7 60
+    #    response=$?
+    #  case $response in
+    #     0) upgradenow="True";;
+    #     *) upgradenow="False";;
+    #  esac
+      upgradenow="True"
     else
       upgradenow="False"
     fi
@@ -635,9 +638,10 @@ function systemupdate(){
       rebt
     else
       display_output 10 102 "$unzipmessage"
+      return 99
     fi
-  else
-    display_output 5 102 "Already up to date"
+  #else
+    #display_output 5 102 "Already up to date"
   fi
   rmfile "$SCRIPTPATH/library/update.log"
 }

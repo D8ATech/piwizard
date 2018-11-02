@@ -40,7 +40,7 @@ function main(){
 	while [ "$MAINRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		$DIALOG  --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/piwizard.main.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-		--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+		--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 		--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 		--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 		--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
@@ -106,7 +106,7 @@ function mainmenu(){
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
@@ -128,7 +128,7 @@ function mainmenu(){
 				Back "Back One Menu" 2>"$choiceOne"
 		else
 				$DIALOGONE  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/one.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
@@ -206,7 +206,7 @@ function gamesmenu(){
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
@@ -246,7 +246,7 @@ function gamesmenu(){
 				Back "Back to Main Menu" 2>"$choiceGames"
 		else
 				$DIALOGGAMES  --keep-window --begin $infotextline $infotextcol --tailboxbg inc/game.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
@@ -317,7 +317,7 @@ function musicmenu(){
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
 				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
@@ -337,7 +337,7 @@ function musicmenu(){
 				Back "Back to Main Menu" 2>"$choiceMusic"
 		else
 				$DIALOGMUSIC --keep-window --begin $infotextline $infotextcol --tailboxbg inc/music.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \

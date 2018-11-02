@@ -24,6 +24,7 @@ self_update() {
           #git clean -f &> /dev/null
           git pull --force &> /dev/null
           display_output 10 60 "New version of the launcher has been installed.\n Press a buton on your controller to exit\n You will need to restart launcher."
+          clear
           exit 1
       elif [ $REMOTE = $BASE ]; then
           echo "There are unpushed changes on client that would be lost.  Exiting"

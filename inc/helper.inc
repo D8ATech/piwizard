@@ -376,7 +376,7 @@ function downloadroms(){
     snesclassic_pro) downloader "snes-classic" "snesclassic" 1;;
     pcengine_pro) downloader "pcengine" "pcengine" 1;;
     arcade_pro) downloader "arcade" "arcade" 6;;
-    playstation) downloader "psx" "psx" 2;;
+    playstation) downloader "psx" "psx" 3;;
     neogeo) downloader "neogeo" "neogeo" 2;;
 
     atari2600) downloader "atari2600" "atari2600" 1;;

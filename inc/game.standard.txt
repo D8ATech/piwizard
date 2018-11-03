@@ -24,4 +24,4 @@
                   ~  FBA                    ~  Sega-MasterSystem
                   ~  Sega-MarkIII           ~  Coleco-Vision
                   ~  Game-And-Watch         ~  MSX2
-                  ~  MSX2+                  ~  Mame      
+                  ~  MSX2+                  ~  Mame

@@ -184,7 +184,7 @@ function licensecheck(){
   			dialog --textbox inc/piwizard.expiredvip.txt 12 81
     else
       apicall=$(curl -s http://api.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
-      apicall="VIP"
+      #apicall="VIP"
       if [[ $apicall = "VIP" ]]; then
           VIP="Yes"
           dialog --textbox inc/piwizard.validvip.txt 32 81

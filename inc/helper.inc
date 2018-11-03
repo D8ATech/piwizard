@@ -391,8 +391,6 @@ function downloadroms(){
     gbc) downloader "gbc" "gbc" 1;;
     gamegear) downloader "gamegear" "gamegear" 1;;
     megadrive) downloader "megadrive" "megadrive" 1;;
-
-
     *) display_output 10 65 "Somehow an incorrect value was sent to the downloading function";;
   esac
 }

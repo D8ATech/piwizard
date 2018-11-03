@@ -1,5 +1,5 @@
                   ______________________________________________________
-                 | STANDARD ROMS | PRO ROMS | SIZE STANDARD | SIZE PRO |
+                 | \Zb\Z1STANDARD ROMS\Zn | \Zb\Z1PRO ROMS\Zn | \Zb\Z1SIZE STANDARD\Zn | \Zb\Z1SIZE PRO\Zn |
              NES |       100     |    750   |     10MB      |     NA   |
        Super-NES |       100     |    850   |     78MB      |     NA   |
      Nintendo-64 |       100     |    365   |     1.3GB     |     NA   |
@@ -24,4 +24,4 @@
                   ~  FBA                    ~  Sega-MasterSystem
                   ~  Sega-MarkIII           ~  Coleco-Vision
                   ~  Game-And-Watch         ~  MSX2
-                  ~  MSX2+                  ~  Mame      
+                  ~  MSX2+                  ~  Mame

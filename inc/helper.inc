@@ -376,6 +376,8 @@ function downloadroms(){
     snesclassic_pro) downloader "snes-classic" "snesclassic" 1;;
     pcengine_pro) downloader "pcengine" "pcengine" 1;;
     arcade_pro) downloader "arcade" "arcade" 6;;
+    playstation) downloader "psx" "psx" 2;;
+    neogeo) downloader "neogeo" "neogeo" 2;;
 
     atari2600) downloader "atari2600" "atari2600" 1;;
     atari5200) downloader "atari5200" "atari5200" 1;;
@@ -389,7 +391,7 @@ function downloadroms(){
     gbc) downloader "gbc" "gbc" 1;;
     gamegear) downloader "gamegear" "gamegear" 1;;
     megadrive) downloader "megadrive" "megadrive" 1;;
-    neogeo) downloader "neogeo" "neogeo" 1;;
+
 
     *) display_output 10 65 "Somehow an incorrect value was sent to the downloading function";;
   esac

@@ -214,7 +214,7 @@ function gamesmenu(){
 	while [ "$GAMESRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGGAMES  --keep-window -colors --begin $infotextline $infotextcol --tailboxbg inc/game.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+				$DIALOGGAMES  --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/game.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \

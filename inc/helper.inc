@@ -293,9 +293,10 @@ function downloader(){
       dialog --title "Download $2 again?" \
         --yesno "This ROM was previously downloaded.\nAre you sure you want to download it again?" 7 60
       response=$?
+
+      #rmdir "/home/pi/RetroPie/roms/$1" - Removed to not delete on redownload
       case $response in
-         0) rmdir "/home/pi/RetroPie/roms/$1"
-            download="True";;
+         0) download="True";;
          *) download="False";;
       esac
     else
@@ -369,7 +370,7 @@ function downloadroms(){
     mastersystem_pro) downloader "mastersystem" "mastersystem" 1;;
     megadrive_pro) downloader "megadrive" "megadrive" 1;;
     msx2_pro) downloader "msx2" "msx2" 1;;
-    msx2plus_pro) downloader "msx2+" "msx2+" 1;;
+    msx2plus_pro) downloader "msx2plus" "msx2plus" 1;;
     n64_pro) downloader "n64" "n64" 3;;
     nes_pro) downloader "nes" "nes" 1;;
     snes_pro) downloader "snes" "snes" 2;;

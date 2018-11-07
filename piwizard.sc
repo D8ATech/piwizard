@@ -232,6 +232,7 @@ function gamesmenu(){
 				nes_pro "Nintendo Entertainment System" \
 				snes_pro "Super Nintendo" \
 				snesclassic_pro "Super Nintedo Classic" \
+				nds "Nintendos DS" \
 				n64_pro "Nintendo 64" \
 				gb_pro "Nintendo GameBoy" \
 				gbc_pro "Nintendo GameBoy Color" \
@@ -247,6 +248,8 @@ function gamesmenu(){
 				arcade_pro "Arcade" \
 				pcengine_pro "PC Engine" \
 				playstation "Playstation" \
+				psp "Playstation Portable" \
+				daphne "Daphne"
 				neogeo "Neogeo" \
 				coleco_pro "Coleco Vision" \
 				gameandwatch_pro "Game and Watch" \
@@ -266,10 +269,8 @@ function gamesmenu(){
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				__ "= Atari Systems =" \
-				atari2600 "Atari 2600" \
 				atari5200 "Atari 5200" \
 				atari7800 "Atari 7800" \
-				atarilynx "Atari Lynx" \
 				__ "= Nintendo Systems =" \
 				nes "Nintendo Entertainment System" \
 				snes "Super Nintendo" \

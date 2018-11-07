@@ -375,6 +375,7 @@ function downloadroms(){
     nes_pro) downloader "nes" "nes" 1;;
     snes_pro) downloader "snes" "snes" 2;;
     snesclassic_pro) downloader "snes-classic" "snesclassic" 1;;
+    nds) downloader "nds" "nds" 6;;
     pcengine_pro) downloader "pcengine" "pcengine" 1;;
     arcade_pro) downloader "arcade" "arcade" 6;;
     playstation) downloader "psx" "psx" 3;;

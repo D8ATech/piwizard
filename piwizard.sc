@@ -249,7 +249,7 @@ function gamesmenu(){
 				pcengine_pro "PC Engine" \
 				playstation "Playstation" \
 				psp "Playstation Portable" \
-				daphne "Daphne"
+				daphne "Daphne" \
 				neogeo "Neogeo" \
 				coleco_pro "Coleco Vision" \
 				gameandwatch_pro "Game and Watch" \

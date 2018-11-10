@@ -274,7 +274,7 @@ function music(){
 }
 
 function config(){
-  display_output 10 40 "Comming Soon"
+  display_output 10 40 "Coming Soon"
 }
 
 function downloader(){
@@ -314,9 +314,9 @@ function downloader(){
       while [ $i -le $count ]
         do
           if [ "$VIP" == "Yes" ]; then
-              downloadserver="http://roms.thepiwizard.com/pro"
+              downloadserver="http://games.thepiwizard.com/pro"
           else
-              downloadserver="http://roms.thepiwizard.com"
+              downloadserver="http://games.thepiwizard.com/standard"
           fi
 
           wget --trust-server-names "$downloadserver/$2-$i.zip" 2>& 1 | \
@@ -375,15 +375,16 @@ function downloadroms(){
     nes_pro) downloader "nes" "nes" 1;;
     snes_pro) downloader "snes" "snes" 2;;
     snesclassic_pro) downloader "snes-classic" "snesclassic" 1;;
+    nds) downloader "nds" "nds" 8;;
     pcengine_pro) downloader "pcengine" "pcengine" 1;;
     arcade_pro) downloader "arcade" "arcade" 6;;
     playstation) downloader "psx" "psx" 3;;
+    psp) downloader "psp" "psp" 4;;
+    daphne) downloader "daphne" "daphne" 6;;
     neogeo) downloader "neogeo" "neogeo" 2;;
 
-    atari2600) downloader "atari2600" "atari2600" 1;;
     atari5200) downloader "atari5200" "atari5200" 1;;
     atari7800) downloader "atari7800" "atari7800" 1;;
-    atarilynx) downloader "atarilynx" "atarilynx" 1;;
     nes) downloader "nes" "nes" 1;;
     snes) downloader "snes" "snes" 1;;
     n64) downloader "n64" "n64" 1;;

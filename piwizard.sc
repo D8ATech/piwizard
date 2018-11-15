@@ -7,8 +7,20 @@ fi
 
 __version="3.0.0"
 
-DIALOGRC="$SCRIPTPATH/.dialogrc"
+[[ "$__debug" -eq 1 ]] && set -x
+
+if [ -f "$SCRIPTPATH/.dialogrc" ]; then
+	DIALOGRC="$SCRIPTPATH/.dialogrc"
+else
+	cp "$SCRIPTPATH/inc/01bluelightrc" "$SCRIPTPATH/.dialogrc"
+fi
 export DIALOGRC
+
+scriptdir="$(dirname "$0")"
+scriptdir="$(cd "$scriptdir" && pwd)"
+__logdir="$scriptdir/logs"
+__tmpdir="$scriptdir/tmp"
+
 ################################################################################
 ####
 #### Pi Wizard v2.2

@@ -1,6 +1,12 @@
 #!/bin/bash
 . inc/variables.inc
 . $SCRIPTPATH/inc/helper.inc
+if [ -f "inc/admindialog.inc" ]; then
+	. inc/admindialog.inc
+fi
+
+__version="3.0.0"
+
 DIALOGRC="$SCRIPTPATH/.dialogrc"
 export DIALOGRC
 ################################################################################

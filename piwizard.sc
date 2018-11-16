@@ -1,19 +1,19 @@
 #!/bin/bash
 . inc/variables.inc
 . $SCRIPTPATH/inc/helper.inc
-if [ -f "inc/admindialog.inc" ]; then
-	. inc/admindialog.inc
+if [ -f "inc/adminpanel.inc" ]; then
+	. inc/adminpanel.inc
 fi
 
 __version="3.0.0"
 
 [[ "$__debug" -eq 1 ]] && set -x
 
-if [ -f "$SCRIPTPATH/.dialogrc" ]; then
-	DIALOGRC="$SCRIPTPATH/.dialogrc"
-else
-	cp "$SCRIPTPATH/inc/01bluelightrc" "$SCRIPTPATH/.dialogrc"
+if [ ! -f "$SCRIPTPATH/.dialogrc" ]; then
+	cp "$SCRIPTPATH/library/01blue_lightrc" "$SCRIPTPATH/.dialogrc"
 fi
+
+DIALOGRC="$SCRIPTPATH/.dialogrc"
 export DIALOGRC
 
 scriptdir="$(dirname "$0")"
@@ -187,7 +187,7 @@ function mainmenu(){
 						Get-Support) support;;
 						Emulator-Bios) bios;;
 						Disk-Space) disk;;
-						Configure) config;;
+						Configure) colormenu;;
 						Backup-Restore) mnuBackupRestore;;
 						Serial-Number) serial;;
 						Upgrade-to-Pro) upgrade;;
@@ -415,6 +415,75 @@ function musicmenu(){
 	done
 
 }
+
+############################################################
+##
+##  Color Menu
+##
+############################################################
+
+function colormenu(){
+	debugwrite ">>> musicmenu - piwizard"
+	COLORRUNNING="TRUE"
+	DIALOGCOLOR=${DIALOGCOLOR=dialog}
+	choiceColor=/tmp/dialogcolor-$$.$RANDOM; > $choiceColor
+	trap "rm -f $choiceColor" 0 1 2 5 15
+
+	while [ "$COLORRUNNING" == "TRUE" ];	do
+		findcenter $DIALOGWIDTH $DIALOGHEIGHT
+				$DIALOGCOLOR --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/music.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
+				--and-widget --begin $infotextline $menutextcol --shadow \
+				--backtitle "PI WIZARD PRO COLOR PICKER" \
+				--title "[ PI WIZARD COLOR PICKER ]" \
+				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
+				Blue-Light "Blue Background Light Menu" \
+				Blue-Dark "Blue Background Dark Menu" \
+				Red-Light "Blue Background Light Menu" \
+				Red-Dark "Blue Background Dark Menu" \
+				Yellow-Light "Blue Background Light Menu" \
+				Yellow-Dark "Blue Background Dark Menu" \
+				Green-Light "Blue Background Light Menu" \
+				Green-Dark "Blue Background Dark Menu" \
+				Magenta-Light "Blue Background Light Menu" \
+				Magenta-Dark "Blue Background Dark Menu" \
+				Cyan-Light "Blue Background Light Menu" \
+				Cyan-Dark "Blue Background Dark Menu" \
+				NoColor "Remove Color" \
+				__ "  " \
+				Reboot "Reboot to save changes" \
+				Back "Back to Main Menu" 2>"$choiceColor"
+
+		retval="$?"
+		choice=$(cat $choiceColor)
+		echo "" > $choiceColor
+
+		case $retval in
+			$DIALOG_ACTION)
+				if [ ! -z "$choice" ]; then
+					case $choice in
+						--) ;;
+						Reboot) rebt;;
+						Back) COLORRUNNING="FALSE";;
+						*) colorpicker "$choice";;
+					esac
+				fi
+				choice=""
+				;;
+			$DIALOG_CANCEL)
+				COLORRUNNING="FALSE";;
+			$DIALOG_ESC)
+				clear
+				[ -s $choiceOne ] && cat $choiceOne || echo "ESC Pressed"
+				COLORRUNNING="FALSE";;
+		esac
+	done
+	COLORRUNNING="TRUE"
+}
+
 
 ############################
 # Initialization

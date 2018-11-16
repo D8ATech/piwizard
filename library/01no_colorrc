@@ -24,16 +24,16 @@ tab_len = 0
 visit_items = OFF
 
 # Shadow dialog boxes? This also turns on color.
-use_shadow = ON
+use_shadow = OFF
 
 # Turn color support ON or OFF
-use_colors = ON
+use_colors = OFF
 
 # Screen color
-screen_color = (BLACK,GREEN,ON)
+screen_color = (WHITE,GREEN,ON)
 
 # Shadow color
-shadow_color = (BLACK,WHITE,ON)
+shadow_color = (WHITE,WHITE,ON)
 
 # Dialog box color
 dialog_color = (WHITE,BLACK,OFF)

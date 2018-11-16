@@ -275,6 +275,46 @@ function music(){
 	cd $SCRIPTPATH
 }
 
+function cpfiles(){
+  debugwrite ">>> cpfiles $1 to $2"
+  if [ -z "$1" ]; then
+    dialog_output 10 40 "No source file was provided"
+    return
+  fi
+  if [ -z "$2" ]; then
+    dialog_output 10 40 "No destination file was provided"
+    return
+  fi
+
+  if [ -z "$3" ]; then
+    \cp -rf $1 $2
+  else
+    sudo \cp -rf $1 $2
+  fi
+}
+
+function colorpicker(){
+  debugwrite ">>> colorpicker"
+  case $1 in
+    Blue-Light) cpfiles  "$SCRIPTPATH/library/01blue_lightrc" "$SCRIPTPATH/.dialogrc";;
+    Blue-Dark)  cpfiles "$SCRIPTPATH/library/01blue_darkrc" "$SCRIPTPATH/.dialogrc";;
+    Red-Light) cpfiles "$SCRIPTPATH/library/01red_lightrc" "$SCRIPTPATH/.dialogrc";;
+    Red-Dark)  cpfiles "$SCRIPTPATH/library/01red_darkrc" "$SCRIPTPATH/.dialogrc";;
+    Yellow-Light) cpfiles "$SCRIPTPATH/library/01yellow_lightrc" "$SCRIPTPATH/.dialogrc";;
+    Yellow-Dark) cpfiles "$SCRIPTPATH/library/01yellow_darkrc" "$SCRIPTPATH/.dialogrc";;
+    Green-Light) cpfiles "$SCRIPTPATH/library/01green_lightrc" "$SCRIPTPATH/.dialogrc";;
+    Green-Dark) cpfiles "$SCRIPTPATH/library/01green_darkrc" "$SCRIPTPATH/.dialogrc";;
+    Magenta-Light) cpfiles "$SCRIPTPATH/library/01magenta_lightrc" "$SCRIPTPATH/.dialogrc";;
+    Magenta-Dark) cpfiles "$SCRIPTPATH/library/01magenta_darkrc" "$SCRIPTPATH/.dialogrc";;
+    Cyan-Light) cpfiles "$SCRIPTPATH/library/01cyan_lightrc" "$SCRIPTPATH/.dialogrc";;
+    Cyan-Dark) cpfiles "$SCRIPTPATH/library/01cyan_darkrc" "$SCRIPTPATH/.dialogrc";;
+    NoColor) cpfiles "$SCRIPTPATH/library/01no_colorrc" "$SCRIPTPATH/.dialogrc";;
+    *) display_output 10 60 "Somehow an incorrect value was sent to the colorpicker function";;
+  esac
+  DIALOGRC="$SCRIPTPATH/.dialogrc"
+  export DIALOGRC
+}
+
 function config(){
   display_output 10 40 "Coming Soon"
 }

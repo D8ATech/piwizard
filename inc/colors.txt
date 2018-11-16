@@ -1,0 +1,22 @@
+This menu allows you to select the background color of Launcher and if the
+menus have light or dark backgrounds.
+
+This selection will be retained after restart.  The original colors of
+launcher at release is green-dark but you are welcome to choose the colors
+combination that best suits you.
+
+If you find an issue with the colors please contact our support to report
+the problem
+
+   ===>  SUPPORT <===
+Here are the ways you can get Support:
+
+Facebook : http://facebook.com/groups/thepiwizard
+E-Mail   : support@thepiwizard.com
+WebSite  : http://thepiwizard.com
+Forum    : http://forum.thepiwizard.com
+          _________________________________________
+IRC Chat :|      IRC Server     | PORT |    ROOM   |
+          | irc.thepiwizard.com | 6667 | #piwizard |
+          | irc.thepiwizard.com | 6667 | #support  |
+          ------------------------------------------

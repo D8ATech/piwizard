@@ -136,7 +136,7 @@ function mainmenu(){
 				Rom-Downloads "Get your Roms " \
 				Single-Rom-Download "Coming Soon!" \
 				__ " " \
-				Configure "Customize Your Launcher" \
+				Colors "Customize Your Launcher Colors" \
 				Backup-Restore "Backup or Restore ROMS from HDD" \
 				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
@@ -158,7 +158,7 @@ function mainmenu(){
 				Rom-Downloads "Get your Roms " \
 				Single-Rom-Download "Coming Soon to PRO" \
 				__ "  " \
-				Configure "Customize Your Launcher" \
+				Colors "Customize Your Launcher Colors" \
 				Backup-Restore "Backup or Restore ROMS from HDD" \
 				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
@@ -187,7 +187,7 @@ function mainmenu(){
 						Get-Support) support;;
 						Emulator-Bios) bios;;
 						Disk-Space) disk;;
-						Configure) colormenu;;
+						Colors) colormenu;;
 						Backup-Restore) mnuBackupRestore;;
 						Serial-Number) serial;;
 						Upgrade-to-Pro) upgrade;;
@@ -431,7 +431,7 @@ function colormenu(){
 
 	while [ "$COLORRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
-				$DIALOGCOLOR --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/music.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+				$DIALOGCOLOR --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/colors.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \

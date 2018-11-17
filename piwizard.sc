@@ -422,7 +422,7 @@ function scriptsmenu(){
 			unset availVers
 		fi
 
-		availVers=($(ls -l $SCRIPTPATH/scripts/*.sh | awk -F '/' '{print $NF}' | sort -V))
+		availVers=($(ls -l $SCRIPTPATH/scripts/*.sc | awk -F '/' '{print $NF}' | sort -V))
 
 		size=$(echo "${#availVers[@]}")
 

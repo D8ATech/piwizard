@@ -143,7 +143,7 @@ function mainmenu(){
 				__ "  " \
 				Configure "Customize Your Launcher" \
 				Backup-Restore "Backup or Restore ROMS from HDD" \
-				Utiity-Scripts "Optional Utility Scripts" \
+				Utility-Scripts "Optional Utility Scripts" \
 				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack - PRO" \
@@ -173,7 +173,7 @@ function mainmenu(){
 						Disk-Space) disk;;
 						Configure) config;;
 						Backup-Restore) mnuBackupRestore;;
-						Utiity-Scripts)
+						Utility-Scripts)
 							scriptsmenu
 							SCRIPTRUNNING=TRUE;;
 						Serial-Number) serial;;

@@ -120,6 +120,7 @@ function mainmenu(){
 				__ " " \
 				Configure "Customize Your Launcher" \
 				Backup-Restore "Backup or Restore ROMS from HDD" \
+				Utility-Scripts "Optional Utility Scripts" \
 				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack" \
@@ -142,6 +143,7 @@ function mainmenu(){
 				__ "  " \
 				Configure "Customize Your Launcher" \
 				Backup-Restore "Backup or Restore ROMS from HDD" \
+				Utiity-Scripts "Optional Utility Scripts" \
 				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack - PRO" \
@@ -171,6 +173,7 @@ function mainmenu(){
 						Disk-Space) disk;;
 						Configure) config;;
 						Backup-Restore) mnuBackupRestore;;
+						Utiity-Scripts) scriptsmenu;;
 						Serial-Number) serial;;
 						Upgrade-to-Pro) upgrade;;
 						Single-Rom-Download) singlerom;;
@@ -396,6 +399,87 @@ function musicmenu(){
 	done
 
 }
+
+
+
+
+############################################################
+##
+##  Scripts Menu
+##
+############################################################
+
+function scriptsmenu(){
+	debugwrite ">>> scriptsmenu - piwizard"
+#	DIALOGSCRIPTS=${DIALOGSCRIPTS=dialog}
+#	choiceScripts=/tmp/dialogscripts-$$.$RANDOM; > $choiceScripts
+#	trap "rm -f $choiceScripts" 0 1 2 5 15
+
+while [ "$SCRIPTRUNNING" == "TRUE" ];	do
+	findcenter $DIALOGWIDTH $DIALOGHEIGHT
+
+	if [[ -n "$availVers" ]]; then
+		unset availVers
+	fi
+
+	availVers=($(ls -l "$SCRIPTPATH/scripts/*.sh" | awk -F '/' '{print $NF}' | sort -V
+))
+
+	size=$(echo "${#availVers[@]}")
+
+	if [[ -n "$options" ]]; then
+		unset options
+	fi
+
+	# Build the options of the Menu
+	for ((i = 0; i < $size; i++)); do
+		options+=($((i)) "${availVers[$i]}")
+	done
+
+	# Add in static options
+	options+=(98 "Reboot")
+	options+=(99 "Back")
+
+	if [[ -n "$cmd" ]]; then
+	unset cmd
+	fi
+
+	cmd=(dialog --backtitle "PiWizard Scripts" --begin $infotextline $infotextcol --title "[ Scripts - Instructions ]" --tailboxbg inc/scripts.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+		--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+		--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+		--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+		--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
+		--and-widget --begin $infotextline $menutextcol
+		--title "[ Available Scripts ]"
+		--nocancel
+		--menu "You can use the UP/DOWN arror keys, or the number keys \n\
+		1 -9 to choose an option.  Reboot and Back options \n\
+		available at the bottom of the list. \n\
+		Choose the Version: \n" 40 60 30 )
+
+	if [[ -n "$choices" ]]; then
+		unset choices
+	fi
+
+	choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+
+	for choice in $choices
+	do
+		for ((i = 0; i < $size; i++)); do
+			if [[ "$i" = "$choice" ]]; then
+					runScript "${availVers[$i]}"
+			fi
+		done
+
+		if [[ "$choice" = "98" ]]; then
+			rebt
+			break
+		fi
+		if [[ "$choice" = "99" ]]; then
+			SCRIPTRUNNING="FALSE"
+		fi
+	done
+done
 
 ############################
 # Initialization

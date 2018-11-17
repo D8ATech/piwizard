@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 . inc/variables.inc
 . $SCRIPTPATH/inc/helper.inc
 DIALOGRC="$SCRIPTPATH/.dialogrc"
@@ -419,7 +419,7 @@ function scriptsmenu(){
 			unset availVers
 		fi
 
-		availVers=($(ls -l "$SCRIPTPATH/scripts/*.sh" | awk -F '/' '{print $NF}' | sort -V))
+		availVers=($(ls -l $SCRIPTPATH/scripts/*.sh | awk -F '/' '{print $NF}' | sort -V))
 
 		size=$(echo "${#availVers[@]}")
 
@@ -445,13 +445,10 @@ function scriptsmenu(){
 			--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 			--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 			--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-			--and-widget --begin $infotextline $menutextcol --shadow \
+			--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 			--backtitle "PIWIZARD SCRIPT RUNNER" \
 			--title "[ Available Scripts ]" \
-			--menu "You can use the UP/DOWN arror keys, or the number keys \n\
-			1 -9 to choose an option.  Reboot and Back options \n\
-			available at the bottom of the list. \n\
-			Choose the Version: \n" 40 60 30 )
+			--menu "You can use the UP/DOWN arrow keys, or the number\nkeys 1 -9 to choose an option.\nReboot and Back options available at the bottom of\nthe list.\n\nMake Your Choice: \n" $MENUHEIGHT $MENUWIDTH $MENUITEMS )
 
 		if [[ -n "$choices" ]]; then
 			unset choices

@@ -273,6 +273,19 @@ function music(){
 	cd $SCRIPTPATH
 }
 
+function runScript(){
+  debugwrite ">>> runScript $1"
+  if [ -z $1 ]; then
+    break
+  fi
+
+  if [ -f "$SCRIPTPATH/scripts/$1" ]; then
+    cd "$SCRIPTPATH/scripts"
+    sudo chmod +x "$1" && sudo "./$1" && sudo chmod -x "$1"
+    cd "$SCRIPTPATH"
+  fi
+}
+
 function config(){
   display_output 10 40 "Coming Soon"
 }

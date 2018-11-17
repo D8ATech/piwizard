@@ -134,7 +134,7 @@ function mainmenu(){
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -173,7 +173,9 @@ function mainmenu(){
 						Disk-Space) disk;;
 						Configure) config;;
 						Backup-Restore) mnuBackupRestore;;
-						Utiity-Scripts) scriptsmenu;;
+						Utiity-Scripts)
+							scriptsmenu
+							SCRIPTRUNNING=TRUE;;
 						Serial-Number) serial;;
 						Upgrade-to-Pro) upgrade;;
 						Single-Rom-Download) singlerom;;
@@ -222,7 +224,7 @@ function gamesmenu(){
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -264,7 +266,7 @@ function gamesmenu(){
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -335,7 +337,7 @@ function musicmenu(){
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD PRO MUSIC INSTALLER" \
 				--title "[ PI WIZARD PRO MUSIC SERVER ]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -355,7 +357,7 @@ function musicmenu(){
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PIWIZARD STANDARD MUSIC INSTALLER" \
 				--title "[ PIWIZARD STANDARD MUSIC SERVER ]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \

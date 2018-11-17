@@ -138,6 +138,7 @@ function mainmenu(){
 				__ " " \
 				Colors "Customize Your Launcher Colors" \
 				Backup-Restore "Backup or Restore ROMS from HDD" \
+				Utility-Scripts "Optional Utility Scripts" \
 				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack" \
@@ -151,7 +152,7 @@ function mainmenu(){
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -160,6 +161,7 @@ function mainmenu(){
 				__ "  " \
 				Colors "Customize Your Launcher Colors" \
 				Backup-Restore "Backup or Restore ROMS from HDD" \
+				Utility-Scripts "Optional Utility Scripts" \
 				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack - PRO" \
@@ -189,6 +191,9 @@ function mainmenu(){
 						Disk-Space) disk;;
 						Colors) colormenu;;
 						Backup-Restore) mnuBackupRestore;;
+						Utility-Scripts)
+							scriptsmenu
+							SCRIPTRUNNING=TRUE;;
 						Serial-Number) serial;;
 						Upgrade-to-Pro) upgrade;;
 						Single-Rom-Download) singlerom;;
@@ -237,7 +242,7 @@ function gamesmenu(){
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -282,7 +287,7 @@ function gamesmenu(){
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -351,7 +356,7 @@ function musicmenu(){
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD PRO MUSIC INSTALLER" \
 				--title "[ PI WIZARD PRO MUSIC SERVER ]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -371,9 +376,9 @@ function musicmenu(){
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PIWIZARD STANDARD MUSIC INSTALLER" \
-				--title "[ PI WIZARD STANDARD MUSIC SERVER ]" \
+				--title "[ PIWIZARD STANDARD MUSIC SERVER ]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				__ "  " \
 				Reboot "Reboot to save changes" \
@@ -484,6 +489,79 @@ function colormenu(){
 	COLORRUNNING="TRUE"
 }
 
+=======
+##  Scripts Menu
+##
+############################################################
+
+function scriptsmenu(){
+	debugwrite ">>> scriptsmenu - piwizard"
+#	DIALOGSCRIPTS=${DIALOGSCRIPTS=dialog}
+#	choiceScripts=/tmp/dialogscripts-$$.$RANDOM; > $choiceScripts
+#	trap "rm -f $choiceScripts" 0 1 2 5 15
+
+	while [ "$SCRIPTRUNNING" == "TRUE" ];	do
+		findcenter $DIALOGWIDTH $DIALOGHEIGHT
+
+		if [[ -n "$availVers" ]]; then
+			unset availVers
+		fi
+
+		availVers=($(ls -l $SCRIPTPATH/scripts/*.sh | awk -F '/' '{print $NF}' | sort -V))
+
+		size=$(echo "${#availVers[@]}")
+
+		if [[ -n "$options" ]]; then
+			unset options
+		fi
+
+		# Build the options of the Menu
+		for ((i = 0; i < $size; i++)); do
+			options+=($((i)) "${availVers[$i]}")
+		done
+
+		# Add in static options
+		options+=(98 "Reboot")
+		options+=(99 "Back")
+
+		if [[ -n "$cmd" ]]; then
+		unset cmd
+		fi
+
+		cmd=(dialog --keep-window --colors --begin $infotextline $infotextcol --title "[ Scripts - Instructions ]" --tailboxbg inc/scripts.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+			--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+			--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+			--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+			--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
+			--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
+			--backtitle "PIWIZARD SCRIPT RUNNER" \
+			--title "[ Available Scripts ]" \
+			--menu "You can use the UP/DOWN arrow keys, or the number\nkeys 1 -9 to choose an option.\nReboot and Back options available at the bottom of\nthe list.\n\nMake Your Choice: \n" $MENUHEIGHT $MENUWIDTH $MENUITEMS )
+
+		if [[ -n "$choices" ]]; then
+			unset choices
+		fi
+
+		choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+
+		for choice in $choices
+		do
+			for ((i = 0; i < $size; i++)); do
+				if [[ "$i" = "$choice" ]]; then
+						runScript "${availVers[$i]}"
+				fi
+			done
+
+			if [[ "$choice" = "98" ]]; then
+				rebt
+				break
+			fi
+			if [[ "$choice" = "99" ]]; then
+				SCRIPTRUNNING="FALSE"
+			fi
+		done
+	done
+}
 
 ############################
 # Initialization

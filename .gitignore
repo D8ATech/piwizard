@@ -1,5 +1,9 @@
 update.log
+!logs/
+!scripts/
+!tmp/
+logs/*
+scripts/*
+tmp/*
 inc/adminpanel.inc
 .dialogrc
-logs/*
-tmp/*

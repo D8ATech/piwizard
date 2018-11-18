@@ -111,7 +111,7 @@ function mainmenu(){
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION INSTALLER]" \
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -245,6 +245,7 @@ function gamesmenu(){
 				famicom_pro "Famicom" \
 				fds_pro "Famicom Disk System" \
 				__ "= Sega Systems =" \
+				segacd "Sega CD" \
 				gamegear_pro "Sega Gamegear" \
 				megadrive_pro "Sega Genesis" \
 				mastersystem_pro "Sega MasterSytem" \

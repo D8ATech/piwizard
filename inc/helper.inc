@@ -380,6 +380,7 @@ function downloadroms(){
     gbc_pro) downloader "gbc" "gbc" 1;;
     mame2003_pro) downloader "mame2003" "mame2003" 1;;
     markiii_pro) downloader "markiii" "markiii" 1;;
+    segacd) downloader "segacd" "segacd" 7;;
     mastersystem_pro) downloader "mastersystem" "mastersystem" 1;;
     megadrive_pro) downloader "megadrive" "megadrive" 1;;
     msx2_pro) downloader "msx2" "msx2" 1;;

@@ -6,3 +6,4 @@ logs/*
 scripts/*
 tmp/*
 inc/adminpanel.inc
+.dialogrc

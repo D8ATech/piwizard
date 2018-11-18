@@ -42,7 +42,7 @@ function turnoffMusic(){
   # turn off the music
   debugwrite ">>> turnoffMusic"
   if [ ! -f $MUSICFILE ]; then
-    touch "$MUSICFILE"
+    sudo touch "$MUSICFILE"
   fi
 }
 

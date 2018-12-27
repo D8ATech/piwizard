@@ -1,5 +1,5 @@
 ==========================================================
-=  PI WIZARD v2.5                                        =
+=  PI WIZARD v3.0                                        =
 =--------------------------------------------------------=
 = Please read the following before accessing PI WIZARD   =
 =                                                        =

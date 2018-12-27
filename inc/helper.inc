@@ -38,6 +38,12 @@ self_update() {
     fi
 }
 
+function loadText(){
+  # load the text files form the Server
+  debugwrite ">>> loadText"
+
+}
+
 function turnoffMusic(){
   # turn off the music
   debugwrite ">>> turnoffMusic"
@@ -181,7 +187,7 @@ function licensecheck(){
 
   	if [[ $expiredvip = "VIP" ]]; then
         VIP="No"
-  			dialog --textbox inc/piwizard.expiredvip.txt 12 81
+  			dialog --infobox "$expiredVipPage" 12 81
     else
       apicall=$(curl -s http://api.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
       if [[ $ADMINPRO = "TRUE" ]]; then
@@ -189,43 +195,32 @@ function licensecheck(){
       fi
       if [[ $apicall = "VIP" ]]; then
           VIP="Yes"
-          dialog --textbox inc/piwizard.validvip.txt 32 81
+          dialog --infobox "$vipPage" 32 81
       else
           VIP="No"
-          dialog --textbox inc/piwizard.standard.txt 38 81
+          dialog --infobox "$standardPage" 38 81
       fi
     fi
   else
     VIP="No"
-    dialog --textbox inc/piwizard.standard.txt 38 81
+    dialog --infobox "$standardPage" 38 81
   fi
 }
 
 function deny(){
     debugwrite ">>> deny"
-    dialog --textbox inc/tocdenied.txt 9 55
+    dialog --infobox "$supportPage" 9 55
     closeAllDialogs
 }
 
 function upgrade(){
   debugwrite ">>> upgrade"
-	dialog --textbox inc/one.upgrade.txt 32 75
+	dialog --infobox "$upgradePage" 32 75
 }
 
 function support(){
   debugwrite ">>> support"
-  dialog --textbox inc/one.support.txt 27 75
-}
-
-function serial(){
-  debugwrite ">>> serial"
-  sn=$(cat /proc/cpuinfo | grep Serial)
-
-  if [ "$sn" -eq "" ]; then
-    sn="NOT DETECTED"
-  fi
-
-  dialog --title "Your Serial Number - $sn" --textbox inc/one.serial.txt 15 80
+  dialog --infobox "$supportPage" 27 75
 }
 
 function setupmusic(){
@@ -462,7 +457,7 @@ function closeAllDialogs(){
 }
 
 function findcenter(){
-  debugwrite ">>> findcenter"
+  debugwrite ">>> findcenter"t
   menuwidth=$1
   menuheight=$2
 
@@ -508,16 +503,61 @@ function getscreeninfo(){
     if [ $ONLINE -gt 0 ]; then
       currentStatus=$(curl -s http://thepiwizard.com/downloadstatus)
       announcements=$(curl -s http://thepiwizard.com/announce)
+      # Load Text Screens
+      mainText=$(curl -s http://launcher.thepiwizard.com/piwizard.main.txt)
+
+      mainMenuVip=$(curl -s http://launcher.thepiwizard.com/one.pro.txt)
+      mainMenuStandard=$(curl -s http://launcher.thepiwizard.com/one.standard.txt)
+
+      gamesMenuVip=$(curl -s http://launcher.thepiwizard.com/game.pro.txt)
+      gamesMenuStandard=$(curl -s http://launcher.thepiwizard.com/game.standard.txt)
+
+      musicMenuVip=$(curl -s http://launcher.thepiwizard.com/music.pro.txt)
+      musicMenuStandard=$(curl -s http://launcher.thepiwizard.com/music.standard.txt)
+
+      colorMenuText=$(curl -s http://launcher.thepiwizard.com/colors.txt)
+
+      scriptsMenuText=$(curl -s http://launcher.thepiwizard.com/scripts.txt)
+
+      # Load Static Text pages
+      supportPage=$(curl -s http://launcher.thepiwizard.com/one.support.txt)
+      upgradePage=$(curl -s http://launcher.thepiwizard.com/one.upgrade.txt)
+      tocDeniedPage=$(curl -s http://launcher.thepiwizard.com/tocdenied.txt)
+      vipPage=$(curl -s http://launcher.thepiwizard.com/piwizard.validvip.txt)
+      standardPage=$(curl -s http://launcher.thepiwizard.com/piwizard.standard.txt)
+      expiredVipPage=$(curl -s http://launcher.thepiwizard.com/piwizard.expiredvip.txt)
+      thanksPage=$(curl -s http://launcher.thepiwizard.com/thanks.txt)
     else
       currentStatus="Currently Offline"
       announcements="Currently Offline"
+      mainText="Currently Offline"
+      mainMenuVip="Currently Offline"
+      mainMenuStandard="Currently Offline"
+      gamesMenuVip="Currently Offline"
+      gamesMenuStandard="Currently Offline"
+      musicMenuVip="Currently Offline"
+      musicMenuStandard="Currently Offline"
+      colorMenuText="Currently Offline"
+      scriptsMenuText="Currently Offline"
+      supportPage="Currently Offline"
+      upgradePage="Currently Offline"
+      tocDeniedPage="Currently Offline"
+      vipPage="Currently Offline"
+      standardPage="Currently Offline"
+      expiredVipPage="Currently Offline"
+      thanksPage="Currently Offline"
     fi
+}
+
+function exitLauncher(){
+  debugwrite ">>> exitLauncher"
+  exit 0
 }
 
 function rebt(){
     debugwrite ">>> rebt"
     if [ ! -z "$1" ]; then
-      dialog --textbox inc/thanks.txt 12 80
+      dialog --infobox "$thanksPage" 12 80
     fi
   	# display_output 10 80 "This is where we would reboot but for now we are just going to exit"
     closeAllDialogs
@@ -531,7 +571,7 @@ function rebt(){
 
 function ext(){
   debugwrite ">>> ext"
-	dialog --textbox inc/tocdenied.txt 12 80
+	dialog --infobox "$tocDeniedPage" 12 80
 	exit
 }
 

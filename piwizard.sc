@@ -195,7 +195,7 @@ function mainmenu(){
 						Upgrade-to-Pro) upgrade;;
 						Single-Rom-Download) singlerom;;
 						Reboot) rebt;;
-						exit) exitLauncher;;
+						Exit) exitLauncher;;
 						Back) ONERUNNING="FALSE";;
 						*)
 							echo "Unexpected Input"

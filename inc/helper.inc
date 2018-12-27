@@ -501,32 +501,57 @@ function findcenter(){
 function getscreeninfo(){
   debugwrite ">>> getscreeninfor"
     if [ $ONLINE -gt 0 ]; then
-      currentStatus=$(curl -s http://thepiwizard.com/downloadstatus)
-      announcements=$(curl -s http://thepiwizard.com/announce)
-      # Load Text Screens
-      mainText=$(curl -s http://launcher.thepiwizard.com/piwizard.main.txt)
+      cd /home/pi/RetroPie/piwizard/inc
+      rm -f *.txt
+      for i in {1..20}
+      do
+        case $i in
+          1) wget --trust-server-names "http://thepiwizard.com/downloadstatus" 2>& 1;;
+          2) wget --trust-server-names "http://thepiwizard.com/announce" 2>& 1;;
+            # Load Text Screens
+          3) wget --trust-server-names "http://launcher.thepiwizard.com/piwizard.main.txt" 2>& 1;;
+          4) wget --trust-server-names "http://launcher.thepiwizard.com/one.pro.txt" 2>& 1;;
+          5) wget --trust-server-names "http://launcher.thepiwizard.com/one.standard.txt" 2>& 1;;
 
-      mainMenuVip=$(curl -s http://launcher.thepiwizard.com/one.pro.txt)
-      mainMenuStandard=$(curl -s http://launcher.thepiwizard.com/one.standard.txt)
+          6) wget --trust-server-names "http://launcher.thepiwizard.com/game.pro.txt" 2>& 1;;
+          7) wget --trust-server-names "http://launcher.thepiwizard.com/game.standard.txt" 2>& 1;;
+          8) wget --trust-server-names "http://launcher.thepiwizard.com/music.pro.txt" 2>& 1;;
+          9) wget --trust-server-names "http://launcher.thepiwizard.com/music.standard.txt" 2>& 1;;
+          10) wget --trust-server-names "http://launcher.thepiwizard.com/colors.txt" 2>& 1;;
+          11) wget --trust-server-names "http://launcher.thepiwizard.com/scripts.txt" 2>& 1;;
+            # Load Static Text pages
+          12) wget --trust-server-names "http://launcher.thepiwizard.com/one.support.txt" 2>& 1;;
+          13) wget --trust-server-names "http://launcher.thepiwizard.com/one.upgrade.txt" 2>& 1;;
+          14) wget --trust-server-names "http://launcher.thepiwizard.com/tocdenied.txt" 2>& 1;;
 
-      gamesMenuVip=$(curl -s http://launcher.thepiwizard.com/game.pro.txt)
-      gamesMenuStandard=$(curl -s http://launcher.thepiwizard.com/game.standard.txt)
+          15) wget --trust-server-names "http://launcher.thepiwizard.com/piwizard.validvip.txt" 2>& 1;;
+          16) wget --trust-server-names "http://launcher.thepiwizard.com/piwizard.standard.txt" 2>& 1;;
+          17) wget --trust-server-names "http://launcher.thepiwizard.com/piwizard.expiredvip.txt" 2>& 1;;
+          18) wget --trust-server-names "http://launcher.thepiwizard.com/thanks.txt" 2>& 1;;
+        esac
+        echo $(($i * 5))
+      done | dialog --title 'Initialization' --guage 'Downloading...' 6 60
 
-      musicMenuVip=$(curl -s http://launcher.thepiwizard.com/music.pro.txt)
-      musicMenuStandard=$(curl -s http://launcher.thepiwizard.com/music.standard.txt)
+      currentStatus=$(<downloadstatus)
+      announcements=$(<announce)
+      mainText=$(<piwizard.main.txt)
+      mainMenuVip=$(<one.pro.txt)
+      mainMenuStandard=$(<one.standard.txt)
+      gamesMenuVip=$(<game.pro.txt)
+      gamesMenuStandard=$(<game.standard.txt)
+      musicMenuVip=$(<music.pro.txt)
+      musicMenuStandard=$(<music.standard.txt)
+      colorMenuText=$(<colors.txt)
+      scriptsMenuText=$(<scripts.txt)
+      supportPage=$(<one.support.txt)
+      upgradePage=$(<one.upgrade.txt)
+      tocDeniedPage=$(<tocdenied.txt)
+      vipPage=$(<piwizard.validvip.txt)
+      standardPage=$(<piwizard.standard.txt)
+      expiredVipPage=$(<piwizard.expiredvip.txt)
+      thanksPage=$(<thanks.txt)
 
-      colorMenuText=$(curl -s http://launcher.thepiwizard.com/colors.txt)
-
-      scriptsMenuText=$(curl -s http://launcher.thepiwizard.com/scripts.txt)
-
-      # Load Static Text pages
-      supportPage=$(curl -s http://launcher.thepiwizard.com/one.support.txt)
-      upgradePage=$(curl -s http://launcher.thepiwizard.com/one.upgrade.txt)
-      tocDeniedPage=$(curl -s http://launcher.thepiwizard.com/tocdenied.txt)
-      vipPage=$(curl -s http://launcher.thepiwizard.com/piwizard.validvip.txt)
-      standardPage=$(curl -s http://launcher.thepiwizard.com/piwizard.standard.txt)
-      expiredVipPage=$(curl -s http://launcher.thepiwizard.com/piwizard.expiredvip.txt)
-      thanksPage=$(curl -s http://launcher.thepiwizard.com/thanks.txt)
+      cd $SCRIPTPATH
     else
       currentStatus="Currently Offline"
       announcements="Currently Offline"
@@ -551,6 +576,7 @@ function getscreeninfo(){
 
 function exitLauncher(){
   debugwrite ">>> exitLauncher"
+  cleanupExit
   exit 0
 }
 
@@ -650,7 +676,7 @@ function unzipprogress(){
   else
     debugwrite "no filename passed"
   fi
-}
+currrrrrl
 
 function processScript(){
   debugwrite ">>> processScript"

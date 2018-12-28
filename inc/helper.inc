@@ -146,6 +146,8 @@ function rmtextfiles(){
   rmfile "$SCRIPTPATH/inc/piwizard.standard.txt"
   rmfile "$SCRIPTPATH/inc/piwizard.expiredvip.txt"
   rmfile "$SCRIPTPATH/inc/thanks.txt"
+  #rmfile "$SCRIPTPATJ/inc/menu.games.pro.txt"
+  #rmfile "$SCRIPTPATJ/inc/menu.games.standard.txt"
 }
 
 function rmdir(){
@@ -550,6 +552,8 @@ function getscreeninfo(){
           16) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.standard.txt" 2>& 1;;
           17) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.expiredvip.txt" 2>& 1;;
           18) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/thanks.txt" 2>& 1;;
+          191) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/menu.games.pro.txt" 2>& 1;;
+          201) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/menu.games.standard.txt" 2>& 1;;
         esac
         echo $(($i * 5))
       done | dialog --title 'Initialization' --guage 'Downloading...' 10 100 0

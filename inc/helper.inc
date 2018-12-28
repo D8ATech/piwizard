@@ -359,6 +359,7 @@ function downloader(){
   else
     count=$3
   fi
+  #display_output 10 40 "$1 | $2 | $3"
 
   if [ $ONLINE -gt 0 ]; then
     download="False"

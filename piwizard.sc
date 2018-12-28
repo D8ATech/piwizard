@@ -235,6 +235,10 @@ function gamesmenu(){
 	while [ "$GAMESRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 
+		if [[ -n "$gameNames" ]]; then
+			unset gameNames
+		fi
+
 		if [[ -n "$gameDirs" ]]; then
 			unset gameDirs
 		fi
@@ -244,29 +248,41 @@ function gamesmenu(){
 		fi
 
 		if [ "$VIP" == "Yes" ]; then
+
+			# Build the VIP menu
+
 			if [[ -n "$options" ]]; then
 				unset options
 			fi
-			counter=1
+			counter=0
 
 			while read p; do
-					gameName=$(echo "$p" | awk -F '|' '{ print $1 }')
-					options+=($((counter)) "${name}")
-					gameDir=$(echo "$p" | awk -F '|' '{ print $2 }')
-					gameDirs+="{$gameDir}"
-					gameZip=$(ech "$p" | awl -F '|' '{ print $3 }')
-					gameZips+="${gameZip}"
-					counter++
+				gameName=$(echo "$p" | awk -F '|' '{ print $1 }')
+				gameNames+=("$gameName")
+
+				if [[ $gameName == *"= " ]]; then
+					options+=("_" "${gameName}")
+				else
+					options+=($((counter)) "${gameName}")
+				fi
+
+				gameDir=$(echo "$p" | awk -F '|' '{ print $2 }')
+				gameDirs+=("${gameDir}")
+				gameZip=$(echo "$p" | awk -F '|' '{ print $3 }')
+				gameZips+=("${gameZip}")
+				((counter++))
 			done <inc/menu.games.pro.txt
 
-			if [[ -n "$cmd" ]]; then
-				unset cmd
-			fi
+			#display_output 15 100 "${gameNames[@]} ${gameDirs[@]} ${gameZips[@]}"
 
 			# Add in static options
 			options+=(97 "Reboot")
 			options+=(98 "Exit")
 			options+=(99 "Back")
+
+			if [[ -n "$cmd" ]]; then
+				unset cmd
+			fi
 
 			cmd=(dialog  --keep-window --colors --begin $infotextline $infotextcol --infobox "$gamesMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
@@ -276,7 +292,7 @@ function gamesmenu(){
 				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
-				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS )
+				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS)
 
 				if [[ -n "$choices" ]]; then
 					unset choices
@@ -284,29 +300,38 @@ function gamesmenu(){
 
 				choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 		else
+
+			# Build the Standard Menu
 			if [[ -n "$options" ]]; then
 				unset options
 			fi
-			counter=1
+			counter=0
 
 			while read p; do
-					gameName=$(echo "$p" | awk -F '|' '{ print $1 }')
-					options+=($((counter)) "${name}")
-					gameDir=$(echo "$p" | awk -F '|' '{ print $2 }')
-					gameDirs+="{$gameDir}"
-					gameZip=$(ech "$p" | awl -F '|' '{ print $3 }')
-					gameZips+="${gameZip}"
-					counter++
-			done <inc/menu.games.standard.txt
+				gameName=$(echo "$p" | awk -F '|' '{ print $1 }')
+				gameNames+=("${gameName}")
 
-			if [[ -n "$cmd" ]]; then
-				unset cmd
-			fi
+				if [[ $gameName == *"= " ]]; then
+					options+=("_" "${gameName}")
+				else
+					options+=($((counter)) "${gameName}")
+				fi
+
+				gameDir=$(echo "$p" | awk -F '|' '{ print $2 }')
+				gameDirs+=("${gameDir}")
+				gameZip=$(echo "$p" | awk -F '|' '{ print $3 }')
+				gameZips+=("${gameZip}")
+				((counter++))
+			done <inc/menu.games.standard.txt
 
 			# Add in static options
 			options+=(97 "Reboot")
 			options+=(98 "Exit")
 			options+=(99 "Back")
+
+			if [[ -n "$cmd" ]]; then
+				unset cmd
+			fi
 
 			cmd=(dialog --keep-window --colors --begin $infotextline $infotextcol --infobox "$gamesMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
@@ -325,12 +350,20 @@ function gamesmenu(){
 			choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 		fi
 
+		# Menu is built, now get the choices that were made
+
 		for choice in $choices
 		do
+			#display_output 15 100 "$choice | ${gameNames[$choice]} | ${gameDirs[$choice]} | ${gameZips[$choice]}"
+
 			for ((i = 0; i < $counter; i++)); do
 				if [[ "$i" = "$choice" ]]; then
-					if [[ ! $choice ==*"= "* ]]; then
-						downloader "${$gameDirs[$i]}" "${$gameDirs[$i]}" "${$gameZips[$i]}"
+					#display_output 10 80 "i: $i | Choice: $choice | gameNames[$i]: ${gameNames[$i]}"
+
+					if [[ ${gameNames[$i]} == *"= "* ]]; then
+						debugwrite "Don't do anything this is a header"
+					else
+						downloader ${gameDirs[$i]} ${gameDirs[$i]} ${gameZips[$i]}
 					fi
 				fi
 			done

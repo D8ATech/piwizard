@@ -38,6 +38,12 @@ self_update() {
     fi
 }
 
+function loadText(){
+  # load the text files form the Server
+  debugwrite ">>> loadText"
+
+}
+
 function turnoffMusic(){
   # turn off the music
   debugwrite ">>> turnoffMusic"
@@ -120,6 +126,28 @@ function rmfile(){
   fi
 }
 
+function rmtextfiles(){
+  debugwrite ">>> rmtextfiles"
+  rmfile "$SCRIPTPATH/inc/downloadstatus"
+  rmfile "$SCRIPTPATH/inc/announce"
+  rmfile "$SCRIPTPATH/inc/piwizard.main.txt"
+  rmfile "$SCRIPTPATH/inc/one.pro.txt"
+  rmfile "$SCRIPTPATH/inc/one.standard.txt"
+  rmfile "$SCRIPTPATH/inc/game.pro.txt"
+  rmfile "$SCRIPTPATH/inc/game.standard.txt"
+  rmfile "$SCRIPTPATH/inc/music.pro.txt"
+  rmfile "$SCRIPTPATH/inc/music.standard.txt"
+  rmfile "$SCRIPTPATH/inc/colors.txt"
+  rmfile "$SCRIPTPATH/inc/scripts.txt"
+  rmfile "$SCRIPTPATH/inc/one.support.txt"
+  rmfile "$SCRIPTPATH/inc/one.upgrade.txt"
+  rmfile "$SCRIPTPATH/inc/tocdenied.txt"
+  rmfile "$SCRIPTPATH/inc/piwizard.validvip.txt"
+  rmfile "$SCRIPTPATH/inc/piwizard.standard.txt"
+  rmfile "$SCRIPTPATH/inc/piwizard.expiredvip.txt"
+  rmfile "$SCRIPTPATH/inc/thanks.txt"
+}
+
 function rmdir(){
   if [ ! -z $1 ]; then
     rm -rf $1
@@ -130,6 +158,7 @@ function cleanupExit(){
   debugwrite ">>> cleanupExit"
   rmfile "$OUTPUT"
   rmfile "$INPUT"
+  rmtextfiles
   clear
   echo "Thanks for using PI WIZARD"
   sleep 5
@@ -181,7 +210,7 @@ function licensecheck(){
 
   	if [[ $expiredvip = "VIP" ]]; then
         VIP="No"
-  			dialog --textbox inc/piwizard.expiredvip.txt 12 81
+  			dialog --msgbox "$expiredVipPage" 12 81
     else
       apicall=$(curl -s http://api.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
       if [[ $ADMINPRO = "TRUE" ]]; then
@@ -189,43 +218,32 @@ function licensecheck(){
       fi
       if [[ $apicall = "VIP" ]]; then
           VIP="Yes"
-          dialog --textbox inc/piwizard.validvip.txt 32 81
+          dialog --msgbox "$vipPage" 32 81
       else
           VIP="No"
-          dialog --textbox inc/piwizard.standard.txt 38 81
+          dialog --msgbox "$standardPage" 38 81
       fi
     fi
   else
     VIP="No"
-    dialog --textbox inc/piwizard.standard.txt 38 81
+    dialog --msgbox "$standardPage" 38 81
   fi
 }
 
 function deny(){
     debugwrite ">>> deny"
-    dialog --textbox inc/tocdenied.txt 9 55
+    dialog --msgbox "$supportPage" 9 55
     closeAllDialogs
 }
 
 function upgrade(){
   debugwrite ">>> upgrade"
-	dialog --textbox inc/one.upgrade.txt 32 75
+	dialog --msgbox "$upgradePage" 32 75
 }
 
 function support(){
   debugwrite ">>> support"
-  dialog --textbox inc/one.support.txt 27 75
-}
-
-function serial(){
-  debugwrite ">>> serial"
-  sn=$(cat /proc/cpuinfo | grep Serial)
-
-  if [ "$sn" -eq "" ]; then
-    sn="NOT DETECTED"
-  fi
-
-  dialog --title "Your Serial Number - $sn" --textbox inc/one.serial.txt 15 80
+  dialog --msgbox "$supportPage" 27 75
 }
 
 function setupmusic(){
@@ -462,7 +480,7 @@ function closeAllDialogs(){
 }
 
 function findcenter(){
-  debugwrite ">>> findcenter"
+  debugwrite ">>> findcenter"t
   menuwidth=$1
   menuheight=$2
 
@@ -506,21 +524,91 @@ function findcenter(){
 function getscreeninfo(){
   debugwrite ">>> getscreeninfor"
     if [ $ONLINE -gt 0 ]; then
-      currentStatus=$(curl -s http://thepiwizard.com/downloadstatus)
-      announcements=$(curl -s http://thepiwizard.com/announce)
+      cd /home/pi/RetroPie/roms/piwizard/inc
+      rmtextfiles
+
+      for i in {1..20}
+      do
+        case $i in
+          1) wget --trust-server-names --quiet "http://thepiwizard.com/downloadstatus" 2>& 1;;
+          2) wget --trust-server-names --quiet "http://thepiwizard.com/announce" 2>& 1;;
+            # Load Text Screens
+          3) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.main.txt" 2>& 1;;
+          4) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/one.pro.txt" 2>& 1;;
+          5) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/one.standard.txt" 2>& 1;;
+          6) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/game.pro.txt" 2>& 1;;
+          7) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/game.standard.txt" 2>& 1;;
+          8) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/music.pro.txt" 2>& 1;;
+          9) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/music.standard.txt" 2>& 1;;
+          10) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/colors.txt" 2>& 1;;
+          11) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/scripts.txt" 2>& 1;;
+            # Load Static Text pages
+          12) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/one.support.txt" 2>& 1;;
+          13) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/one.upgrade.txt" 2>& 1;;
+          14) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/tocdenied.txt" 2>& 1;;
+          15) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.validvip.txt" 2>& 1;;
+          16) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.standard.txt" 2>& 1;;
+          17) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.expiredvip.txt" 2>& 1;;
+          18) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/thanks.txt" 2>& 1;;
+        esac
+        echo $(($i * 5))
+      done | dialog --title 'Initialization' --guage 'Downloading...' 10 100 0
+
+      currentStatus=$(<downloadstatus)
+      announcements=$(<announce)
+      mainText=$(<piwizard.main.txt)
+      mainMenuVip=$(<one.pro.txt)
+      mainMenuStandard=$(<one.standard.txt)
+      gamesMenuVip=$(<game.pro.txt)
+      gamesMenuStandard=$(<game.standard.txt)
+      musicMenuVip=$(<music.pro.txt)
+      musicMenuStandard=$(<music.standard.txt)
+      colorMenuText=$(<colors.txt)
+      scriptsMenuText=$(<scripts.txt)
+      supportPage=$(<one.support.txt)
+      upgradePage=$(<one.upgrade.txt)
+      tocDeniedPage=$(<tocdenied.txt)
+      vipPage=$(<piwizard.validvip.txt)
+      standardPage=$(<piwizard.standard.txt)
+      expiredVipPage=$(<piwizard.expiredvip.txt)
+      thanksPage=$(<thanks.txt)
+      cd $SCRIPTPATH
     else
       currentStatus="Currently Offline"
       announcements="Currently Offline"
+      mainText="Currently Offline"
+      mainMenuVip="Currently Offline"
+      mainMenuStandard="Currently Offline"
+      gamesMenuVip="Currently Offline"
+      gamesMenuStandard="Currently Offline"
+      musicMenuVip="Currently Offline"
+      musicMenuStandard="Currently Offline"
+      colorMenuText="Currently Offline"
+      scriptsMenuText="Currently Offline"
+      supportPage="Currently Offline"
+      upgradePage="Currently Offline"
+      tocDeniedPage="Currently Offline"
+      vipPage="Currently Offline"
+      standardPage="Currently Offline"
+      expiredVipPage="Currently Offline"
+      thanksPage="Currently Offline"
     fi
+}
+
+function exitLauncher(){
+  debugwrite ">>> exitLauncher"
+  cleanupExit
+  exit 0
 }
 
 function rebt(){
     debugwrite ">>> rebt"
     if [ ! -z "$1" ]; then
-      dialog --textbox inc/thanks.txt 12 80
+      dialog --infobox "$thanksPage" 12 80
     fi
   	# display_output 10 80 "This is where we would reboot but for now we are just going to exit"
     closeAllDialogs
+    rmtextfiles
     clear
     turnonMusic
     echo "Pi Wizard in now rebooting..."
@@ -531,7 +619,7 @@ function rebt(){
 
 function ext(){
   debugwrite ">>> ext"
-	dialog --textbox inc/tocdenied.txt 12 80
+	dialog --infobox "$tocDeniedPage" 12 80
 	exit
 }
 
@@ -610,7 +698,7 @@ function unzipprogress(){
   else
     debugwrite "no filename passed"
   fi
-}
+currrrrrl
 
 function processScript(){
   debugwrite ">>> processScript"

@@ -58,7 +58,7 @@ function main(){
 
 	while [ "$MAINRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
-		$DIALOG  --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/piwizard.main.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+		$DIALOG  --keep-window --colors --begin $infotextline $infotextcol --infobox "$mainText" $TXTBOXHEIGHT $TXTBOXWIDTH \
 		--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 		--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 		--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
@@ -84,9 +84,7 @@ function main(){
 						Accept) loading;;
 						Decline) deny;;
 						Reboot) rebt;;
-						Exit)
-								MAINRUNNING="FALSE"
-								return 0;;
+						Exit) exitLauncher;;
 						*)
 							echo "Unexpected Input"
 							return 1
@@ -124,7 +122,7 @@ function mainmenu(){
 	while [ "$ONERUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGONE  --keep-window  --colors --begin $infotextline $infotextcol --tailboxbg inc/one.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+				$DIALOGONE  --keep-window  --colors --begin $infotextline $infotextcol --infobox "$mainMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
@@ -139,15 +137,15 @@ function mainmenu(){
 				Colors "Customize Your Launcher Colors" \
 				Backup-Restore "Backup or Restore ROMS from HDD" \
 				Utility-Scripts "Optional Utility Scripts" \
-				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack" \
 				Get-Support "View Support Methods" \
 				__ "  " \
 				Reboot "Reboot to save changes" \
+				Exit "Exit Launcher" \
 				Back "Back One Menu" 2>"$choiceOne"
 		else
-				$DIALOGONE  --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/one.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+				$DIALOGONE  --keep-window --colors --begin $infotextline $infotextcol --infobox "$mainMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
@@ -162,13 +160,13 @@ function mainmenu(){
 				Colors "Customize Your Launcher Colors" \
 				Backup-Restore "Backup or Restore ROMS from HDD" \
 				Utility-Scripts "Optional Utility Scripts" \
-				Serial-Number "The Serial Number of your PI" \
 				Disk-Space "SD Card Disk Space" \
 				Music "Grab a Music Pack - PRO" \
 				Upgrade-to-Pro "Compare Standard to Pro" \
 				Get-Support "View Support Methods" \
 				__ "  " \
 				Reboot "Reboot to save changes" \
+				Exit "Exit Launcher" \
 				Back "Back One Menu" 2>"$choiceOne"
 		fi
 
@@ -194,10 +192,10 @@ function mainmenu(){
 						Utility-Scripts)
 							scriptsmenu
 							SCRIPTRUNNING=TRUE;;
-						Serial-Number) serial;;
 						Upgrade-to-Pro) upgrade;;
 						Single-Rom-Download) singlerom;;
 						Reboot) rebt;;
+						Exit) exitLauncher;;
 						Back) ONERUNNING="FALSE";;
 						*)
 							echo "Unexpected Input"
@@ -237,7 +235,7 @@ function gamesmenu(){
 	while [ "$GAMESRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGGAMES  --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/game.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+				$DIALOGGAMES  --keep-window --colors --begin $infotextline $infotextcol --infobox "$gamesMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
@@ -280,9 +278,10 @@ function gamesmenu(){
 				msx2plus_pro "MSX2+" \
  				__ "  " \
 				Reboot "Reboot to save changes" \
+				Exit "Exit Launcher" \
 				Back "Back to Main Menu" 2>"$choiceGames"
 		else
-				$DIALOGGAMES  --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/game.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+				$DIALOGGAMES  --keep-window --colors --begin $infotextline $infotextcol --infobox "$gamesMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
@@ -306,6 +305,7 @@ function gamesmenu(){
 				megadrive "Sega Genesis" \
 				__ "  " \
 				Reboot "Reboot to save changes" \
+				Exit "Exit Launcher" \
 				Back "Back to Main Menu" 2>"$choiceGames"
 		fi
 
@@ -318,6 +318,7 @@ function gamesmenu(){
 				if [ ! -z "$choice" ]; then
 					case $choice in
 						Reboot) rebt;;
+						Exit) exitLauncher;;
 						Back) GAMESRUNNING="FALSE";;
 						__);;
 						*) downloadroms "$choice"
@@ -351,7 +352,7 @@ function musicmenu(){
 	while [ "$MUSICRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGMUSIC --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/music.pro.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+				$DIALOGMUSIC --keep-window --colors --begin $infotextline $infotextcol --infobox "$musicMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
@@ -369,9 +370,10 @@ function musicmenu(){
 				GST2 "Game Soundtrack 2" \
 				__ "  " \
 				Reboot "Reboot to save changes" \
+				Exit "Exit Launcher" \
 				Back "Back to Main Menu" 2>"$choiceMusic"
 		else
-				$DIALOGMUSIC --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/music.standard.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+				$DIALOGMUSIC --keep-window --colors --begin $infotextline $infotextcol --infobox "$musicMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
@@ -382,6 +384,7 @@ function musicmenu(){
 				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				__ "  " \
 				Reboot "Reboot to save changes" \
+				Exit "Exit Launcher" \
 				Back "Back to Main Menu" 2>"$choiceMusic"
 		fi
 
@@ -401,6 +404,7 @@ function musicmenu(){
 						GST1) music "GS1";;
 						GST2) music "GS2";;
 						Reboot) rebt;;
+						Exit) exitLauncher;;
 						Back) MUSICRUNNING="FALSE";;
 						*)
 							echo "Unexpected Input"
@@ -436,7 +440,7 @@ function colormenu(){
 
 	while [ "$COLORRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
-				$DIALOGCOLOR --keep-window --colors --begin $infotextline $infotextcol --tailboxbg inc/colors.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+				$DIALOGCOLOR --keep-window --colors --begin $infotextline $infotextcol --infobox "$colorMenuText" $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
@@ -460,6 +464,7 @@ function colormenu(){
 				NoColor "Remove Color" \
 				__ "  " \
 				Reboot "Reboot to save changes" \
+				Exit "Exit Launcher" \
 				Back "Back to Main Menu" 2>"$choiceColor"
 
 		retval="$?"
@@ -472,6 +477,7 @@ function colormenu(){
 					case $choice in
 						--) ;;
 						Reboot) rebt;;
+						Exit) exitLauncher;;
 						Back) COLORRUNNING="FALSE";;
 						*) colorpicker "$choice";;
 					esac
@@ -521,14 +527,15 @@ function scriptsmenu(){
 		done
 
 		# Add in static options
-		options+=(98 "Reboot")
+		options+=(97 "Reboot")
+		options+=(98 "Exit")
 		options+=(99 "Back")
 
 		if [[ -n "$cmd" ]]; then
 		unset cmd
 		fi
 
-		cmd=(dialog --keep-window --colors --begin $infotextline $infotextcol --title "[ Scripts - Instructions ]" --tailboxbg inc/scripts.txt $TXTBOXHEIGHT $TXTBOXWIDTH \
+		cmd=(dialog --keep-window --colors --begin $infotextline $infotextcol --title "[ Scripts - Instructions ]" --infobox "$scriptsMenuText" $TXTBOXHEIGHT $TXTBOXWIDTH \
 			--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
 			--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 			--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
@@ -552,8 +559,12 @@ function scriptsmenu(){
 				fi
 			done
 
-			if [[ "$choice" = "98" ]]; then
+			if [[ "$choice" = "97" ]]; then
 				rebt
+				break
+			fi
+			if [[ "$choice" = "98" ]]; then
+				exitLauncher
 				break
 			fi
 			if [[ "$choice" = "99" ]]; then

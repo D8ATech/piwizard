@@ -126,6 +126,28 @@ function rmfile(){
   fi
 }
 
+function rmtextfiles(){
+  debugwrite ">>> rmtextfiles"
+  rmfile "$SCRIPTPATH/inc/downloadstatus"
+  rmfile "$SCRIPTPATH/inc/announce"
+  rmfile "$SCRIPTPATH/inc/piwizard.main.txt"
+  rmfile "$SCRIPTPATH/inc/one.pro.txt"
+  rmfile "$SCRIPTPATH/inc/one.standard.txt"
+  rmfile "$SCRIPTPATH/inc/game.pro.txt"
+  rmfile "$SCRIPTPATH/inc/game.standard.txt"
+  rmfile "$SCRIPTPATH/inc/music.pro.txt"
+  rmfile "$SCRIPTPATH/inc/music.standard.txt"
+  rmfile "$SCRIPTPATH/inc/colors.txt"
+  rmfile "$SCRIPTPATH/inc/scripts.txt"
+  rmfile "$SCRIPTPATH/inc/one.support.txt"
+  rmfile "$SCRIPTPATH/inc/one.upgrade.txt"
+  rmfile "$SCRIPTPATH/inc/tocdenied.txt"
+  rmfile "$SCRIPTPATH/inc/piwizard.validvip.txt"
+  rmfile "$SCRIPTPATH/inc/piwizard.standard.txt"
+  rmfile "$SCRIPTPATH/inc/piwizard.expiredvip.txt"
+  rmfile "$SCRIPTPATH/inc/thanks.txt"
+}
+
 function rmdir(){
   if [ ! -z $1 ]; then
     rm -rf $1
@@ -136,6 +158,7 @@ function cleanupExit(){
   debugwrite ">>> cleanupExit"
   rmfile "$OUTPUT"
   rmfile "$INPUT"
+  rmtextfiles
   clear
   echo "Thanks for using PI WIZARD"
   sleep 5
@@ -502,7 +525,8 @@ function getscreeninfo(){
   debugwrite ">>> getscreeninfor"
     if [ $ONLINE -gt 0 ]; then
       cd /home/pi/RetroPie/roms/piwizard/inc
-      rm -f *.txt
+      rmtextfiles
+
       for i in {1..20}
       do
         case $i in
@@ -548,7 +572,6 @@ function getscreeninfo(){
       standardPage=$(<piwizard.standard.txt)
       expiredVipPage=$(<piwizard.expiredvip.txt)
       thanksPage=$(<thanks.txt)
-
       cd $SCRIPTPATH
     else
       currentStatus="Currently Offline"
@@ -585,6 +608,7 @@ function rebt(){
     fi
   	# display_output 10 80 "This is where we would reboot but for now we are just going to exit"
     closeAllDialogs
+    rmtextfiles
     clear
     turnonMusic
     echo "Pi Wizard in now rebooting..."

@@ -187,7 +187,7 @@ function licensecheck(){
 
   	if [[ $expiredvip = "VIP" ]]; then
         VIP="No"
-  			dialog --infobox "$expiredVipPage" 12 81
+  			dialog --msgbox "$expiredVipPage" 12 81
     else
       apicall=$(curl -s http://api.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
       if [[ $ADMINPRO = "TRUE" ]]; then
@@ -195,32 +195,32 @@ function licensecheck(){
       fi
       if [[ $apicall = "VIP" ]]; then
           VIP="Yes"
-          dialog --infobox "$vipPage" 32 81
+          dialog --msgbox "$vipPage" 32 81
       else
           VIP="No"
-          dialog --infobox "$standardPage" 38 81
+          dialog --msgbox "$standardPage" 38 81
       fi
     fi
   else
     VIP="No"
-    dialog --infobox "$standardPage" 38 81
+    dialog --msgbox "$standardPage" 38 81
   fi
 }
 
 function deny(){
     debugwrite ">>> deny"
-    dialog --infobox "$supportPage" 9 55
+    dialog --msgbox "$supportPage" 9 55
     closeAllDialogs
 }
 
 function upgrade(){
   debugwrite ">>> upgrade"
-	dialog --infobox "$upgradePage" 32 75
+	dialog --msgbox "$upgradePage" 32 75
 }
 
 function support(){
   debugwrite ">>> support"
-  dialog --infobox "$supportPage" 27 75
+  dialog --msgbox "$supportPage" 27 75
 }
 
 function setupmusic(){
@@ -501,36 +501,34 @@ function findcenter(){
 function getscreeninfo(){
   debugwrite ">>> getscreeninfor"
     if [ $ONLINE -gt 0 ]; then
-      cd /home/pi/RetroPie/piwizard/inc
+      cd /home/pi/RetroPie/roms/piwizard/inc
       rm -f *.txt
       for i in {1..20}
       do
         case $i in
-          1) wget --trust-server-names "http://thepiwizard.com/downloadstatus" 2>& 1;;
-          2) wget --trust-server-names "http://thepiwizard.com/announce" 2>& 1;;
+          1) wget --trust-server-names --quiet "http://thepiwizard.com/downloadstatus" 2>& 1;;
+          2) wget --trust-server-names --quiet "http://thepiwizard.com/announce" 2>& 1;;
             # Load Text Screens
-          3) wget --trust-server-names "http://launcher.thepiwizard.com/piwizard.main.txt" 2>& 1;;
-          4) wget --trust-server-names "http://launcher.thepiwizard.com/one.pro.txt" 2>& 1;;
-          5) wget --trust-server-names "http://launcher.thepiwizard.com/one.standard.txt" 2>& 1;;
-
-          6) wget --trust-server-names "http://launcher.thepiwizard.com/game.pro.txt" 2>& 1;;
-          7) wget --trust-server-names "http://launcher.thepiwizard.com/game.standard.txt" 2>& 1;;
-          8) wget --trust-server-names "http://launcher.thepiwizard.com/music.pro.txt" 2>& 1;;
-          9) wget --trust-server-names "http://launcher.thepiwizard.com/music.standard.txt" 2>& 1;;
-          10) wget --trust-server-names "http://launcher.thepiwizard.com/colors.txt" 2>& 1;;
-          11) wget --trust-server-names "http://launcher.thepiwizard.com/scripts.txt" 2>& 1;;
+          3) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.main.txt" 2>& 1;;
+          4) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/one.pro.txt" 2>& 1;;
+          5) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/one.standard.txt" 2>& 1;;
+          6) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/game.pro.txt" 2>& 1;;
+          7) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/game.standard.txt" 2>& 1;;
+          8) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/music.pro.txt" 2>& 1;;
+          9) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/music.standard.txt" 2>& 1;;
+          10) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/colors.txt" 2>& 1;;
+          11) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/scripts.txt" 2>& 1;;
             # Load Static Text pages
-          12) wget --trust-server-names "http://launcher.thepiwizard.com/one.support.txt" 2>& 1;;
-          13) wget --trust-server-names "http://launcher.thepiwizard.com/one.upgrade.txt" 2>& 1;;
-          14) wget --trust-server-names "http://launcher.thepiwizard.com/tocdenied.txt" 2>& 1;;
-
-          15) wget --trust-server-names "http://launcher.thepiwizard.com/piwizard.validvip.txt" 2>& 1;;
-          16) wget --trust-server-names "http://launcher.thepiwizard.com/piwizard.standard.txt" 2>& 1;;
-          17) wget --trust-server-names "http://launcher.thepiwizard.com/piwizard.expiredvip.txt" 2>& 1;;
-          18) wget --trust-server-names "http://launcher.thepiwizard.com/thanks.txt" 2>& 1;;
+          12) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/one.support.txt" 2>& 1;;
+          13) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/one.upgrade.txt" 2>& 1;;
+          14) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/tocdenied.txt" 2>& 1;;
+          15) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.validvip.txt" 2>& 1;;
+          16) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.standard.txt" 2>& 1;;
+          17) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.expiredvip.txt" 2>& 1;;
+          18) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/thanks.txt" 2>& 1;;
         esac
         echo $(($i * 5))
-      done | dialog --title 'Initialization' --guage 'Downloading...' 6 60
+      done | dialog --title 'Initialization' --guage 'Downloading...' 10 100 0
 
       currentStatus=$(<downloadstatus)
       announcements=$(<announce)

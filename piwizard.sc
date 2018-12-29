@@ -228,6 +228,167 @@ function mnuBackupRestore(){
 
 function gamesmenu(){
 	debugwrite ">>> gamesmenu - piwizard"
+	#DIALOGGAMES=${DIALOGGAMES=dialog}
+	#choiceGames=/tmp/dialoggames-$$.$RANDOM; > $choiceGames
+	#trap "rm -f $choiceGames" 0 1 2 5 15
+
+	while [ "$GAMESRUNNING" == "TRUE" ];	do
+		findcenter $DIALOGWIDTH $DIALOGHEIGHT
+
+		if [[ -n "$gameNames" ]]; then
+			unset gameNames
+		fi
+
+		if [[ -n "$gameDirs" ]]; then
+			unset gameDirs
+		fi
+
+		if [[ -n "$gameZips" ]]; then
+			unset gameZips
+		fi
+
+		if [ "$VIP" == "Yes" ]; then
+
+			# Build the VIP menu
+
+			if [[ -n "$options" ]]; then
+				unset options
+			fi
+			counter=0
+
+			while read p; do
+				gameName=$(echo "$p" | awk -F '|' '{ print $1 }')
+				gameNames+=("$gameName")
+
+				if [[ $gameName == *"= " ]]; then
+					options+=("_" "${gameName}")
+				else
+					options+=($((counter)) "${gameName}")
+				fi
+
+				gameDir=$(echo "$p" | awk -F '|' '{ print $2 }')
+				gameDirs+=("${gameDir}")
+				gameZip=$(echo "$p" | awk -F '|' '{ print $3 }')
+				gameZips+=("${gameZip}")
+				((counter++))
+			done <inc/menu.games.pro.txt
+
+			#display_output 15 100 "${gameNames[@]} ${gameDirs[@]} ${gameZips[@]}"
+
+			# Add in static options
+			options+=(97 "Reboot")
+			options+=(98 "Exit")
+			options+=(99 "Back")
+
+			if [[ -n "$cmd" ]]; then
+				unset cmd
+			fi
+
+			cmd=(dialog  --keep-window --colors --begin $infotextline $infotextcol --infobox "$gamesMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
+				--backtitle "PI WIZARD PRO VERSION" \
+				--title "[ PI WIZARD PRO VERSION Downloader ]" \
+				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS)
+
+				if [[ -n "$choices" ]]; then
+					unset choices
+				fi
+
+				choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+		else
+
+			# Build the Standard Menu
+			if [[ -n "$options" ]]; then
+				unset options
+			fi
+			counter=0
+
+			while read p; do
+				gameName=$(echo "$p" | awk -F '|' '{ print $1 }')
+				gameNames+=("${gameName}")
+
+				if [[ $gameName == *"= " ]]; then
+					options+=("_" "${gameName}")
+				else
+					options+=($((counter)) "${gameName}")
+				fi
+
+				gameDir=$(echo "$p" | awk -F '|' '{ print $2 }')
+				gameDirs+=("${gameDir}")
+				gameZip=$(echo "$p" | awk -F '|' '{ print $3 }')
+				gameZips+=("${gameZip}")
+				((counter++))
+			done <inc/menu.games.standard.txt
+
+			# Add in static options
+			options+=(97 "Reboot")
+			options+=(98 "Exit")
+			options+=(99 "Back")
+
+			if [[ -n "$cmd" ]]; then
+				unset cmd
+			fi
+
+			cmd=(dialog --keep-window --colors --begin $infotextline $infotextcol --infobox "$gamesMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
+				--backtitle "PI WIZARD STANDARD VERSION" \
+				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
+				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS )
+
+			if [[ -n "$choices" ]]; then
+				unset choices
+			fi
+
+			choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+		fi
+
+		# Menu is built, now get the choices that were made
+
+		for choice in $choices
+		do
+			#display_output 15 100 "$choice | ${gameNames[$choice]} | ${gameDirs[$choice]} | ${gameZips[$choice]}"
+
+			for ((i = 0; i < $counter; i++)); do
+				if [[ "$i" = "$choice" ]]; then
+					#display_output 10 80 "i: $i | Choice: $choice | gameNames[$i]: ${gameNames[$i]}"
+
+					if [[ ${gameNames[$i]} == *"= "* ]]; then
+						debugwrite "Don't do anything this is a header"
+					else
+						downloader ${gameDirs[$i]} ${gameDirs[$i]} ${gameZips[$i]}
+					fi
+				fi
+			done
+
+			if [[ "$choice" = "97" ]]; then
+				rebt
+				break
+			fi
+			if [[ "$choice" = "98" ]]; then
+				exitLauncher
+				break
+			fi
+			if [[ "$choice" = "99" ]]; then
+				GAMESRUNNING="FALSE"
+			fi
+		done
+	done
+}
+
+
+###
+# old
+###
+function gamesmenu_old(){
+	debugwrite ">>> gamesmenu - piwizard"
 	DIALOGGAMES=${DIALOGGAMES=dialog}
 	choiceGames=/tmp/dialoggames-$$.$RANDOM; > $choiceGames
 	trap "rm -f $choiceGames" 0 1 2 5 15
@@ -336,6 +497,7 @@ function gamesmenu(){
 		esac
 	done
 }
+
 
 ############################################################
 ##
@@ -532,7 +694,7 @@ function scriptsmenu(){
 		options+=(99 "Back")
 
 		if [[ -n "$cmd" ]]; then
-		unset cmd
+			unset cmd
 		fi
 
 		cmd=(dialog --keep-window --colors --begin $infotextline $infotextcol --title "[ Scripts - Instructions ]" --infobox "$scriptsMenuText" $TXTBOXHEIGHT $TXTBOXWIDTH \

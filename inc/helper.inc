@@ -146,6 +146,8 @@ function rmtextfiles(){
   rmfile "$SCRIPTPATH/inc/piwizard.standard.txt"
   rmfile "$SCRIPTPATH/inc/piwizard.expiredvip.txt"
   rmfile "$SCRIPTPATH/inc/thanks.txt"
+  rmfile "$SCRIPTPATJ/inc/menu.games.pro.txt"
+  rmfile "$SCRIPTPATJ/inc/menu.games.standard.txt"
 }
 
 function rmdir(){
@@ -357,6 +359,7 @@ function downloader(){
   else
     count=$3
   fi
+  #display_output 10 40 "$1 | $2 | $3"
 
   if [ $ONLINE -gt 0 ]; then
     download="False"
@@ -423,52 +426,52 @@ function downloader(){
   fi
 }
 
-function downloadroms(){
-  debugwrite ">>> downloadroms"
-  case $1 in
-    atari2600_pro) downloader "atari2600" "atari2600" 1;;
-    atari5200_pro) downloader "atari5200" "atari5200" 1;;
-    atari7800_pro) downloader "atari7800" "atari7800" 1;;
-    atarilynx_pro) downloader "atarilynx" "atarilynx" 1;;
-    coleco_pro) downloader "coleco" "coleco" 1;;
-    famicom_pro) downloader "famicom" "famicom" 1;;
-    fds_pro) downloader "fds" "fds" 1;;
-    gameandwatch_pro) downloader "gameandwatch" "gameandwatch" 1;;
-    gamegear_pro) downloader "gamegear" "gamegear" 1;;
-    gb_pro) downloader "gb" "gb" 1;;
-    gba_pro) downloader "gba" "gba" 5;;
-    gbc_pro) downloader "gbc" "gbc" 1;;
-    mame2003_pro) downloader "mame2003" "mame2003" 1;;
-    markiii_pro) downloader "markiii" "markiii" 1;;
-    mastersystem_pro) downloader "mastersystem" "mastersystem" 1;;
-    megadrive_pro) downloader "megadrive" "megadrive" 1;;
-    msx2_pro) downloader "msx2" "msx2" 1;;
-    msx2plus_pro) downloader "msx2plus" "msx2plus" 1;;
-    n64_pro) downloader "n64" "n64" 3;;
-    nes_pro) downloader "nes" "nes" 1;;
-    snes_pro) downloader "snes" "snes" 2;;
-    snesclassic_pro) downloader "snes-classic" "snesclassic" 1;;
-    nds) downloader "nds" "nds" 8;;
-    pcengine_pro) downloader "pcengine" "pcengine" 1;;
-    arcade_pro) downloader "arcade" "arcade" 6;;
-    playstation) downloader "psx" "psx" 3;;
-    psp) downloader "psp" "psp" 4;;
-    daphne) downloader "daphne" "daphne" 6;;
-    neogeo) downloader "neogeo" "neogeo" 2;;
-
-    atari5200) downloader "atari5200" "atari5200" 1;;
-    atari7800) downloader "atari7800" "atari7800" 1;;
-    nes) downloader "nes" "nes" 1;;
-    snes) downloader "snes" "snes" 1;;
-    n64) downloader "n64" "n64" 1;;
-    gb) downloader "gb" "gb" 1;;
-    gba) downloader "gba" "gba" 1;;
-    gbc) downloader "gbc" "gbc" 1;;
-    gamegear) downloader "gamegear" "gamegear" 1;;
-    megadrive) downloader "megadrive" "megadrive" 1;;
-    *) display_output 10 65 "Somehow an incorrect value was sent to the downloading function";;
-  esac
-}
+#function downloadroms(){
+#  debugwrite ">>> downloadroms"
+#  case $1 in
+#    atari2600_pro) downloader "atari2600" "atari2600" 1;;
+#    atari5200_pro) downloader "atari5200" "atari5200" 1;;
+#    atari7800_pro) downloader "atari7800" "atari7800" 1;;
+#    atarilynx_pro) downloader "atarilynx" "atarilynx" 1;;
+#    coleco_pro) downloader "coleco" "coleco" 1;;
+#    famicom_pro) downloader "famicom" "famicom" 1;;
+#    fds_pro) downloader "fds" "fds" 1;;
+#    gameandwatch_pro) downloader "gameandwatch" "gameandwatch" 1;;
+#    gamegear_pro) downloader "gamegear" "gamegear" 1;;
+#    gb_pro) downloader "gb" "gb" 1;;
+#    gba_pro) downloader "gba" "gba" 5;;
+#    gbc_pro) downloader "gbc" "gbc" 1;;
+#    mame2003_pro) downloader "mame2003" "mame2003" 1;;
+#    markiii_pro) downloader "markiii" "markiii" 1;;
+#    mastersystem_pro) downloader "mastersystem" "mastersystem" 1;;
+#    megadrive_pro) downloader "megadrive" "megadrive" 1;;
+#    msx2_pro) downloader "msx2" "msx2" 1;;
+#    msx2plus_pro) downloader "msx2plus" "msx2plus" 1;;
+#    n64_pro) downloader "n64" "n64" 3;;
+#    nes_pro) downloader "nes" "nes" 1;;
+#    snes_pro) downloader "snes" "snes" 2;;
+#    snesclassic_pro) downloader "snes-classic" "snesclassic" 1;;
+#    nds) downloader "nds" "nds" 8;;
+#    pcengine_pro) downloader "pcengine" "pcengine" 1;;
+#    arcade_pro) downloader "arcade" "arcade" 6;;
+#    playstation) downloader "psx" "psx" 3;;
+#    psp) downloader "psp" "psp" 4;;
+#    daphne) downloader "daphne" "daphne" 6;;
+#    neogeo) downloader "neogeo" "neogeo" 2;;
+#
+#    atari5200) downloader "atari5200" "atari5200" 1;;
+#    atari7800) downloader "atari7800" "atari7800" 1;;
+#    nes) downloader "nes" "nes" 1;;
+#    snes) downloader "snes" "snes" 1;;
+#    n64) downloader "n64" "n64" 1;;
+#    gb) downloader "gb" "gb" 1;;
+#    gba) downloader "gba" "gba" 1;;
+#    gbc) downloader "gbc" "gbc" 1;;
+#    gamegear) downloader "gamegear" "gamegear" 1;;
+#    megadrive) downloader "megadrive" "megadrive" 1;;
+#    *) display_output 10 65 "Somehow an incorrect value was sent to the downloading function";;
+#  esac
+#}
 
 function closeAllDialogs(){
   debugwrite ">>> closeAllDialogs"
@@ -550,6 +553,9 @@ function getscreeninfo(){
           16) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.standard.txt" 2>& 1;;
           17) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.expiredvip.txt" 2>& 1;;
           18) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/thanks.txt" 2>& 1;;
+            # Load Menus
+          19) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/menu.games.pro.txt" 2>& 1;;
+          20) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/menu.games.standard.txt" 2>& 1;;
         esac
         echo $(($i * 5))
       done | dialog --title 'Initialization' --guage 'Downloading...' 10 100 0

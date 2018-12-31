@@ -192,7 +192,7 @@ function getVersion(){
     lVersion=$LAUNCHERVERSION
   fi
 
-  FOOTERTEXT=" http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - https://paypal.me/piwizard \n\n Serial Number of this device: \Zb\Z1$sn\Zn  Image Version: \Zb\Z1$imgVersion\Zn Launcher Version: \Zb\Z1$lVersion\Zn Build: \Zb\Z1$LOCAL\Zn"
+  FOOTERTEXT="                    http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - https://paypal.me/piwizard                    \n\n Serial Number of this device: \Zb\Z1$sn\Zn  Image Version: \Zb\Z1$imgVersion\Zn Launcher Version: \Zb\Z1$lVersion\Zn Build: \Zb\Z1$LOCAL\Zn"
 
 }
 
@@ -470,7 +470,7 @@ function findcenter(){
   announcetxtline=$statustextline
   footercol=$menutextcol
   footerline=$(expr $MAXHEIGHT - 7)
-  romcounter=$(curl -s http://thepiwizard.com/counter.txt)
+  romcounter=$(curl -s http://thepiwizard.com/counter/counter.txt)
 }
 
 function getscreeninfo(){

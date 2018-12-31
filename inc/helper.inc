@@ -41,7 +41,6 @@ self_update() {
 function loadText(){
   # load the text files form the Server
   debugwrite ">>> loadText"
-
 }
 
 function turnoffMusic(){
@@ -146,8 +145,8 @@ function rmtextfiles(){
   rmfile "$SCRIPTPATH/inc/piwizard.standard.txt"
   rmfile "$SCRIPTPATH/inc/piwizard.expiredvip.txt"
   rmfile "$SCRIPTPATH/inc/thanks.txt"
-  rmfile "$SCRIPTPATJ/inc/menu.games.pro.txt"
-  rmfile "$SCRIPTPATJ/inc/menu.games.standard.txt"
+  rmfile "$SCRIPTPATH/inc/menu.games.pro.txt"
+  rmfile "$SCRIPTPATH/inc/menu.games.standard.txt"
 }
 
 function rmdir(){
@@ -162,7 +161,7 @@ function cleanupExit(){
   rmfile "$INPUT"
   rmtextfiles
   clear
-  echo "Thanks for using PI WIZARD"
+  echo "$thanksPage"
   sleep 5
 }
 
@@ -193,7 +192,7 @@ function getVersion(){
     lVersion=$LAUNCHERVERSION
   fi
 
-  FOOTERTEXT=" http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - http://forum.thepiwizard.com - http://paypal.me/thepiwizard \n\n Serial Number of this device: \Zb\Z1$sn\Zn  Image Version: \Zb\Z1$imgVersion\Zn Launcher Version: \Zb\Z1$lVersion\Zn Build: \Zb\Z1$LOCAL\Zn"
+  FOOTERTEXT=" http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - https://paypal.me/piwizard \n\n Serial Number of this device: \Zb\Z1$sn\Zn  Image Version: \Zb\Z1$imgVersion\Zn Launcher Version: \Zb\Z1$lVersion\Zn Build: \Zb\Z1$LOCAL\Zn"
 
 }
 
@@ -220,32 +219,32 @@ function licensecheck(){
       fi
       if [[ $apicall = "VIP" ]]; then
           VIP="Yes"
-          dialog --msgbox "$vipPage" 32 81
+          dialog --colors --msgbox "$vipPage" 32 81
       else
           VIP="No"
-          dialog --msgbox "$standardPage" 38 81
+          dialog --colors --msgbox "$standardPage" 38 81
       fi
     fi
   else
     VIP="No"
-    dialog --msgbox "$standardPage" 38 81
+    dialog --colors --msgbox "$standardPage" 38 81
   fi
 }
 
 function deny(){
     debugwrite ">>> deny"
-    dialog --msgbox "$supportPage" 9 55
+    dialog --colors --msgbox "$tocDeniedPage" 9 55
     closeAllDialogs
 }
 
 function upgrade(){
   debugwrite ">>> upgrade"
-	dialog --msgbox "$upgradePage" 32 75
+	dialog --colors --msgbox "$upgradePage" 32 75
 }
 
 function support(){
   debugwrite ">>> support"
-  dialog --msgbox "$supportPage" 27 75
+  dialog --colors --msgbox  "$supportPage" 27 75
 }
 
 function setupmusic(){
@@ -307,9 +306,9 @@ function cpfiles(){
   fi
 
   if [ -z "$3" ]; then
-    \cp -rf $1 $2
+    cp -rf $1 $2
   else
-    sudo \cp -rf $1 $2
+    sudo cp -rf $1 $2
   fi
 }
 
@@ -359,7 +358,6 @@ function downloader(){
   else
     count=$3
   fi
-  #display_output 10 40 "$1 | $2 | $3"
 
   if [ $ONLINE -gt 0 ]; then
     download="False"
@@ -388,34 +386,34 @@ function downloader(){
       cd /home/pi/RetroPie/roms/$1
       i=1
       while [ $i -le $count ]
-        do
-          if [ "$VIP" == "Yes" ]; then
-              downloadserver="http://games.thepiwizard.com/pro"
-          else
-              downloadserver="http://games.thepiwizard.com/standard"
-          fi
-
-          wget --trust-server-names "$downloadserver/$2-$i.zip" 2>& 1 | \
-          stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
-          dialog --gauge "Downloading $2-$i.zip" 10 100
-
-          unzipprogress "/home/pi/RetroPie/roms/$1/$2-$i.zip" "/home/pi/RetroPie/roms/$1"
-          if [ "$unzipsuccess" != "True" ]; then
-            displayerror="True"
-          else
-            rmfile "/home/pi/RetroPie/roms/$1/$2-$i.zip"
-          fi
-          unzipsuccess="True"
-          ((i++))
-        done
-
-        if [ "$displayerror" != "True" ]; then
-          display_output 10 40 "$1 Rom Pack Installed"
+      do
+        if [ "$VIP" == "Yes" ]; then
+            downloadserver="http://games.thepiwizard.com/pro"
         else
-          display_output 10 102 "$unzipmessage"
-          unzipmessage=""
-          displayerror="False"
+            downloadserver="http://games.thepiwizard.com/standard"
         fi
+
+        wget --trust-server-names "$downloadserver/$2-$i.zip" 2>& 1 | \
+        stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+        dialog --gauge "Downloading $2-$i.zip" 10 100
+
+        unzipprogress "/home/pi/RetroPie/roms/$1/$2-$i.zip" "/home/pi/RetroPie/roms/$1"
+        if [ "$unzipsuccess" != "True" ]; then
+          displayerror="True"
+        else
+          rmfile "/home/pi/RetroPie/roms/$1/$2-$i.zip"
+        fi
+        unzipsuccess="True"
+        ((i++))
+      done
+
+      if [ "$displayerror" != "True" ]; then
+        display_output 10 40 "$1 Rom Pack Installed"
+      else
+        display_output 10 102 "$unzipmessage"
+        unzipmessage=""
+        displayerror="False"
+      fi
     else
       display_output 10 40 "Download canceled per your request"
     fi
@@ -425,53 +423,6 @@ function downloader(){
     display_output 10 40 "Launcher is currently offline so downloading is disabled"
   fi
 }
-
-#function downloadroms(){
-#  debugwrite ">>> downloadroms"
-#  case $1 in
-#    atari2600_pro) downloader "atari2600" "atari2600" 1;;
-#    atari5200_pro) downloader "atari5200" "atari5200" 1;;
-#    atari7800_pro) downloader "atari7800" "atari7800" 1;;
-#    atarilynx_pro) downloader "atarilynx" "atarilynx" 1;;
-#    coleco_pro) downloader "coleco" "coleco" 1;;
-#    famicom_pro) downloader "famicom" "famicom" 1;;
-#    fds_pro) downloader "fds" "fds" 1;;
-#    gameandwatch_pro) downloader "gameandwatch" "gameandwatch" 1;;
-#    gamegear_pro) downloader "gamegear" "gamegear" 1;;
-#    gb_pro) downloader "gb" "gb" 1;;
-#    gba_pro) downloader "gba" "gba" 5;;
-#    gbc_pro) downloader "gbc" "gbc" 1;;
-#    mame2003_pro) downloader "mame2003" "mame2003" 1;;
-#    markiii_pro) downloader "markiii" "markiii" 1;;
-#    mastersystem_pro) downloader "mastersystem" "mastersystem" 1;;
-#    megadrive_pro) downloader "megadrive" "megadrive" 1;;
-#    msx2_pro) downloader "msx2" "msx2" 1;;
-#    msx2plus_pro) downloader "msx2plus" "msx2plus" 1;;
-#    n64_pro) downloader "n64" "n64" 3;;
-#    nes_pro) downloader "nes" "nes" 1;;
-#    snes_pro) downloader "snes" "snes" 2;;
-#    snesclassic_pro) downloader "snes-classic" "snesclassic" 1;;
-#    nds) downloader "nds" "nds" 8;;
-#    pcengine_pro) downloader "pcengine" "pcengine" 1;;
-#    arcade_pro) downloader "arcade" "arcade" 6;;
-#    playstation) downloader "psx" "psx" 3;;
-#    psp) downloader "psp" "psp" 4;;
-#    daphne) downloader "daphne" "daphne" 6;;
-#    neogeo) downloader "neogeo" "neogeo" 2;;
-#
-#    atari5200) downloader "atari5200" "atari5200" 1;;
-#    atari7800) downloader "atari7800" "atari7800" 1;;
-#    nes) downloader "nes" "nes" 1;;
-#    snes) downloader "snes" "snes" 1;;
-#    n64) downloader "n64" "n64" 1;;
-#    gb) downloader "gb" "gb" 1;;
-#    gba) downloader "gba" "gba" 1;;
-#    gbc) downloader "gbc" "gbc" 1;;
-#    gamegear) downloader "gamegear" "gamegear" 1;;
-#    megadrive) downloader "megadrive" "megadrive" 1;;
-#    *) display_output 10 65 "Somehow an incorrect value was sent to the downloading function";;
-#  esac
-#}
 
 function closeAllDialogs(){
   debugwrite ">>> closeAllDialogs"
@@ -483,11 +434,9 @@ function closeAllDialogs(){
 }
 
 function findcenter(){
-  debugwrite ">>> findcenter"t
+  debugwrite ">>> findcenter"
   menuwidth=$1
   menuheight=$2
-
-  #display_output 10 80 "menuwidth: $1 - menuheight $2 - MAX WIDTH: $MAXWIDTH - MAX HEIGHT: $MAXHEIGHT"
 
   #Calculate Width
   if [ $menuwidth -gt $MAXWIDTH ]; then
@@ -704,7 +653,7 @@ function unzipprogress(){
   else
     debugwrite "no filename passed"
   fi
-currrrrrl
+}
 
 function processScript(){
   debugwrite ">>> processScript"
@@ -755,7 +704,7 @@ function systemupdate(){
 
 
   # if new version available ask if they want to install
-    if [ ${#toinstall[@]} -gt 0 ]; then
+    if [ ${toinstall[@]} -gt 0 ]; then
     #  dialog --title "Upgrades Available" \
     #    --yesno "There are upgrades available to install.\nDo you want to download and install\nA reboot is required?" 7 60
     #    response=$?

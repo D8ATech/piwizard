@@ -67,11 +67,11 @@ function main(){
 		--backtitle "PI WIZARD - Automatic Installer" \
 		--title "[ D I S C L A I M E R ]" \
 		--no-cancel \
-		--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
+		--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 		Accept "Agree to the EULA" \
 		Decline "Decline the EULA" \
 		Reboot  "Reboot my Pi" \
-		Exit "Exit" 2>"$choiceMain"
+		Exit "Exit Launcher" 2>"$choiceMain"
 
 		retval="$?"
 		choice=$(cat $choiceMain)
@@ -130,7 +130,7 @@ function mainmenu(){
 				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION INSTALLER]" \
-				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
+				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Rom-Downloads "Get your Roms " \
 				Single-Rom-Download "Coming Soon!" \
 				__ " " \
@@ -141,9 +141,9 @@ function mainmenu(){
 				Music "Grab a Music Pack" \
 				Get-Support "View Support Methods" \
 				__ "  " \
-				Reboot "Reboot to save changes" \
+				Reboot "Reboot" \
 				Exit "Exit Launcher" \
-				Back "Back One Menu" 2>"$choiceOne"
+				Back "Back to Previous Menu" 2>"$choiceOne"
 		else
 				$DIALOGONE  --keep-window --colors --begin $infotextline $infotextcol --infobox "$mainMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
@@ -153,7 +153,7 @@ function mainmenu(){
 				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
-				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
+				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Rom-Downloads "Get your Roms " \
 				Single-Rom-Download "Coming Soon to PRO" \
 				__ "  " \
@@ -165,9 +165,9 @@ function mainmenu(){
 				Upgrade-to-Pro "Compare Standard to Pro" \
 				Get-Support "View Support Methods" \
 				__ "  " \
-				Reboot "Reboot to save changes" \
+				Reboot "Reboot" \
 				Exit "Exit Launcher" \
-				Back "Back One Menu" 2>"$choiceOne"
+				Back "Back to Previous Menu" 2>"$choiceOne"
 		fi
 
 		retval="$?"
@@ -277,8 +277,8 @@ function gamesmenu(){
 
 			# Add in static options
 			options+=(97 "Reboot")
-			options+=(98 "Exit")
-			options+=(99 "Back")
+			options+=(98 "Exit Launcher")
+			options+=(99 "Back to Previous Menu")
 
 			if [[ -n "$cmd" ]]; then
 				unset cmd
@@ -292,7 +292,7 @@ function gamesmenu(){
 				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
-				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS)
+				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS)
 
 				if [[ -n "$choices" ]]; then
 					unset choices
@@ -326,8 +326,8 @@ function gamesmenu(){
 
 			# Add in static options
 			options+=(97 "Reboot")
-			options+=(98 "Exit")
-			options+=(99 "Back")
+			options+=(98 "Exit Launcher")
+			options+=(99 "Back to Previous Menu")
 
 			if [[ -n "$cmd" ]]; then
 				unset cmd
@@ -341,7 +341,7 @@ function gamesmenu(){
 				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
-				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS )
+				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS )
 
 			if [[ -n "$choices" ]]; then
 				unset choices
@@ -404,7 +404,7 @@ function gamesmenu_old(){
 				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
-				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
+				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				__ "= Atari Systems =" \
 				atari2600_pro "Atari 2600" \
 				atari5200_pro "Atari 5200" \
@@ -440,7 +440,7 @@ function gamesmenu_old(){
  				__ "  " \
 				Reboot "Reboot to save changes" \
 				Exit "Exit Launcher" \
-				Back "Back to Main Menu" 2>"$choiceGames"
+				Back "Back to Previous Menu" 2>"$choiceGames"
 		else
 				$DIALOGGAMES  --keep-window --colors --begin $infotextline $infotextcol --infobox "$gamesMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
@@ -450,7 +450,7 @@ function gamesmenu_old(){
 				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
-				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
+				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				__ "= Atari Systems =" \
 				atari5200 "Atari 5200" \
 				atari7800 "Atari 7800" \
@@ -467,7 +467,7 @@ function gamesmenu_old(){
 				__ "  " \
 				Reboot "Reboot to save changes" \
 				Exit "Exit Launcher" \
-				Back "Back to Main Menu" 2>"$choiceGames"
+				Back "Back to Previous Menu" 2>"$choiceGames"
 		fi
 
 		retval="$?"
@@ -522,7 +522,7 @@ function musicmenu(){
 				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PI WIZARD PRO MUSIC INSTALLER" \
 				--title "[ PI WIZARD PRO MUSIC SERVER ]" \
-				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
+				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Year-1980 "1980's" \
 				Year-1990 "1990's" \
 				Year-2000 "2000's" \
@@ -533,7 +533,7 @@ function musicmenu(){
 				__ "  " \
 				Reboot "Reboot to save changes" \
 				Exit "Exit Launcher" \
-				Back "Back to Main Menu" 2>"$choiceMusic"
+				Back "Back to Previous Menu" 2>"$choiceMusic"
 		else
 				$DIALOGMUSIC --keep-window --colors --begin $infotextline $infotextcol --infobox "$musicMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
 				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
@@ -543,11 +543,11 @@ function musicmenu(){
 				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 				--backtitle "PIWIZARD STANDARD MUSIC INSTALLER" \
 				--title "[ PIWIZARD STANDARD MUSIC SERVER ]" \
-				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
+				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				__ "  " \
 				Reboot "Reboot to save changes" \
 				Exit "Exit Launcher" \
-				Back "Back to Main Menu" 2>"$choiceMusic"
+				Back "Back to Previous Menu" 2>"$choiceMusic"
 		fi
 
 		retval="$?"
@@ -610,24 +610,24 @@ function colormenu(){
 				--and-widget --begin $infotextline $menutextcol --shadow \
 				--backtitle "PI WIZARD PRO COLOR PICKER" \
 				--title "[ PI WIZARD COLOR PICKER ]" \
-				--menu "Make your choice:" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
+				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Blue-Light "Blue Background Light Menu" \
 				Blue-Dark "Blue Background Dark Menu" \
-				Red-Light "Blue Background Light Menu" \
-				Red-Dark "Blue Background Dark Menu" \
-				Yellow-Light "Blue Background Light Menu" \
-				Yellow-Dark "Blue Background Dark Menu" \
-				Green-Light "Blue Background Light Menu" \
-				Green-Dark "Blue Background Dark Menu" \
-				Magenta-Light "Blue Background Light Menu" \
-				Magenta-Dark "Blue Background Dark Menu" \
-				Cyan-Light "Blue Background Light Menu" \
-				Cyan-Dark "Blue Background Dark Menu" \
+				Red-Light "Red Background Light Menu" \
+				Red-Dark "Red Background Dark Menu" \
+				Yellow-Light "Yellow Background Light Menu" \
+				Yellow-Dark "Yellow Background Dark Menu" \
+				Green-Light "Green Background Light Menu" \
+				Green-Dark "Green Background Dark Menu" \
+				Magenta-Light "Magenta Background Light Menu" \
+				Magenta-Dark "Magenta Background Dark Menu" \
+				Cyan-Light "Cyan Background Light Menu" \
+				Cyan-Dark "Cyan Background Dark Menu" \
 				NoColor "Remove Color" \
 				__ "  " \
-				Reboot "Reboot to save changes" \
+				Reboot "Reboot" \
 				Exit "Exit Launcher" \
-				Back "Back to Main Menu" 2>"$choiceColor"
+				Back "Back to Previous Menu" 2>"$choiceColor"
 
 		retval="$?"
 		choice=$(cat $choiceColor)
@@ -690,8 +690,8 @@ function scriptsmenu(){
 
 		# Add in static options
 		options+=(97 "Reboot")
-		options+=(98 "Exit")
-		options+=(99 "Back")
+		options+=(98 "Exit Launcher")
+		options+=(99 "Back to Previous Menu")
 
 		if [[ -n "$cmd" ]]; then
 			unset cmd
@@ -705,7 +705,7 @@ function scriptsmenu(){
 			--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
 			--backtitle "PIWIZARD SCRIPT RUNNER" \
 			--title "[ Available Scripts ]" \
-			--menu "You can use the UP/DOWN arrow keys, or the number\nkeys 1 -9 to choose an option.\nReboot and Back options available at the bottom of\nthe list.\n\nMake Your Choice: \n" $MENUHEIGHT $MENUWIDTH $MENUITEMS )
+			--menu "You can use the UP/DOWN arrow keys, or the number\nkeys 1 -9 to choose an option.\nReboot and Back options available at the bottom of\nthe list.\n" $MENUHEIGHT $MENUWIDTH $MENUITEMS )
 
 		if [[ -n "$choices" ]]; then
 			unset choices

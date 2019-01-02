@@ -138,6 +138,7 @@ function rmtextfiles(){
   rmfile "$SCRIPTPATH/inc/music.standard.txt"
   rmfile "$SCRIPTPATH/inc/colors.txt"
   rmfile "$SCRIPTPATH/inc/scripts.txt"
+  #rmfile "$SCRIPTPATH/inc/srd.txt"
   rmfile "$SCRIPTPATH/inc/one.support.txt"
   rmfile "$SCRIPTPATH/inc/one.upgrade.txt"
   rmfile "$SCRIPTPATH/inc/tocdenied.txt"
@@ -198,9 +199,13 @@ function getVersion(){
 
 function licensecheck(){
   debugwrite ">>> licensecheck"
-  sn=$(cat /proc/cpuinfo | grep Serial| cut -d ' ' -f 2) #store the serial in the $sn value
+  if [ -z $SerialNo ]; then
+    sn=$(cat /proc/cpuinfo | grep Serial| cut -d ' ' -f 2) #store the serial in the $sn value
+  else
+    sn=$SerialNo
+  fi
 
-  if [  -z "$sn" ]; then
+  if [ -z "$sn" ]; then
     sn="NOT DETECTED"
   fi
 
@@ -256,6 +261,35 @@ function setupmusic(){
     rmfile "*.zip"
     rmfile "*.zip.*"
   fi
+}
+
+function singlerom(){
+  debugwrite ">>> singlerom"
+  if [ "$sn" = "NOT DETECTED" ]; then
+    display_output 10 60 "Sorry, Single ROM Download is only availabe when your serial number is detected."
+    return
+  fi
+
+  if [ "$VIP" = "No" ]; then
+    display_output 10 60 "Sorry, Single ROM Download is only available when you are a Pro member"
+    return
+  fi
+
+  # Display Instructions
+  dialog _--colors -msgbox "$srdText" 80 37
+  # Download the serialno.zip
+
+  # Did the Download Succeed?
+      # Get the contents of the zip into an array
+      # Extract the zip
+      # go though the array
+      # If not Arcade
+          # extract the zips in the system folder, then delete the zips
+      # If Arcade,
+          # do nothing becuase the files have be stay zipped
+      # If Everything was succesful call API to delete zip on SERVER
+
+  # Did the Download Fail?  Abort
 }
 
 function music(){
@@ -502,6 +536,7 @@ function getscreeninfo(){
           16) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.standard.txt" 2>& 1;;
           17) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.expiredvip.txt" 2>& 1;;
           18) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/thanks.txt" 2>& 1;;
+              # wget --trust-server-names --quiet "http://launcher.thepiwizard.com/srd.txt" 2>& 1;;
             # Load Menus
           19) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/menu.games.pro.txt" 2>& 1;;
           20) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/menu.games.standard.txt" 2>& 1;;
@@ -527,6 +562,7 @@ function getscreeninfo(){
       standardPage=$(<piwizard.standard.txt)
       expiredVipPage=$(<piwizard.expiredvip.txt)
       thanksPage=$(<thanks.txt)
+      srdText=$(<srd.txt)
       cd $SCRIPTPATH
     else
       currentStatus="Currently Offline"
@@ -547,6 +583,7 @@ function getscreeninfo(){
       standardPage="Currently Offline"
       expiredVipPage="Currently Offline"
       thanksPage="Currently Offline"
+      srdText="Currently Offline"
     fi
 }
 

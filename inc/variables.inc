@@ -20,14 +20,17 @@ TXTBOXHEIGHT=30
 unzipsuccess="True"
 unzipmessage="Unzip:"
 unzipmessage+="\n"
+turnOnMusicOnExit="True"
 
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 SCRIPTNAME="$0"
 ARGS=( "$@" )
 ONLINE=1
-WIZARDPATH="/home/pi/RetroPie/roms/piwizard"
-MUSICFILE="/home/pi/RetroPie/roms/music/DisableMusic"
+ROMPATH="/home/pi/RetroPie/roms"
+WIZARDPATH="$ROMPATH/piwizard"
+MUSICFILE="$ROMPATH/music/DisableMusic"
+
 DIALOG_ACTION=0
 DIALOG_CANCEL=1
 DIALOG_ESC=255

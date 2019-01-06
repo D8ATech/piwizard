@@ -48,13 +48,19 @@ function turnoffMusic(){
   debugwrite ">>> turnoffMusic"
   if [ ! -f $MUSICFILE ]; then
     touch "$MUSICFILE"
+    turnOnMusicOnExit="True"
+  else
+    turnOnMusicOnExit="False"
   fi
+
 }
 
 function turnonMusic(){
   # turn on the music
   debugwrite ">>> turnonMusic"
-  rmfile "$MUSICFILE"
+  if [ "$turnOnMusicOnExit" = "True"]; then
+    rmfile "$MUSICFILE"
+  fi
 }
 
 function onlinecheck(){
@@ -306,7 +312,7 @@ function singlerom(){
           # display_output 10 80 "zippath: $zippath \ngamename: $gamename\n unzipname:$unzipname"
 
           cd "/home/pi/RetroPie/roms/$zippath"
-          sudo chown pi:pi *.*
+          sudo chown -R pi:pi *.*
 
           unzipprogress "$unzipname" "/home/pi/RetroPie/roms/$zippath"
           cd "/home/pi/RetroPie/roms"
@@ -712,13 +718,13 @@ function unzipprogress(){
     if [ -n "$2" ]; then
       destination="$2"
 
-      display_output 10 120 "!! filename: $filename \ndestination: $destination"
+      # display_output 10 120 "!! filename: $filename \ndestination: $destination"
 
       if [ -f "$filename" ]; then
         filename=$(sed 's/(/\\(/g' <<< "$filename")
         filename=$(sed 's/)/\\)/g' <<< "$filename")
         filename=$(sed 's/ /\\ /g' <<< "$filename")
-        filename=$(sed "s/\x27/\\\x27/g" <<< "$filename")
+        #filename=$(sed "s/'/\\'/g" <<< "$filename")
         #filename=$(sed 's/[/\\[/g' <<< "$filename")
         #filename=$(sed 's/]/\\]/g' <<< "$filename")
 

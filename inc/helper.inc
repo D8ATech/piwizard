@@ -105,22 +105,26 @@ function output_help(){
 
 function debugwrite(){
   if [ "$DEBUG" == "TRUE" ]; then
-    echo $1
+    echo "$1"
   fi
 }
 
 function isVIP(){
-  if [ ! -z $1 ]; then
-    debugwrite "isVIP : $1"
-    VIP=$1
+  if [ -z "$1" ]; then
+    debugwrite ">>>> Error value not passed to isVIP"
+  else
+    debugwrite ">> isVIP : $1"
+    VIP="$1"
   fi
 }
 
 function rmfile(){
   debugwrite ">>> rmfile"
-  if [ ! -z $1 ]; then
-    if [ -f $1 ]; then
-        sudo rm $1
+  if [ -z "$1" ]; then
+    debugwrite ">>>> Error value not passed to rmfile"
+  else
+    if [ -f "$1" ]; then
+        sudo rm "$1"
     fi
   fi
 }
@@ -151,8 +155,8 @@ function rmtextfiles(){
 }
 
 function rmdir(){
-  if [ ! -z $1 ]; then
-    rm -rf $1
+  if [ -n "$1" ]; then
+    rm -rf "$1"
   fi
 }
 
@@ -178,7 +182,7 @@ function smallscreencheck(){
   	displaymsg="$displaymsg The screen height is $MAXHEIGHT which is less than 55.\n"
   fi
 
-  if [ ! -z "$displaymsg" ]; then
+  if [ -n "$displaymsg" ]; then
   	displaymsg="\n$displaymsg Some of the screen may be cut off. The menus should all\n"
   	displaymsg="$displaymsg work fine but much of the extra information could be hidden\n or jumbled on the right and bottom of the screen"
   	display_output 11 70 "$displaymsg"
@@ -189,8 +193,8 @@ function getVersion(){
   imgVersion=$(tail -n 1 update.log | awk -F '-' '{ print $1 }')
   lVersion=$(git tag | tail -n 1)
 
-  if [ -z $lVersion ]; then
-    lVersion=$LAUNCHERVERSION
+  if [ -z "$lVersion" ]; then
+    lVersion="$LAUNCHERVERSION"
   fi
 
   FOOTERTEXT="                    http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - https://paypal.me/piwizard                    \n\n Serial Number of this device: \Zb\Z1$sn\Zn  Image Version: \Zb\Z1$imgVersion\Zn Launcher Version: \Zb\Z1$lVersion\Zn Build: \Zb\Z1$LOCAL\Zn"
@@ -199,10 +203,10 @@ function getVersion(){
 
 function licensecheck(){
   debugwrite ">>> licensecheck"
-  if [ -z $SerialNo ]; then
+  if [ -z "$SerialNo" ]; then
     sn=$(cat /proc/cpuinfo | grep Serial| cut -d ' ' -f 2) #store the serial in the $sn value
   else
-    sn=$SerialNo
+    sn="$SerialNo"
   fi
 
   if [ -z "$sn" ]; then
@@ -276,20 +280,64 @@ function singlerom(){
   fi
 
   # Display Instructions
-  dialog _--colors -msgbox "$srdText" 80 37
+  dialog --colors --msgbox "$srdText" 38 80
   # Download the serialno.zip
+  cd /home/pi/RetroPie/roms
+  rmfile "$sn.zip"
+  downloadserver="http://thepiwizardserver.com/srd"
+  wget --trust-server-names "$downloadserver/$sn.zip" 2>& 1 | \
+  stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+  dialog --gauge "Downloading $sn.zip" 10 100
 
   # Did the Download Succeed?
+  if [ -f "$sn.zip" ]; then
       # Get the contents of the zip into an array
+      unzip -l "$sn.zip" | grep "/" | sed 's/  / /g' | sed 's/  / /g' | cut -d ' ' -f 5- > files.txt
       # Extract the zip
-      # go though the array
-      # If not Arcade
-          # extract the zips in the system folder, then delete the zips
-      # If Arcade,
-          # do nothing becuase the files have be stay zipped
-      # If Everything was succesful call API to delete zip on SERVER
 
-  # Did the Download Fail?  Abort
+      unzipprogress "/home/pi/RetroPie/roms/$sn.zip" "/home/pi/RetroPie/roms" 1
+
+      # go though the array
+      while read p; do
+          zippath=$(echo $p | awk -F '/' '{ print $1 }')
+          gamename=$(echo $p | awk -F '/' '{ print $2 }')
+          unzipname="/home/pi/RetroPie/roms/$zippath/$gamename"
+
+          # display_output 10 80 "zippath: $zippath \ngamename: $gamename\n unzipname:$unzipname"
+
+          cd "/home/pi/RetroPie/roms/$zippath"
+          sudo chown pi:pi *.*
+
+          unzipprogress "$unzipname" "/home/pi/RetroPie/roms/$zippath"
+          cd "/home/pi/RetroPie/roms"
+          if [ "$unzipsuccess" != "True" ]; then
+            displayerror="True"
+          else
+            rmfile "/home/pi/RetroPie/roms/$p"
+          fi
+          unzipsuccess="True"
+      done <files.txt
+      rmfile "/home/pi/RetroPie/roms/files.txt"
+      # If Everything was succesful call API to delete zip on SERVER
+      if [ "$displayerror" != "True" ]; then
+        display_output 10 40 "$sn.zip Single Rom Dowload Pack Installed"
+        rmfile "/home/pi/RetroPie/roms/$sn.zip"
+      else
+        display_output 52 142 "$unzipmessage"
+        unzipmessage=""
+        displayerror="False"
+      fi
+  else
+    # Did the Download Fail?  Abort
+    errormessage="$sn.zip was either not found or failed to download.\n"
+    errormessage+="If you have not received an email please try again after you get the email.\n"
+    errormessage+="If you have received the email and you are getting this message, \n"
+    errormessage+="did you get the email more than 24 hours ago?\n"
+    errormessage+="If you so you will need to start over.\n"
+    errormessage+="Otherwise, please contact support."
+    display_output 10 80 "$errormessage"
+  fi
+  cd $SCRIPTPATH
 }
 
 function music(){
@@ -595,7 +643,7 @@ function exitLauncher(){
 
 function rebt(){
     debugwrite ">>> rebt"
-    if [ ! -z "$1" ]; then
+    if [ -n "$1" ]; then
       dialog --infobox "$thanksPage" 12 80
     fi
   	# display_output 10 80 "This is where we would reboot but for now we are just going to exit"
@@ -658,14 +706,23 @@ function display_output(){
 
 function unzipprogress(){
   debugwrite ">>> unzipprogress"
-  debugwrite "Made it to unzipprogress - $1 : $2 : $3"
-  if [ ! -z $1 ]; then
-    filename=$1
-    if [ ! -z $2 ]; then
-      destination=$2
+  debugwrite "Made it to unzipprogress - 1:$1 | 2:$2 | 3:$3"
+  if [ -n "$1" ]; then
+    filename="$1"
+    if [ -n "$2" ]; then
+      destination="$2"
 
-      if [ -f $filename ]; then
-        if [ ! -z $3 ]; then
+      display_output 10 120 "!! filename: $filename \ndestination: $destination"
+
+      if [ -f "$filename" ]; then
+        filename=$(sed 's/(/\\(/g' <<< "$filename")
+        filename=$(sed 's/)/\\)/g' <<< "$filename")
+        filename=$(sed 's/ /\\ /g' <<< "$filename")
+        filename=$(sed "s/\x27/\\\x27/g" <<< "$filename")
+        #filename=$(sed 's/[/\\[/g' <<< "$filename")
+        #filename=$(sed 's/]/\\]/g' <<< "$filename")
+
+        if [ -n "$3" ]; then
           eval sudo unzip -o "$filename" -d "$destination" 2>&1 | dialog --title "Unzipping $filename" --progressbox 3 102 #;
         else
           eval unzip -o "$filename" -d "$destination" 2>&1 | dialog --title "Unzipping $filename" --progressbox 3 102 #;
@@ -673,16 +730,20 @@ function unzipprogress(){
         retcode=$?
         if [ $retcode -ne 0 ]; then
           unzipsuccess="False"
-          unzipmessage+=$(printf "unzip '$1' failed with exit code [%d]." $retcode)
+          unzipmessage+=$(printf "unzip '$filename' failed with exit code [%d].\n" $retcode)
+          unzipmessage+="\n"
           #printf "Error : [%d] when executing command: '$cmnd'" $ret_code
         else
-          unzipsuccess="True"
+          if [ "$unzipsuccess" != "False" ]; then
+            unzipsuccess="True"
+          fi
           #unzipmessage="success"
         fi
         #pv -n $filename | unzip -o "$filename" -d "$destination" 2>&1 | dialog --colors --title "\Zu\Z5Percentage will not increment\Zn" --gauge "Extracting $filename" 6 60 #;
       else
         unzipsuccess="False"
-        unzipmessage+=$(printf "unzip '$1' failed becuase the file was not found")
+        unzipmessage+=$(printf "unzip '$filename' failed becuase the file was not found")
+        unzipmessage+="\n"
       fi
     else
       debugwrite "no destination passed"

@@ -132,7 +132,7 @@ function mainmenu(){
 				--title "[ PI WIZARD PRO VERSION INSTALLER]" \
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Rom-Downloads "Get your Roms " \
-				Single-Rom-Download "Coming Soon!" \
+				SRD "Single ROM Download" \
 				__ " " \
 				Colors "Customize Your Launcher Colors" \
 				Backup-Restore "Backup or Restore ROMS from HDD" \
@@ -155,7 +155,7 @@ function mainmenu(){
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Rom-Downloads "Get your Roms " \
-				Single-Rom-Download "Coming Soon to PRO" \
+				SRD "Single ROM Download" \
 				__ "  " \
 				Colors "Customize Your Launcher Colors" \
 				Backup-Restore "Backup or Restore ROMS from HDD" \
@@ -193,7 +193,7 @@ function mainmenu(){
 							scriptsmenu
 							SCRIPTRUNNING=TRUE;;
 						Upgrade-to-Pro) upgrade;;
-						Single-Rom-Download) singlerom;;
+						SRD) singlerom;;
 						Reboot) rebt;;
 						Exit) exitLauncher;;
 						Back) ONERUNNING="FALSE";;

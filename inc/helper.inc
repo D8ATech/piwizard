@@ -148,7 +148,7 @@ function rmtextfiles(){
   rmfile "$SCRIPTPATH/inc/music.standard.txt"
   rmfile "$SCRIPTPATH/inc/colors.txt"
   rmfile "$SCRIPTPATH/inc/scripts.txt"
-  #rmfile "$SCRIPTPATH/inc/srd.txt"
+  rmfile "$SCRIPTPATH/inc/srd.txt"
   rmfile "$SCRIPTPATH/inc/one.support.txt"
   rmfile "$SCRIPTPATH/inc/one.upgrade.txt"
   rmfile "$SCRIPTPATH/inc/tocdenied.txt"
@@ -313,7 +313,7 @@ function singlerom(){
 
           cd "/home/pi/RetroPie/roms/$zippath"
           sudo chown -R pi:pi *.*
-
+          display_output 10 40 "Press Enter"
           unzipprogress "$unzipname" "/home/pi/RetroPie/roms/$zippath"
           cd "/home/pi/RetroPie/roms"
           if [ "$unzipsuccess" != "True" ]; then
@@ -590,8 +590,8 @@ function getscreeninfo(){
           15) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.validvip.txt" 2>& 1;;
           16) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.standard.txt" 2>& 1;;
           17) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.expiredvip.txt" 2>& 1;;
-          18) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/thanks.txt" 2>& 1;;
-              # wget --trust-server-names --quiet "http://launcher.thepiwizard.com/srd.txt" 2>& 1;;
+          18) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/thanks.txt" 2>& 1
+              wget --trust-server-names --quiet "http://launcher.thepiwizard.com/srd.txt" 2>& 1;;
             # Load Menus
           19) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/menu.games.pro.txt" 2>& 1;;
           20) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/menu.games.standard.txt" 2>& 1;;

@@ -313,7 +313,7 @@ function singlerom(){
 
           cd "/home/pi/RetroPie/roms/$zippath"
           sudo chown -R pi:pi *.*
-          display_output 10 40 "Press Enter"
+
           unzipprogress "$unzipname" "/home/pi/RetroPie/roms/$zippath"
           cd "/home/pi/RetroPie/roms"
           if [ "$unzipsuccess" != "True" ]; then
@@ -324,6 +324,7 @@ function singlerom(){
           unzipsuccess="True"
       done <files.txt
       rmfile "/home/pi/RetroPie/roms/files.txt"
+
       # If Everything was succesful call API to delete zip on SERVER
       if [ "$displayerror" != "True" ]; then
         display_output 10 40 "$sn.zip Single Rom Dowload Pack Installed"
@@ -457,7 +458,6 @@ function downloader(){
         --yesno "This ROM was previously downloaded.\nAre you sure you want to download it again?" 7 60
       response=$?
 
-      #rmdir "/home/pi/RetroPie/roms/$1" - Removed to not delete on redownload
       case $response in
          0) download="True";;
          *) download="False";;
@@ -653,7 +653,6 @@ function rebt(){
     if [ -n "$1" ]; then
       dialog --infobox "$thanksPage" 12 80
     fi
-  	# display_output 10 80 "This is where we would reboot but for now we are just going to exit"
     closeAllDialogs
     rmtextfiles
     clear
@@ -719,15 +718,10 @@ function unzipprogress(){
     if [ -n "$2" ]; then
       destination="$2"
 
-      # display_output 10 120 "!! filename: $filename \ndestination: $destination"
-
       if [ -f "$filename" ]; then
         filename=$(sed 's/(/\\(/g' <<< "$filename")
         filename=$(sed 's/)/\\)/g' <<< "$filename")
         filename=$(sed 's/ /\\ /g' <<< "$filename")
-        #filename=$(sed "s/'/\\'/g" <<< "$filename")
-        #filename=$(sed 's/[/\\[/g' <<< "$filename")
-        #filename=$(sed 's/]/\\]/g' <<< "$filename")
 
         if [ -n "$3" ]; then
           eval sudo unzip -o "$filename" -d "$destination" 2>&1 | dialog --title "Unzipping $filename" --progressbox 3 102 #;
@@ -739,14 +733,12 @@ function unzipprogress(){
           unzipsuccess="False"
           unzipmessage+=$(printf "unzip '$filename' failed with exit code [%d].\n" $retcode)
           unzipmessage+="\n"
-          #printf "Error : [%d] when executing command: '$cmnd'" $ret_code
         else
           if [ "$unzipsuccess" != "False" ]; then
             unzipsuccess="True"
           fi
           #unzipmessage="success"
         fi
-        #pv -n $filename | unzip -o "$filename" -d "$destination" 2>&1 | dialog --colors --title "\Zu\Z5Percentage will not increment\Zn" --gauge "Extracting $filename" 6 60 #;
       else
         unzipsuccess="False"
         unzipmessage+=$(printf "unzip '$filename' failed becuase the file was not found")

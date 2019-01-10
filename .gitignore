@@ -7,3 +7,4 @@ scripts/*
 tmp/*
 inc/adminpanel.inc
 .dialogrc
+inc/*.txt

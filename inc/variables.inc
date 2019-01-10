@@ -3,6 +3,7 @@ MAINRUNNING="TRUE"
 ONERUNNING="TRUE"
 MUSICRUNNING="TRUE"
 GAMESRUNNING="TRUE"
+COLORRUNNING="TRUE"
 SCRIPTRUNNING="TRUE"
 
 # Screen
@@ -17,20 +18,23 @@ TXTBOXWIDTH=102
 TXTBOXHEIGHT=30
 
 unzipsuccess="True"
-unzipmessage="Unzip :"
+unzipmessage="Unzip:"
+unzipmessage+="\n"
+turnOnMusicOnExit="True"
 
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 SCRIPTNAME="$0"
 ARGS=( "$@" )
-DEBUG="FALSE"
 ONLINE=1
-WIZARDPATH="/home/pi/RetroPie/roms/piwizard"
-MUSICFILE="/home/pi/RetroPie/roms/music/DisableMusic"
+ROMPATH="/home/pi/RetroPie/roms"
+WIZARDPATH="$ROMPATH/piwizard"
+MUSICFILE="$ROMPATH/music/DisableMusic"
+
 DIALOG_ACTION=0
 DIALOG_CANCEL=1
 DIALOG_ESC=255
 HEIGHT=0
 WIDTH=0
 REBOOTREQUIRED="FALSE"
-LAUNCHERVERSION="2.0"
+LAUNCHERVERSION="3.0.0"

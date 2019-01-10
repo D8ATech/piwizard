@@ -38,18 +38,29 @@ self_update() {
     fi
 }
 
+function loadText(){
+  # load the text files form the Server
+  debugwrite ">>> loadText"
+}
+
 function turnoffMusic(){
   # turn off the music
   debugwrite ">>> turnoffMusic"
   if [ ! -f $MUSICFILE ]; then
     sudo touch "$MUSICFILE"
+    turnOnMusicOnExit="True"
+  else
+    turnOnMusicOnExit="False"
   fi
+
 }
 
 function turnonMusic(){
   # turn on the music
   debugwrite ">>> turnonMusic"
-  rmfile "$MUSICFILE"
+  if [ "$turnOnMusicOnExit" = "True"]; then
+    rmfile "$MUSICFILE"
+  fi
 }
 
 function onlinecheck(){
@@ -100,29 +111,58 @@ function output_help(){
 
 function debugwrite(){
   if [ "$DEBUG" == "TRUE" ]; then
-    echo $1
+    echo "$1"
   fi
 }
 
 function isVIP(){
-  if [ ! -z $1 ]; then
-    debugwrite "isVIP : $1"
-    VIP=$1
+  if [ -z "$1" ]; then
+    debugwrite ">>>> Error value not passed to isVIP"
+  else
+    debugwrite ">> isVIP : $1"
+    VIP="$1"
   fi
 }
 
 function rmfile(){
   debugwrite ">>> rmfile"
-  if [ ! -z $1 ]; then
-    if [ -f $1 ]; then
-        sudo rm $1
+  if [ -z "$1" ]; then
+    debugwrite ">>>> Error value not passed to rmfile"
+  else
+    if [ -f "$1" ]; then
+        sudo rm "$1"
     fi
   fi
 }
 
+function rmtextfiles(){
+  debugwrite ">>> rmtextfiles"
+  rmfile "$SCRIPTPATH/inc/downloadstatus"
+  rmfile "$SCRIPTPATH/inc/announce"
+  rmfile "$SCRIPTPATH/inc/piwizard.main.txt"
+  rmfile "$SCRIPTPATH/inc/one.pro.txt"
+  rmfile "$SCRIPTPATH/inc/one.standard.txt"
+  rmfile "$SCRIPTPATH/inc/game.pro.txt"
+  rmfile "$SCRIPTPATH/inc/game.standard.txt"
+  rmfile "$SCRIPTPATH/inc/music.pro.txt"
+  rmfile "$SCRIPTPATH/inc/music.standard.txt"
+  rmfile "$SCRIPTPATH/inc/colors.txt"
+  rmfile "$SCRIPTPATH/inc/scripts.txt"
+  rmfile "$SCRIPTPATH/inc/srd.txt"
+  rmfile "$SCRIPTPATH/inc/one.support.txt"
+  rmfile "$SCRIPTPATH/inc/one.upgrade.txt"
+  rmfile "$SCRIPTPATH/inc/tocdenied.txt"
+  rmfile "$SCRIPTPATH/inc/piwizard.validvip.txt"
+  rmfile "$SCRIPTPATH/inc/piwizard.standard.txt"
+  rmfile "$SCRIPTPATH/inc/piwizard.expiredvip.txt"
+  rmfile "$SCRIPTPATH/inc/thanks.txt"
+  rmfile "$SCRIPTPATH/inc/menu.games.pro.txt"
+  rmfile "$SCRIPTPATH/inc/menu.games.standard.txt"
+}
+
 function rmdir(){
-  if [ ! -z $1 ]; then
-    rm -rf $1
+  if [ -n "$1" ]; then
+    rm -rf "$1"
   fi
 }
 
@@ -130,8 +170,9 @@ function cleanupExit(){
   debugwrite ">>> cleanupExit"
   rmfile "$OUTPUT"
   rmfile "$INPUT"
+  rmtextfiles
   clear
-  echo "Thanks for using PI WIZARD"
+  echo "$thanksPage"
   sleep 5
 }
 
@@ -147,7 +188,7 @@ function smallscreencheck(){
   	displaymsg="$displaymsg The screen height is $MAXHEIGHT which is less than 55.\n"
   fi
 
-  if [ ! -z "$displaymsg" ]; then
+  if [ -n "$displaymsg" ]; then
   	displaymsg="\n$displaymsg Some of the screen may be cut off. The menus should all\n"
   	displaymsg="$displaymsg work fine but much of the extra information could be hidden\n or jumbled on the right and bottom of the screen"
   	display_output 11 70 "$displaymsg"
@@ -157,20 +198,24 @@ function smallscreencheck(){
 function getVersion(){
   imgVersion=$(tail -n 1 update.log | awk -F '-' '{ print $1 }')
   lVersion=$(git tag | tail -n 1)
-  #read -p "enter"
-  if [ -z $lVersion ]; then
-    lVersion=$LAUNCHERVERSION
+
+  if [ -z "$lVersion" ]; then
+    lVersion="$LAUNCHERVERSION"
   fi
 
-  FOOTERTEXT=" http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - http://forum.thepiwizard.com - http://paypal.me/thepiwizard \n\n Serial Number of this device: \Zb\Z1$sn\Zn  Image Version: \Zb\Z1$imgVersion\Zn Launcher Version: \Zb\Z1$lVersion\Zn Build: \Zb\Z1$LOCAL\Zn"
+  FOOTERTEXT="                    http://facebook.com/groups/thepiwizard - support@thepiwizard.com - http://thepiwizard.com - https://paypal.me/piwizard                    \n\n Serial Number of this device: \Zb\Z1$sn\Zn  Image Version: \Zb\Z1$imgVersion\Zn Launcher Version: \Zb\Z1$lVersion\Zn Build: \Zb\Z1$LOCAL\Zn"
 
 }
 
 function licensecheck(){
   debugwrite ">>> licensecheck"
-  sn=$(cat /proc/cpuinfo | grep Serial| cut -d ' ' -f 2) #store the serial in the $sn value
+  if [ -z "$SerialNo" ]; then
+    sn=$(cat /proc/cpuinfo | grep Serial| cut -d ' ' -f 2) #store the serial in the $sn value
+  else
+    sn="$SerialNo"
+  fi
 
-  if [  -z "$sn" ]; then
+  if [ -z "$sn" ]; then
     sn="NOT DETECTED"
   fi
 
@@ -181,49 +226,40 @@ function licensecheck(){
 
   	if [[ $expiredvip = "VIP" ]]; then
         VIP="No"
-  			dialog --textbox inc/piwizard.expiredvip.txt 12 81
+  			dialog --msgbox "$expiredVipPage" 12 81
     else
       apicall=$(curl -s http://api.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
-      #apicall="VIP"
+      if [[ $ADMINPRO = "TRUE" ]]; then
+        apicall="VIP"
+      fi
       if [[ $apicall = "VIP" ]]; then
           VIP="Yes"
-          dialog --textbox inc/piwizard.validvip.txt 32 81
+          dialog --colors --msgbox "$vipPage" 32 81
       else
           VIP="No"
-          dialog --textbox inc/piwizard.standard.txt 38 81
+          dialog --colors --msgbox "$standardPage" 38 81
       fi
     fi
   else
     VIP="No"
-    dialog --textbox inc/piwizard.standard.txt 38 81
+    dialog --colors --msgbox "$standardPage" 38 81
   fi
 }
 
 function deny(){
     debugwrite ">>> deny"
-    dialog --textbox inc/tocdenied.txt 9 55
+    dialog --colors --msgbox "$tocDeniedPage" 9 55
     closeAllDialogs
 }
 
 function upgrade(){
   debugwrite ">>> upgrade"
-	dialog --textbox inc/one.upgrade.txt 32 75
+	dialog --colors --msgbox "$upgradePage" 32 75
 }
 
 function support(){
   debugwrite ">>> support"
-  dialog --textbox inc/one.support.txt 27 75
-}
-
-function serial(){
-  debugwrite ">>> serial"
-  sn=$(cat /proc/cpuinfo | grep Serial)
-
-  if [ "$sn" -eq "" ]; then
-    sn="NOT DETECTED"
-  fi
-
-  dialog --title "Your Serial Number - $sn" --textbox inc/one.serial.txt 15 80
+  dialog --colors --msgbox  "$supportPage" 27 75
 }
 
 function setupmusic(){
@@ -235,6 +271,81 @@ function setupmusic(){
     rmfile "*.zip"
     rmfile "*.zip.*"
   fi
+}
+
+function singlerom(){
+  debugwrite ">>> singlerom"
+  if [ "$sn" = "NOT DETECTED" ]; then
+    display_output 10 60 "Sorry, Single ROM Download is only availabe when your serial number is detected."
+    return
+  fi
+
+  if [ "$VIP" = "No" ]; then
+    display_output 10 60 "Sorry, Single ROM Download is only available when you are a Pro member"
+    return
+  fi
+
+  # Display Instructions
+  dialog --colors --msgbox "$srdText" 38 80
+  # Download the serialno.zip
+  cd /home/pi/RetroPie/roms
+  rmfile "$sn.zip"
+  downloadserver="http://thepiwizardserver.com/srd"
+  wget --trust-server-names "$downloadserver/$sn.zip" 2>& 1 | \
+  stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+  dialog --gauge "Downloading $sn.zip" 10 100
+
+  # Did the Download Succeed?
+  if [ -f "$sn.zip" ]; then
+      # Get the contents of the zip into an array
+      unzip -l "$sn.zip" | grep "/" | sed 's/  / /g' | sed 's/  / /g' | cut -d ' ' -f 5- > files.txt
+      # Extract the zip
+
+      unzipprogress "/home/pi/RetroPie/roms/$sn.zip" "/home/pi/RetroPie/roms" 1
+
+      # go though the array
+      while read p; do
+          zippath=$(echo $p | awk -F '/' '{ print $1 }')
+          gamename=$(echo $p | awk -F '/' '{ print $2 }')
+          unzipname="/home/pi/RetroPie/roms/$zippath/$gamename"
+
+          # display_output 10 80 "zippath: $zippath \ngamename: $gamename\n unzipname:$unzipname"
+
+          cd "/home/pi/RetroPie/roms/$zippath"
+          sudo chown -R pi:pi *.*
+
+          unzipprogress "$unzipname" "/home/pi/RetroPie/roms/$zippath"
+          cd "/home/pi/RetroPie/roms"
+          if [ "$unzipsuccess" != "True" ]; then
+            displayerror="True"
+          else
+            rmfile "/home/pi/RetroPie/roms/$p"
+          fi
+          unzipsuccess="True"
+      done <files.txt
+      rmfile "/home/pi/RetroPie/roms/files.txt"
+
+      # If Everything was succesful call API to delete zip on SERVER
+      if [ "$displayerror" != "True" ]; then
+        display_output 10 40 "$sn.zip Single Rom Dowload Pack Installed"
+        rmfile "/home/pi/RetroPie/roms/$sn.zip"
+        curl -q "http://thepiwizardserver.com/srd/delete.php?sn=$sn"
+      else
+        display_output 52 142 "$unzipmessage"
+        unzipmessage=""
+        displayerror="False"
+      fi
+  else
+    # Did the Download Fail?  Abort
+    errormessage="$sn.zip was either not found or failed to download.\n"
+    errormessage+="If you have not received an email please try again after you get the email.\n"
+    errormessage+="If you have received the email and you are getting this message, \n"
+    errormessage+="did you get the email more than 24 hours ago?\n"
+    errormessage+="If you so you will need to start over.\n"
+    errormessage+="Otherwise, please contact support."
+    display_output 10 80 "$errormessage"
+  fi
+  cd $SCRIPTPATH
 }
 
 function music(){
@@ -273,6 +384,46 @@ function music(){
 	cd $SCRIPTPATH
 }
 
+function cpfiles(){
+  debugwrite ">>> cpfiles $1 to $2"
+  if [ -z "$1" ]; then
+    dialog_output 10 40 "No source file was provided"
+    return
+  fi
+  if [ -z "$2" ]; then
+    dialog_output 10 40 "No destination file was provided"
+    return
+  fi
+
+  if [ -z "$3" ]; then
+    cp -rf $1 $2
+  else
+    sudo cp -rf $1 $2
+  fi
+}
+
+function colorpicker(){
+  debugwrite ">>> colorpicker"
+  case $1 in
+    Blue-Light) cpfiles  "$SCRIPTPATH/library/01blue_lightrc" "$SCRIPTPATH/.dialogrc";;
+    Blue-Dark)  cpfiles "$SCRIPTPATH/library/01blue_darkrc" "$SCRIPTPATH/.dialogrc";;
+    Red-Light) cpfiles "$SCRIPTPATH/library/01red_lightrc" "$SCRIPTPATH/.dialogrc";;
+    Red-Dark)  cpfiles "$SCRIPTPATH/library/01red_darkrc" "$SCRIPTPATH/.dialogrc";;
+    Yellow-Light) cpfiles "$SCRIPTPATH/library/01yellow_lightrc" "$SCRIPTPATH/.dialogrc";;
+    Yellow-Dark) cpfiles "$SCRIPTPATH/library/01yellow_darkrc" "$SCRIPTPATH/.dialogrc";;
+    Green-Light) cpfiles "$SCRIPTPATH/library/01green_lightrc" "$SCRIPTPATH/.dialogrc";;
+    Green-Dark) cpfiles "$SCRIPTPATH/library/01green_darkrc" "$SCRIPTPATH/.dialogrc";;
+    Magenta-Light) cpfiles "$SCRIPTPATH/library/01magenta_lightrc" "$SCRIPTPATH/.dialogrc";;
+    Magenta-Dark) cpfiles "$SCRIPTPATH/library/01magenta_darkrc" "$SCRIPTPATH/.dialogrc";;
+    Cyan-Light) cpfiles "$SCRIPTPATH/library/01cyan_lightrc" "$SCRIPTPATH/.dialogrc";;
+    Cyan-Dark) cpfiles "$SCRIPTPATH/library/01cyan_darkrc" "$SCRIPTPATH/.dialogrc";;
+    NoColor) cpfiles "$SCRIPTPATH/library/01no_colorrc" "$SCRIPTPATH/.dialogrc";;
+    *) display_output 10 60 "Somehow an incorrect value was sent to the colorpicker function";;
+  esac
+  DIALOGRC="$SCRIPTPATH/.dialogrc"
+  export DIALOGRC
+}
+
 function runScript(){
   debugwrite ">>> runScript $1"
   if [ -z $1 ]; then
@@ -307,7 +458,6 @@ function downloader(){
         --yesno "This ROM was previously downloaded.\nAre you sure you want to download it again?" 7 60
       response=$?
 
-      #rmdir "/home/pi/RetroPie/roms/$1" - Removed to not delete on redownload
       case $response in
          0) download="True";;
          *) download="False";;
@@ -325,34 +475,34 @@ function downloader(){
       cd /home/pi/RetroPie/roms/$1
       i=1
       while [ $i -le $count ]
-        do
-          if [ "$VIP" == "Yes" ]; then
-              downloadserver="http://games.thepiwizard.com/pro"
-          else
-              downloadserver="http://games.thepiwizard.com/standard"
-          fi
-
-          wget --trust-server-names "$downloadserver/$2-$i.zip" 2>& 1 | \
-          stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
-          dialog --gauge "Downloading $2-$i.zip" 10 100
-
-          unzipprogress "/home/pi/RetroPie/roms/$1/$2-$i.zip" "/home/pi/RetroPie/roms/$1"
-          if [ "$unzipsuccess" != "True" ]; then
-            displayerror="True"
-          else
-            rmfile "/home/pi/RetroPie/roms/$1/$2-$i.zip"
-          fi
-          unzipsuccess="True"
-          ((i++))
-        done
-
-        if [ "$displayerror" != "True" ]; then
-          display_output 10 40 "$1 Rom Pack Installed"
+      do
+        if [ "$VIP" == "Yes" ]; then
+            downloadserver="http://games.thepiwizard.com/pro"
         else
-          display_output 10 102 "$unzipmessage"
-          unzipmessage=""
-          displayerror="False"
+            downloadserver="http://games.thepiwizard.com/standard"
         fi
+
+        wget --trust-server-names "$downloadserver/$2-$i.zip" 2>& 1 | \
+        stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+        dialog --gauge "Downloading $2-$i.zip" 10 100
+
+        unzipprogress "/home/pi/RetroPie/roms/$1/$2-$i.zip" "/home/pi/RetroPie/roms/$1"
+        if [ "$unzipsuccess" != "True" ]; then
+          displayerror="True"
+        else
+          rmfile "/home/pi/RetroPie/roms/$1/$2-$i.zip"
+        fi
+        unzipsuccess="True"
+        ((i++))
+      done
+
+      if [ "$displayerror" != "True" ]; then
+        display_output 10 40 "$1 Rom Pack Installed"
+      else
+        display_output 10 102 "$unzipmessage"
+        unzipmessage=""
+        displayerror="False"
+      fi
     else
       display_output 10 40 "Download canceled per your request"
     fi
@@ -361,54 +511,6 @@ function downloader(){
   else
     display_output 10 40 "Launcher is currently offline so downloading is disabled"
   fi
-}
-
-function downloadroms(){
-  debugwrite ">>> downloadroms"
-  case $1 in
-    atari2600_pro) downloader "atari2600" "atari2600" 1;;
-    atari5200_pro) downloader "atari5200" "atari5200" 1;;
-    atari7800_pro) downloader "atari7800" "atari7800" 1;;
-    atarilynx_pro) downloader "atarilynx" "atarilynx" 1;;
-    coleco_pro) downloader "coleco" "coleco" 1;;
-    famicom_pro) downloader "famicom" "famicom" 1;;
-    fds_pro) downloader "fds" "fds" 1;;
-    gameandwatch_pro) downloader "gameandwatch" "gameandwatch" 1;;
-    gamegear_pro) downloader "gamegear" "gamegear" 1;;
-    gb_pro) downloader "gb" "gb" 1;;
-    gba_pro) downloader "gba" "gba" 5;;
-    gbc_pro) downloader "gbc" "gbc" 1;;
-    mame2003_pro) downloader "mame2003" "mame2003" 1;;
-    markiii_pro) downloader "markiii" "markiii" 1;;
-    segacd) downloader "segacd" "segacd" 7;;
-    mastersystem_pro) downloader "mastersystem" "mastersystem" 1;;
-    megadrive_pro) downloader "megadrive" "megadrive" 1;;
-    msx2_pro) downloader "msx2" "msx2" 1;;
-    msx2plus_pro) downloader "msx2plus" "msx2plus" 1;;
-    n64_pro) downloader "n64" "n64" 3;;
-    nes_pro) downloader "nes" "nes" 1;;
-    snes_pro) downloader "snes" "snes" 2;;
-    snesclassic_pro) downloader "snes-classic" "snesclassic" 1;;
-    nds) downloader "nds" "nds" 8;;
-    pcengine_pro) downloader "pcengine" "pcengine" 1;;
-    arcade_pro) downloader "arcade" "arcade" 6;;
-    playstation) downloader "psx" "psx" 3;;
-    psp) downloader "psp" "psp" 4;;
-    daphne) downloader "daphne" "daphne" 6;;
-    neogeo) downloader "neogeo" "neogeo" 2;;
-
-    atari5200) downloader "atari5200" "atari5200" 1;;
-    atari7800) downloader "atari7800" "atari7800" 1;;
-    nes) downloader "nes" "nes" 1;;
-    snes) downloader "snes" "snes" 1;;
-    n64) downloader "n64" "n64" 1;;
-    gb) downloader "gb" "gb" 1;;
-    gba) downloader "gba" "gba" 1;;
-    gbc) downloader "gbc" "gbc" 1;;
-    gamegear) downloader "gamegear" "gamegear" 1;;
-    megadrive) downloader "megadrive" "megadrive" 1;;
-    *) display_output 10 65 "Somehow an incorrect value was sent to the downloading function";;
-  esac
 }
 
 function closeAllDialogs(){
@@ -424,8 +526,6 @@ function findcenter(){
   debugwrite ">>> findcenter"
   menuwidth=$1
   menuheight=$2
-
-  #display_output 10 80 "menuwidth: $1 - menuheight $2 - MAX WIDTH: $MAXWIDTH - MAX HEIGHT: $MAXHEIGHT"
 
   #Calculate Width
   if [ $menuwidth -gt $MAXWIDTH ]; then
@@ -459,27 +559,102 @@ function findcenter(){
   announcetxtline=$statustextline
   footercol=$menutextcol
   footerline=$(expr $MAXHEIGHT - 7)
-  romcounter=$(curl -s http://thepiwizard.com/counter.txt)
+  romcounter=$(curl -s http://thepiwizard.com/counter/counter.txt)
 }
 
 function getscreeninfo(){
   debugwrite ">>> getscreeninfor"
     if [ $ONLINE -gt 0 ]; then
-      currentStatus=$(curl -s http://thepiwizard.com/downloadstatus)
-      announcements=$(curl -s http://thepiwizard.com/announce)
+      cd /home/pi/RetroPie/roms/piwizard/inc
+      rmtextfiles
+
+      for i in {1..20}
+      do
+        case $i in
+          1) wget --trust-server-names --quiet "http://thepiwizard.com/downloadstatus" 2>& 1;;
+          2) wget --trust-server-names --quiet "http://thepiwizard.com/announce" 2>& 1;;
+            # Load Text Screens
+          3) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.main.txt" 2>& 1;;
+          4) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/one.pro.txt" 2>& 1;;
+          5) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/one.standard.txt" 2>& 1;;
+          6) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/game.pro.txt" 2>& 1;;
+          7) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/game.standard.txt" 2>& 1;;
+          8) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/music.pro.txt" 2>& 1;;
+          9) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/music.standard.txt" 2>& 1;;
+          10) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/colors.txt" 2>& 1;;
+          11) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/scripts.txt" 2>& 1;;
+            # Load Static Text pages
+          12) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/one.support.txt" 2>& 1;;
+          13) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/one.upgrade.txt" 2>& 1;;
+          14) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/tocdenied.txt" 2>& 1;;
+          15) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.validvip.txt" 2>& 1;;
+          16) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.standard.txt" 2>& 1;;
+          17) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.expiredvip.txt" 2>& 1;;
+          18) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/thanks.txt" 2>& 1
+              wget --trust-server-names --quiet "http://launcher.thepiwizard.com/srd.txt" 2>& 1;;
+            # Load Menus
+          19) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/menu.games.pro.txt" 2>& 1;;
+          20) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/menu.games.standard.txt" 2>& 1;;
+        esac
+        echo $(($i * 5))
+      done | dialog --title 'Initialization' --guage 'Downloading...' 10 100 0
+
+      currentStatus=$(<downloadstatus)
+      announcements=$(<announce)
+      mainText=$(<piwizard.main.txt)
+      mainMenuVip=$(<one.pro.txt)
+      mainMenuStandard=$(<one.standard.txt)
+      gamesMenuVip=$(<game.pro.txt)
+      gamesMenuStandard=$(<game.standard.txt)
+      musicMenuVip=$(<music.pro.txt)
+      musicMenuStandard=$(<music.standard.txt)
+      colorMenuText=$(<colors.txt)
+      scriptsMenuText=$(<scripts.txt)
+      supportPage=$(<one.support.txt)
+      upgradePage=$(<one.upgrade.txt)
+      tocDeniedPage=$(<tocdenied.txt)
+      vipPage=$(<piwizard.validvip.txt)
+      standardPage=$(<piwizard.standard.txt)
+      expiredVipPage=$(<piwizard.expiredvip.txt)
+      thanksPage=$(<thanks.txt)
+      srdText=$(<srd.txt)
+      cd $SCRIPTPATH
     else
       currentStatus="Currently Offline"
       announcements="Currently Offline"
+      mainText="Currently Offline"
+      mainMenuVip="Currently Offline"
+      mainMenuStandard="Currently Offline"
+      gamesMenuVip="Currently Offline"
+      gamesMenuStandard="Currently Offline"
+      musicMenuVip="Currently Offline"
+      musicMenuStandard="Currently Offline"
+      colorMenuText="Currently Offline"
+      scriptsMenuText="Currently Offline"
+      supportPage="Currently Offline"
+      upgradePage="Currently Offline"
+      tocDeniedPage="Currently Offline"
+      vipPage="Currently Offline"
+      standardPage="Currently Offline"
+      expiredVipPage="Currently Offline"
+      thanksPage="Currently Offline"
+      srdText="Currently Offline"
     fi
+}
+
+function exitLauncher(){
+  debugwrite ">>> exitLauncher"
+  cleanupExit
+  exit 0
 }
 
 function rebt(){
     debugwrite ">>> rebt"
-    if [ ! -z "$1" ]; then
-      dialog --textbox inc/thanks.txt 12 80
+    if [ -n "$1" ]; then
+      dialog --infobox "$thanksPage" 12 80
     fi
-  	# display_output 10 80 "This is where we would reboot but for now we are just going to exit"
     closeAllDialogs
+    rmtextfiles
     clear
     turnonMusic
     echo "Pi Wizard in now rebooting..."
@@ -490,7 +665,7 @@ function rebt(){
 
 function ext(){
   debugwrite ">>> ext"
-	dialog --textbox inc/tocdenied.txt 12 80
+	dialog --infobox "$tocDeniedPage" 12 80
 	exit
 }
 
@@ -537,14 +712,18 @@ function display_output(){
 
 function unzipprogress(){
   debugwrite ">>> unzipprogress"
-  debugwrite "Made it to unzipprogress - $1 : $2 : $3"
-  if [ ! -z $1 ]; then
-    filename=$1
-    if [ ! -z $2 ]; then
-      destination=$2
+  debugwrite "Made it to unzipprogress - 1:$1 | 2:$2 | 3:$3"
+  if [ -n "$1" ]; then
+    filename="$1"
+    if [ -n "$2" ]; then
+      destination="$2"
 
-      if [ -f $filename ]; then
-        if [ ! -z $3 ]; then
+      if [ -f "$filename" ]; then
+        filename=$(sed 's/(/\\(/g' <<< "$filename")
+        filename=$(sed 's/)/\\)/g' <<< "$filename")
+        filename=$(sed 's/ /\\ /g' <<< "$filename")
+
+        if [ -n "$3" ]; then
           eval sudo unzip -o "$filename" -d "$destination" 2>&1 | dialog --title "Unzipping $filename" --progressbox 3 102 #;
         else
           eval unzip -o "$filename" -d "$destination" 2>&1 | dialog --title "Unzipping $filename" --progressbox 3 102 #;
@@ -552,16 +731,18 @@ function unzipprogress(){
         retcode=$?
         if [ $retcode -ne 0 ]; then
           unzipsuccess="False"
-          unzipmessage+=$(printf "unzip '$1' failed with exit code [%d]." $retcode)
-          #printf "Error : [%d] when executing command: '$cmnd'" $ret_code
+          unzipmessage+=$(printf "unzip '$filename' failed with exit code [%d].\n" $retcode)
+          unzipmessage+="\n"
         else
-          unzipsuccess="True"
+          if [ "$unzipsuccess" != "False" ]; then
+            unzipsuccess="True"
+          fi
           #unzipmessage="success"
         fi
-        #pv -n $filename | unzip -o "$filename" -d "$destination" 2>&1 | dialog --colors --title "\Zu\Z5Percentage will not increment\Zn" --gauge "Extracting $filename" 6 60 #;
       else
         unzipsuccess="False"
-        unzipmessage+=$(printf "unzip '$1' failed becuase the file was not found")
+        unzipmessage+=$(printf "unzip '$filename' failed becuase the file was not found")
+        unzipmessage+="\n"
       fi
     else
       debugwrite "no destination passed"
@@ -620,7 +801,7 @@ function systemupdate(){
 
 
   # if new version available ask if they want to install
-    if [ ${#toinstall[@]} -gt 0 ]; then
+    if [ ${toinstall[@]} -gt 0 ]; then
     #  dialog --title "Upgrades Available" \
     #    --yesno "There are upgrades available to install.\nDo you want to download and install\nA reboot is required?" 7 60
     #    response=$?

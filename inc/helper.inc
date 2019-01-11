@@ -290,15 +290,24 @@ function singlerom(){
   # Download the serialno.zip
   cd /home/pi/RetroPie/roms
   rmfile "$sn.zip"
-  downloadserver="http://thepiwizardserver.com/srd"
-  wget --trust-server-names "$downloadserver/$sn.zip" 2>& 1 | \
+  srddownloadserver="http://thepiwizardserver.com/srd"
+  wget --trust-server-names "$srddownloadserver/$sn.zip" 2>& 1 | \
   stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
   dialog --gauge "Downloading $sn.zip" 10 100
 
   # Did the Download Succeed?
   if [ -f "$sn.zip" ]; then
       # Get the contents of the zip into an array
-      unzip -l "$sn.zip" | grep "/" | sed 's/  / /g' | sed 's/  / /g' | cut -d ' ' -f 5- > files.txt
+
+      # BAD unzip -l "$sn.zip" | grep "/" | sed 's/  / /g' | sed 's/  / /g' | cut -d ' ' -f 5- > files.txt
+      unzip -l "$sn.zip" | grep "/" > unformatedfiles.txt
+      touch files.txt
+      while read p; do
+        gameFile=$(echo "$p" | awk -F '/' '{ print $2 }' | sed 's/ /\\ /g')
+        gamePath=$(echo "$gameFile" | awk -F '-' '{ print $1 }')
+        echo "$gamePath/$gameFile" >> files.txt
+      done <unformatedfiles.txt
+      rmfile "unformatedfiles.txt"
       # Extract the zip
 
       unzipprogress "/home/pi/RetroPie/roms/$sn.zip" "/home/pi/RetroPie/roms" 1
@@ -777,20 +786,21 @@ function systemupdate(){
   toinstall=()
 
   # Read local update.log
-    # If local upate.log doesn't exist assume 2.0
-    if [ ! -f "update.log" ]; then
-      echo "2.0-Base" >> update.log
-    fi
-    readarray -t localversion < update.log
+  # If local upate.log doesn't exist assume 2.0
+  if [ ! -f "update.log" ]; then
+    echo "2.0-Base" >> update.log
+  fi
+  readarray -t localversion < update.log
 
   # Read Remote update.log
-    rmfile  "$SCRIPTPATH/library/update.log"
-    cd /home/pi/RetroPie/roms/piwizard/library
+  rmfile  "$SCRIPTPATH/library/update.log"
+  cd /home/pi/RetroPie/roms/piwizard/library
 
-    wget --trust-server-names "http://thepiwizard.com/upgrade/update.log" 2>& 1 | \
-    stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
-    dialog --gauge "Checking For Updates" 10 100
+  wget --trust-server-names "http://thepiwizard.com/upgrade/update.log" 2>& 1 | \
+  stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+  dialog --gauge "Checking For Updates" 10 100
 
+  if [ -f "update.log" ]; then
     readarray -t remoteversion < update.log
 
     cd $SCRIPTPATH
@@ -802,17 +812,13 @@ function systemupdate(){
 
   # if new version available ask if they want to install
     if [ ${toinstall[@]} -gt 0 ]; then
-    #  dialog --title "Upgrades Available" \
-    #    --yesno "There are upgrades available to install.\nDo you want to download and install\nA reboot is required?" 7 60
-    #    response=$?
-    #  case $response in
-    #     0) upgradenow="True";;
-    #     *) upgradenow="False";;
-    #  esac
       upgradenow="True"
     else
       upgradenow="False"
     fi
+  else
+    upgradenow="False"
+  fi
 
   # If yes, go through loop of updating each version one at a time
   if [ "$upgradenow" == "True" ]; then

@@ -811,7 +811,7 @@ function systemupdate(){
 
 
   # if new version available ask if they want to install
-    if [ ${toinstall[@]} -gt 0 ]; then
+    if [ ${#toinstall[@]} -gt 0 ]; then
       upgradenow="True"
     else
       upgradenow="False"

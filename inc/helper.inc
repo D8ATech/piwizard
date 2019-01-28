@@ -58,7 +58,7 @@ function turnoffMusic(){
 function turnonMusic(){
   # turn on the music
   debugwrite ">>> turnonMusic"
-  if [ "$turnOnMusicOnExit" = "True"]; then
+  if [ "$turnOnMusicOnExit" = "True" ]; then
     rmfile "$MUSICFILE"
   fi
 }

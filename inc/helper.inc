@@ -59,7 +59,7 @@ function turnonMusic(){
   # turn on the music
   debugwrite ">>> turnonMusic"
   if [ "$turnOnMusicOnExit" = "True" ]; then
-    rmfile "$MUSICFILE"
+    sudo rmfile "$MUSICFILE"
   fi
 }
 

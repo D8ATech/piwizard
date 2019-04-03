@@ -145,7 +145,7 @@ function clearPro(){
           echo "$d would be deleted"
       fi
     fi
-  done < <(find * -prune -type d)
+  done <(find * -prune -type d)
   read -p "Press Enter"
   cd $SCRIPTPATH
 }

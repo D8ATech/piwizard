@@ -59,7 +59,7 @@ function turnonMusic(){
   # turn on the music
   debugwrite ">>> turnonMusic"
   if [ "$turnOnMusicOnExit" = "True" ]; then
-    sudo rmfile "$MUSICFILE"
+    rmfile "$MUSICFILE"
   fi
 }
 
@@ -135,6 +135,21 @@ function rmfile(){
   fi
 }
 
+function clearPro(){
+  cd /home/pi/RetroPie/roms
+  while IFS= read -r d; do
+    if [ "$d" != "piwizard" ]; then
+      if [ "$d" != "dev" ]; then
+        if [ "$d" != "music" ]; then
+          #rmdir "$d"
+          echo "$d would be deleted"
+      fi
+    fi
+  done < <(find * -prune -type d)
+  read -p "Press Enter"
+  cd $SCRIPTPATH
+}
+
 function rmtextfiles(){
   debugwrite ">>> rmtextfiles"
   rmfile "$SCRIPTPATH/inc/downloadstatus"
@@ -162,7 +177,9 @@ function rmtextfiles(){
 
 function rmdir(){
   if [ -n "$1" ]; then
-    rm -rf "$1"
+    if [ -d "$1" ]; then
+      sudo rm -rf "$1"
+    fi
   fi
 }
 
@@ -174,6 +191,14 @@ function cleanupExit(){
   clear
   echo "$thanksPage"
   sleep 5
+}
+
+function downloadedImageCheck(){
+  debugwrite ">>> downloadedImageCheck"
+  if [[ -f "/bin/iploaded" ]]; then
+    clearPro
+    rmfile "/bin/iploaded"
+  fi
 }
 
 function smallscreencheck(){
@@ -199,7 +224,7 @@ function getVersion(){
   imgVersion=$(tail -n 1 update.log | awk -F '-' '{ print $1 }')
   lVersion=$(git tag | head -n 1)
 
-  if [ -z "$lVersion" ]; then
+  if [ -z "$lVersion" ]; thenrm
     lVersion="$LAUNCHERVERSION"
   fi
 
@@ -237,6 +262,7 @@ function licensecheck(){
           dialog --colors --msgbox "$vipPage" 32 81
       else
           VIP="No"
+          downloadedImageCheck
           dialog --colors --msgbox "$standardPage" 38 81
       fi
     fi

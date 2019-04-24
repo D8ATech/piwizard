@@ -199,8 +199,8 @@ function cleanupExit(){
 function downloadedImageCheck(){
   debugwrite ">>> downloadedImageCheck"
   if [[ -f "/bin/iploaded" ]]; then
-    clearPro
     rmfile "/bin/iploaded"
+    clearPro
   fi
 }
 

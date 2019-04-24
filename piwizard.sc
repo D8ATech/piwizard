@@ -794,6 +794,4 @@ licensecheck
 #read -p "licensecheck complete Press Enter"
 
 main
-turnonMusic
-cleanupExit
 debugwrite ">>> END <<<"

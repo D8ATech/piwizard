@@ -55,9 +55,9 @@ function turnoffMusic(){
 
 }
 
-function turnonMusic(){
+function turnOnMusic(){
   # turn on the music
-  debugwrite ">>> turnonMusic"
+  debugwrite ">>> turnOnMusic"
   if [ "$turnOnMusicOnExit" = "True" ]; then
     rmfile "$MUSICFILE"
   fi
@@ -149,8 +149,8 @@ function clearPro(){
       fi
     fi
   done
-  read -p "Press Enter"
   cd $SCRIPTPATH
+  rebt "now"
 }
 
 function rmtextfiles(){
@@ -682,6 +682,7 @@ function getscreeninfo(){
 
 function exitLauncher(){
   debugwrite ">>> exitLauncher"
+  turnOnMusic
   cleanupExit
   exit 0
 }
@@ -694,7 +695,7 @@ function rebt(){
     closeAllDialogs
     rmtextfiles
     clear
-    turnonMusic
+    turnOnMusic
     echo "Pi Wizard in now rebooting..."
     sudo reboot now
   	exit 91

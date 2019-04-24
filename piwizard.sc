@@ -5,7 +5,7 @@ if [ -f "inc/adminpanel.inc" ]; then
 	. inc/adminpanel.inc
 fi
 
-__version="3.0.0"
+__version="3.1.0"
 
 [[ "$__debug" -eq 1 ]] && set -x
 

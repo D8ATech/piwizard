@@ -130,22 +130,25 @@ function rmfile(){
     debugwrite ">>>> Error value not passed to rmfile"
   else
     if [ -f "$1" ]; then
-        sudo rm "$1"
+        sudo rm -f "$1"
     fi
   fi
 }
 
 function clearPro(){
   cd /home/pi/RetroPie/roms
-  while IFS= read -r d; do
-    if [ "$d" != "piwizard" ]; then
-      if [ "$d" != "dev" ]; then
-        if [ "$d" != "music" ]; then
-          #rmdir "$d"
-          echo "$d would be deleted"
+
+  for f in */; do
+    if [ -d "$f" ]; then
+      if [ "$f" != "piwizard/" ]; then
+        if [ "$f" != "dev/" ]; then
+          if [ "$f" != "music/" ]; then
+            rmdir "$f"
+          fi
+        fi
       fi
     fi
-  done <(find * -prune -type d)
+  done
   read -p "Press Enter"
   cd $SCRIPTPATH
 }
@@ -203,10 +206,10 @@ function downloadedImageCheck(){
 
 function smallscreencheck(){
   debugwrite ">>> smallscreencheck"
+  displaymsg=""
+
   if [ $MAXWIDTH -lt 160 ]; then
   	displaymsg=" The screen width is $MAXWIDTH which is less than 160.\n"
-  else
-  	displaymsg=""
   fi
 
   if [ $MAXHEIGHT -lt 55 ]; then
@@ -224,7 +227,7 @@ function getVersion(){
   imgVersion=$(tail -n 1 update.log | awk -F '-' '{ print $1 }')
   lVersion=$(git tag | head -n 1)
 
-  if [ -z "$lVersion" ]; thenrm
+  if [ -z "$lVersion" ]; then
     lVersion="$LAUNCHERVERSION"
   fi
 

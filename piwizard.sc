@@ -755,14 +755,17 @@ while [[ $# -gt 0 ]]
 	  key="$1"
 	  case $key in
 	      -h|--help)
-	          DISPLAYHELP="YES"
+						debugwrite ">>>> key = $key - displaying help"
+						DISPLAYHELP="YES"
 	          shift # past argument
 	          ;;
 	      -n|--noupgrade)
+						debugwrite ">>>> key = $key - not checking for updates"
 	          UPGRADECHECK="NO"
 	          shift # past argument
 	          ;;
 	      *)    # unknown option
+						debugwrite ">>>> key = $key - not sure what to do with this"
 	          POSITIONAL+=("$key") # save it in an array for later
 	          shift # past argument
 	          ;;
@@ -778,10 +781,17 @@ if [ "$UPGRADECHECK" == "YES" ]; then
   self_update
 fi
 
-smallscreencheck
 getscreeninfo
-licensecheck
+#read -p "getscreeninfo complete Press Enter"
+
+smallscreencheck
+#read -p "smallscreencheck complete Press Enter"
+
 onlinecheck
+#read -p "onlinecheck complete Press Enter"
+
+licensecheck
+#read -p "licensecheck complete Press Enter"
 
 main
 turnonMusic

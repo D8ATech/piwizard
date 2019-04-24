@@ -26,13 +26,16 @@ self_update() {
           git pull --force &> /dev/null
           display_output 10 60 "New version of the launcher has been installed.\n Press a buton on your controller to exit\n You will need to restart launcher."
           systemupdate
+          exitLauncher
           clear
           exit 1
       elif [ $REMOTE = $BASE ]; then
           echo "There are unpushed changes on client that would be lost.  Exiting"
+          exitLauncher
           exit 1
       else
           echo "Code has diverged.  Delete this directory structure, re-clone the repository and try again. Exiting Now"
+          exitLauncher
           exit 99
       fi
     fi
@@ -150,7 +153,7 @@ function clearPro(){
     fi
   done
   cd $SCRIPTPATH
-  rebt "now"
+  rebt "System Updated, Rebooting now..."
 }
 
 function rmtextfiles(){
@@ -191,7 +194,6 @@ function cleanupExit(){
   rmfile "$OUTPUT"
   rmfile "$INPUT"
   rmtextfiles
-  clear
   echo "$thanksPage"
   sleep 5
 }
@@ -691,12 +693,12 @@ function rebt(){
     debugwrite ">>> rebt"
     if [ -n "$1" ]; then
       dialog --infobox "$thanksPage" 12 80
+    else
+      dialog --infobox "$1" 12 80
     fi
     closeAllDialogs
-    rmtextfiles
-    clear
+    cleanupExit
     turnOnMusic
-    echo "Pi Wizard in now rebooting..."
     sudo reboot now
   	exit 91
   	break

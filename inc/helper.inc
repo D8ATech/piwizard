@@ -59,7 +59,7 @@ function turnonMusic(){
   # turn on the music
   debugwrite ">>> turnonMusic"
   if [ "$turnOnMusicOnExit" = "True" ]; then
-    sudo rmfile "$MUSICFILE"
+    rmfile "$MUSICFILE"
   fi
 }
 
@@ -130,9 +130,27 @@ function rmfile(){
     debugwrite ">>>> Error value not passed to rmfile"
   else
     if [ -f "$1" ]; then
-        sudo rm "$1"
+        sudo rm -f "$1"
     fi
   fi
+}
+
+function clearPro(){
+  cd /home/pi/RetroPie/roms
+
+  for f in */; do
+    if [ -d "$f" ]; then
+      if [ "$f" != "piwizard/" ]; then
+        if [ "$f" != "dev/" ]; then
+          if [ "$f" != "music/" ]; then
+            rmdir "$f"
+          fi
+        fi
+      fi
+    fi
+  done
+  read -p "Press Enter"
+  cd $SCRIPTPATH
 }
 
 function rmtextfiles(){
@@ -162,7 +180,9 @@ function rmtextfiles(){
 
 function rmdir(){
   if [ -n "$1" ]; then
-    rm -rf "$1"
+    if [ -d "$1" ]; then
+      sudo rm -rf "$1"
+    fi
   fi
 }
 
@@ -176,12 +196,20 @@ function cleanupExit(){
   sleep 5
 }
 
+function downloadedImageCheck(){
+  debugwrite ">>> downloadedImageCheck"
+  if [[ -f "/bin/iploaded" ]]; then
+    clearPro
+    rmfile "/bin/iploaded"
+  fi
+}
+
 function smallscreencheck(){
   debugwrite ">>> smallscreencheck"
+  displaymsg=""
+
   if [ $MAXWIDTH -lt 160 ]; then
   	displaymsg=" The screen width is $MAXWIDTH which is less than 160.\n"
-  else
-  	displaymsg=""
   fi
 
   if [ $MAXHEIGHT -lt 55 ]; then
@@ -237,6 +265,7 @@ function licensecheck(){
           dialog --colors --msgbox "$vipPage" 32 81
       else
           VIP="No"
+          downloadedImageCheck
           dialog --colors --msgbox "$standardPage" 38 81
       fi
     fi

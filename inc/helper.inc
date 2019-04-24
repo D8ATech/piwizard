@@ -227,7 +227,7 @@ function smallscreencheck(){
 
 function getVersion(){
   imgVersion=$(tail -n 1 update.log | awk -F '-' '{ print $1 }')
-  lVersion=$(git tag | head -n 1)
+  lVersion=$(git tag | sort -nr | head -n 1)
 
   if [ -z "$lVersion" ]; then
     lVersion="$LAUNCHERVERSION"

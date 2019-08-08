@@ -195,9 +195,9 @@ function deleteSystem(){
     else
         if [ -d "$1" ]; then
             # delete the line below
-            echo "$1 will be removed"
+            # echo "$1 will be removed"
             # uncomment the line below so that files are actually deleted
-            # sudo rm -rf "$1"
+            sudo rm -rf "$1"
         fi
     fi
 }

@@ -189,6 +189,19 @@ function rmdir(){
   fi
 }
 
+function deleteSystem(){
+    if [[ -z $1 ]]; then
+        echo "nothing to be removed"
+    else
+        if [ -d "$1" ]; then
+            # delete the line below
+            echo "$1 will be removed"
+            # uncomment the line below so that files are actually deleted
+            # sudo rm -rf "$1"
+        fi
+    fi
+}
+
 function cleanupExit(){
   debugwrite ">>> cleanupExit"
   rmfile "$OUTPUT"

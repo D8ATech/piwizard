@@ -5,7 +5,7 @@ if [ -f "inc/adminpanel.inc" ]; then
 	. inc/adminpanel.inc
 fi
 
-__version="3.1.0"
+__version="3.2.0"
 
 [[ "$__debug" -eq 1 ]] && set -x
 
@@ -133,6 +133,7 @@ function mainmenu(){
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Rom-Downloads "Get your Roms " \
 				SRD "Single ROM Download" \
+				Delete "Delete Full Systems" \
 				__ " " \
 				Colors "Customize Your Launcher Colors" \
 				Backup-Restore "Backup or Restore ROMS from HDD" \
@@ -156,6 +157,7 @@ function mainmenu(){
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Rom-Downloads "Get your Roms " \
 				SRD "Single ROM Download" \
+				Delete "Delete Full Systems" \
 				__ "  " \
 				Colors "Customize Your Launcher Colors" \
 				Backup-Restore "Backup or Restore ROMS from HDD" \
@@ -194,6 +196,7 @@ function mainmenu(){
 							SCRIPTRUNNING=TRUE;;
 						Upgrade-to-Pro) upgrade;;
 						SRD) singlerom;;
+						Delete) deleteSystemsMenu;;
 						Reboot) rebt;;
 						Exit) exitLauncher;;
 						Back) ONERUNNING="FALSE";;
@@ -658,6 +661,57 @@ function colormenu(){
 	COLORRUNNING="TRUE"
 }
 
+############################################################
+##  Delete Systems Menu
+##
+############################################################
+
+function deleteSystemsMenu() {
+    if [[ -n "$systemNames" ]]; then
+        unset systemNames
+    fi
+
+    if [[ -n $options ]]; then
+        unset $options
+    fi
+    counter=0
+		cd /home/pi/RetroPie/roms
+
+    for f in *; do
+      if [ -d ${f} ]; then
+        systemName=$(echo "$f")
+        if [[ "$systemName" != "piwizard" ]]; then
+	        if [[ "$systemName" != "dev" ]]; then
+            if [[ "$systemName" != "music" ]]; then
+              systemNames+=("$systemName")
+              options+=("$systemName" "$counter" "off")
+              let counter=counter+1
+            fi
+	        fi
+        fi
+      fi
+    done
+
+    if [[ -n $choices ]]; then
+       unset choices
+    fi
+
+    choices=$(dialog --backtitle "Select the systems you want to delete" \
+    --title "Remove Systems from PiWizard" --clear \
+    --checklist "Available Systems" 20 61 $counter \
+    "${options[@]}" \
+    2>&1 >/dev/tty)
+
+    case $choices in
+      1)
+        echo "Cancel pressed - $choices";;
+      255)
+        echo "ESC pressed";;
+      *)
+        arr=( $choices )
+        for i in "${arr[@]}"; do deleteSystem $i; done;;
+    esac
+}
 ############################################################
 ##  Scripts Menu
 ##

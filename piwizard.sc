@@ -5,7 +5,7 @@ if [ -f "inc/adminpanel.inc" ]; then
 	. inc/adminpanel.inc
 fi
 
-__version="3.1.0"
+__version="3.2.0"
 
 [[ "$__debug" -eq 1 ]] && set -x
 
@@ -133,12 +133,11 @@ function mainmenu(){
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Rom-Downloads "Get your Roms " \
 				SRD "Single ROM Download" \
+				Delete "Delete Full Systems" \
 				__ " " \
 				Colors "Customize Your Launcher Colors" \
-				Backup-Restore "Backup or Restore ROMS from HDD" \
 				Utility-Scripts "Optional Utility Scripts" \
 				Disk-Space "SD Card Disk Space" \
-				Music "Grab a Music Pack" \
 				Get-Support "View Support Methods" \
 				__ "  " \
 				Reboot "Reboot" \
@@ -156,12 +155,11 @@ function mainmenu(){
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Rom-Downloads "Get your Roms " \
 				SRD "Single ROM Download" \
+				Delete "Delete Full Systems" \
 				__ "  " \
 				Colors "Customize Your Launcher Colors" \
-				Backup-Restore "Backup or Restore ROMS from HDD" \
 				Utility-Scripts "Optional Utility Scripts" \
 				Disk-Space "SD Card Disk Space" \
-				Music "Grab a Music Pack - PRO" \
 				Upgrade-to-Pro "Compare Standard to Pro" \
 				Get-Support "View Support Methods" \
 				__ "  " \
@@ -194,6 +192,7 @@ function mainmenu(){
 							SCRIPTRUNNING=TRUE;;
 						Upgrade-to-Pro) upgrade;;
 						SRD) singlerom;;
+						Delete) deleteSystemsMenu;;
 						Reboot) rebt;;
 						Exit) exitLauncher;;
 						Back) ONERUNNING="FALSE";;
@@ -658,6 +657,69 @@ function colormenu(){
 	COLORRUNNING="TRUE"
 }
 
+############################################################
+##  Delete Systems Menu
+##
+############################################################
+
+function deleteSystemsMenu() {
+    if [[ -n "$systemNames" ]]; then
+        unset systemNames
+    fi
+
+    if [[ -n $options ]]; then
+        unset $options
+    fi
+    counter=0
+		cd /home/pi/RetroPie/roms
+
+    for f in *; do
+      if [ -d ${f} ]; then
+        systemName=$(echo "$f")
+        if [[ "$systemName" != "piwizard" ]]; then
+	        if [[ "$systemName" != "dev" ]]; then
+            if [[ "$systemName" != "music" ]]; then
+              systemNames+=("$systemName")
+              options+=("$systemName" "$counter" "off")
+              let counter=counter+1
+            fi
+	        fi
+        fi
+      fi
+    done
+
+		if [ $counter -eq 0 ]; then
+			display_output 10 40 "There are no systems to be deleted"
+		else
+	    if [[ -n $choices ]]; then
+	       unset choices
+	    fi
+
+	    choices=$(dialog --backtitle "Select the systems you want to delete" \
+	    --title "Remove Systems from PiWizard" --clear \
+	    --checklist "Available Systems" 20 61 $counter \
+	    "${options[@]}" \
+	    2>&1 >/dev/tty)
+
+	    case $choices in
+	      1)
+	        echo "Cancel pressed - $choices";;
+	      255)
+	        echo "ESC pressed";;
+	      *)
+	        arr=( $choices )
+					dialog --title "Are you sure?" \
+						--yesno "These Systems will be removed.\n$choices\nYou will need to restart your sytem.\nAre you sure you want to do this?" 8 60
+					response=$?
+
+					case $response in
+						 0) for i in "${arr[@]}"; do deleteSystem $i; done;;
+						 *) download="False";;
+					esac
+	        ;;
+	    esac
+		fi
+}
 ############################################################
 ##  Scripts Menu
 ##

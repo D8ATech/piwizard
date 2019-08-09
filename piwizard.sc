@@ -136,10 +136,8 @@ function mainmenu(){
 				Delete "Delete Full Systems" \
 				__ " " \
 				Colors "Customize Your Launcher Colors" \
-				Backup-Restore "Backup or Restore ROMS from HDD" \
 				Utility-Scripts "Optional Utility Scripts" \
 				Disk-Space "SD Card Disk Space" \
-				Music "Grab a Music Pack" \
 				Get-Support "View Support Methods" \
 				__ "  " \
 				Reboot "Reboot" \
@@ -160,10 +158,8 @@ function mainmenu(){
 				Delete "Delete Full Systems" \
 				__ "  " \
 				Colors "Customize Your Launcher Colors" \
-				Backup-Restore "Backup or Restore ROMS from HDD" \
 				Utility-Scripts "Optional Utility Scripts" \
 				Disk-Space "SD Card Disk Space" \
-				Music "Grab a Music Pack - PRO" \
 				Upgrade-to-Pro "Compare Standard to Pro" \
 				Get-Support "View Support Methods" \
 				__ "  " \

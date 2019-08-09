@@ -689,7 +689,7 @@ function deleteSystemsMenu() {
     done
 
 		if [ $counter -eq 0 ]; then
-			display_outpu("There are no systems to be deleted")
+			display_output 10 40 "There are no systems to be deleted"
 		else
 	    if [[ -n $choices ]]; then
 	       unset choices

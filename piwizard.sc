@@ -692,6 +692,7 @@ function deleteSystemsMenu() {
        unset choices
     fi
 
+
     choices=$(dialog --backtitle "Select the systems you want to delete" \
     --title "Remove Systems from PiWizard" --clear \
     --checklist "Available Systems" 20 61 $counter \
@@ -705,7 +706,15 @@ function deleteSystemsMenu() {
         echo "ESC pressed";;
       *)
         arr=( $choices )
-        for i in "${arr[@]}"; do deleteSystem $i; done;;
+				dialog --title "Are you sure?" \
+					--yesno "These Systems will be removed.\n$choices\nYou will need to restart your sytem.\nAre you sure you want to do this?" 8 60
+				response=$?
+
+				case $response in
+					 0) for i in "${arr[@]}"; do deleteSystem $i; done;;
+					 *) download="False";;
+				esac
+        ;;
     esac
 }
 ############################################################

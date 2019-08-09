@@ -688,34 +688,37 @@ function deleteSystemsMenu() {
       fi
     done
 
-    if [[ -n $choices ]]; then
-       unset choices
-    fi
+		if [ $counter -eq 0 ]; then
+			display_outpu("There are no systems to be deleted")
+		else
+	    if [[ -n $choices ]]; then
+	       unset choices
+	    fi
 
+	    choices=$(dialog --backtitle "Select the systems you want to delete" \
+	    --title "Remove Systems from PiWizard" --clear \
+	    --checklist "Available Systems" 20 61 $counter \
+	    "${options[@]}" \
+	    2>&1 >/dev/tty)
 
-    choices=$(dialog --backtitle "Select the systems you want to delete" \
-    --title "Remove Systems from PiWizard" --clear \
-    --checklist "Available Systems" 20 61 $counter \
-    "${options[@]}" \
-    2>&1 >/dev/tty)
+	    case $choices in
+	      1)
+	        echo "Cancel pressed - $choices";;
+	      255)
+	        echo "ESC pressed";;
+	      *)
+	        arr=( $choices )
+					dialog --title "Are you sure?" \
+						--yesno "These Systems will be removed.\n$choices\nYou will need to restart your sytem.\nAre you sure you want to do this?" 8 60
+					response=$?
 
-    case $choices in
-      1)
-        echo "Cancel pressed - $choices";;
-      255)
-        echo "ESC pressed";;
-      *)
-        arr=( $choices )
-				dialog --title "Are you sure?" \
-					--yesno "These Systems will be removed.\n$choices\nYou will need to restart your sytem.\nAre you sure you want to do this?" 8 60
-				response=$?
-
-				case $response in
-					 0) for i in "${arr[@]}"; do deleteSystem $i; done;;
-					 *) download="False";;
-				esac
-        ;;
-    esac
+					case $response in
+						 0) for i in "${arr[@]}"; do deleteSystem $i; done;;
+						 *) download="False";;
+					esac
+	        ;;
+	    esac
+		fi
 }
 ############################################################
 ##  Scripts Menu

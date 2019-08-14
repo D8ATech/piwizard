@@ -158,8 +158,8 @@ function clearPro(){
 
 function rmtextfiles(){
   debugwrite ">>> rmtextfiles"
-  rmfile "$SCRIPTPATH/inc/downloadstatus"
-  rmfile "$SCRIPTPATH/inc/announce"
+  rmfile "$SCRIPTPATH/inc/downloadstatus.txt"
+  rmfile "$SCRIPTPATH/inc/announce.txt"
   rmfile "$SCRIPTPATH/inc/piwizard.main.txt"
   rmfile "$SCRIPTPATH/inc/one.pro.txt"
   rmfile "$SCRIPTPATH/inc/one.standard.txt"
@@ -624,8 +624,8 @@ function getscreeninfo(){
       for i in {1..20}
       do
         case $i in
-          1) wget --trust-server-names --quiet "http://thepiwizard.com/downloadstatus" 2>& 1;;
-          2) wget --trust-server-names --quiet "http://thepiwizard.com/announce" 2>& 1;;
+          1) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/downloadstatus.txt" 2>& 1;;
+          2) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/announce.txt" 2>& 1;;
             # Load Text Screens
           3) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/piwizard.main.txt" 2>& 1;;
           4) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/one.pro.txt" 2>& 1;;
@@ -652,8 +652,8 @@ function getscreeninfo(){
         echo $(($i * 5))
       done | dialog --title 'Initialization' --guage 'Downloading...' 10 100 0
 
-      currentStatus=$(<downloadstatus)
-      announcements=$(<announce)
+      currentStatus=$(<downloadstatus.txt)
+      announcements=$(<announce.txt)
       mainText=$(<piwizard.main.txt)
       mainMenuVip=$(<one.pro.txt)
       mainMenuStandard=$(<one.standard.txt)

@@ -1,2 +1,4 @@
+library/* linguist-vendored
+
 *.sc linguist-language=Shell
 *.sh linguist-language=Shell

@@ -1,2 +1,2 @@
-.sc linguist-language=Shell
-.sh linguist-language=Shell
+*.sc linguist-language=Shell
+*.sh linguist-language=Shell

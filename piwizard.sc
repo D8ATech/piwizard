@@ -5,7 +5,7 @@ if [ -f "inc/adminpanel.inc" ]; then
 	. inc/adminpanel.inc
 fi
 
-__version="3.2.0"
+__version="4.0.0"
 
 [[ "$__debug" -eq 1 ]] && set -x
 
@@ -23,7 +23,7 @@ __tmpdir="$scriptdir/tmp"
 
 ################################################################################
 ####
-#### Pi Wizard v2.2
+#### Pi Wizard v4.0.0
 ####
 ################################################################################
 #
@@ -32,6 +32,7 @@ __tmpdir="$scriptdir/tmp"
 # 0.0.1 - Initial version with self updating
 #2.0.0 - First Released Version
 #2.2.0 - System Update and many fixes
+#4.4.0 - update to support Pi4 and Pi3 in same code base
 
 ############################################################
 ##
@@ -132,6 +133,7 @@ function mainmenu(){
 				--title "[ PI WIZARD PRO VERSION INSTALLER]" \
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Rom-Downloads "Get your Roms " \
+				Configure "Configuration Scripts" \
 				SRD "Single ROM Download" \
 				Delete "Delete Full Systems" \
 				__ " " \
@@ -154,6 +156,7 @@ function mainmenu(){
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
 				Rom-Downloads "Get your Roms " \
+				Configure "Configuration Scripts" \
 				SRD "Single ROM Download" \
 				Delete "Delete Full Systems" \
 				__ "  " \
@@ -179,6 +182,9 @@ function mainmenu(){
 						Rom-Downloads)
 							gamesmenu
 							GAMESRUNNING=TRUE;;
+						Configure)
+							configmenu
+							CONFIGRUNNING="TRUE"
 						Music)
 							musicmenu
 							MUSICRUNNING="TRUE";;
@@ -210,6 +216,8 @@ function mainmenu(){
 				clear
 				[ -s $choiceOne ] && cat $choiceOne || echo "ESC Pressed"
 				ONERUNNING="FALSE";;
+			*)
+				retval="";;
 	  esac
 	done
 }

@@ -626,7 +626,7 @@ function configmenu(){
 			resetcontrollers "Reset Contollers" \
 			OverscanOn-Off "Overscan on-off" \
 			Music-Stop "Music Stop" \
-			Music-Start "Music Start"
+			Music-Start "Music Start" \
 			__ "  " \
 			Reboot "Reboot" \
 			Exit "Exit Launcher" \
@@ -643,7 +643,7 @@ function configmenu(){
 						--) ;;
 						Reboot) rebt;;
 						Exit) exitLauncher;;
-						Back) COLORRUNNING="FALSE";;
+						Back) CONFIGRUNNING="FALSE";;
 						*) processConfigScript "$choice";;
 					esac
 				fi

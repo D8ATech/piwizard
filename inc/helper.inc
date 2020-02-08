@@ -808,11 +808,11 @@ function unzipprogress(){
 }
 
 function processConfigScript(){
-  debugwrite ">>> processConfigScript"
+  debugwrite ">>> processConfigScript : $1"
   if [ -n "$1" ]; then
-    filetorun="/home/pi/RetroPie/roms/piwzard/p4scripts/$1.sc"
+    filetorun="/home/pi/RetroPie/roms/piwizard/p4scripts/$1.sc"
     if [ -f "$filetorun" ]; then
-      sudo chmod +x $filetorun
+      sudo chmod +x "$filetorun"
       source "$filetorun"
       retcode=$?
       if [ $retcode -eq 0 ]; then
@@ -820,6 +820,9 @@ function processConfigScript(){
       else
         display_output 10 40 "The script failed to run and returned code: $retcode"
       fi
+      sudo chmod -x "$filetorun"
+    else
+      display_output 10 40 "Internal Error: Could not find selected script"
     fi
   else
     debugwrite "no script passed"

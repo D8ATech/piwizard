@@ -32,7 +32,7 @@ __tmpdir="$scriptdir/tmp"
 # 0.0.1 - Initial version with self updating
 #2.0.0 - First Released Version
 #2.2.0 - System Update and many fixes
-#4.4.0 - update to support Pi4 and Pi3 in same code base
+#4.0.0 - update to support Pi4 and Pi3 in same code base
 
 ############################################################
 ##
@@ -59,12 +59,12 @@ function main(){
 
 	while [ "$MAINRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
-		$DIALOG  --keep-window --colors --begin $infotextline $infotextcol --infobox "$mainText" $TXTBOXHEIGHT $TXTBOXWIDTH \
-		--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-		--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-		--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+		$DIALOG  --keep-window --colors --begin $infotextline $infotextcol --no-shadow --infobox "$mainText" $TXTBOXHEIGHT $TXTBOXWIDTH \
+		--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
+		--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --no-shadow --infobox "$romcounter" 3 55 \
+		--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --no-shadow --infobox "$announcements" 9 102 \
 		--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-		--and-widget --begin $infotextline $menutextcol --shadow \
+		--and-widget --begin $infotextline $menutextcol --no-shadow \
 		--backtitle "PI WIZARD - Automatic Installer" \
 		--title "[ D I S C L A I M E R ]" \
 		--no-cancel \
@@ -123,12 +123,12 @@ function mainmenu(){
 	while [ "$ONERUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGONE  --keep-window  --colors --begin $infotextline $infotextcol --infobox "$mainMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				$DIALOGONE  --keep-window  --colors --begin $infotextline $infotextcol --no-shadow --infobox "$mainMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --no-shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION INSTALLER]" \
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -146,12 +146,12 @@ function mainmenu(){
 				Exit "Exit Launcher" \
 				Back "Back to Previous Menu" 2>"$choiceOne"
 		else
-				$DIALOGONE  --keep-window --colors --begin $infotextline $infotextcol --infobox "$mainMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
+				$DIALOGONE  --keep-window --colors --begin $infotextline $infotextcol --no-shadow --infobox "$mainMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
 				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
 				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --no-shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -184,7 +184,7 @@ function mainmenu(){
 							GAMESRUNNING=TRUE;;
 						Configure)
 							configmenu
-							CONFIGRUNNING="TRUE"
+							CONFIGRUNNING="TRUE";;
 						Music)
 							musicmenu
 							MUSICRUNNING="TRUE";;
@@ -291,12 +291,12 @@ function gamesmenu(){
 				unset cmd
 			fi
 
-			cmd=(dialog  --keep-window --colors --begin $infotextline $infotextcol --infobox "$gamesMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
+			cmd=(dialog  --keep-window --colors --begin $infotextline $infotextcol --no-shadow --infobox "$gamesMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --no-shadow --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --no-shadow --infobox "$announcements" 9 102 \
 				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --no-shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS)
@@ -340,12 +340,12 @@ function gamesmenu(){
 				unset cmd
 			fi
 
-			cmd=(dialog --keep-window --colors --begin $infotextline $infotextcol --infobox "$gamesMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
-				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
+			cmd=(dialog --keep-window --colors --begin $infotextline $infotextcol --no-shadow --infobox "$gamesMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --no-shadow --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --no-shadow --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $footerline $footercol --no-shadow --infobox "$FOOTERTEXT" 5 160 \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --no-shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS )
@@ -403,12 +403,12 @@ function gamesmenu_old(){
 	while [ "$GAMESRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGGAMES  --keep-window --colors --begin $infotextline $infotextcol --infobox "$gamesMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
-				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
+				$DIALOGGAMES  --keep-window --colors --begin $infotextline $infotextcol --no-shadow --infobox "$gamesMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --no-shadow --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --no-shadow --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $footerline $footercol --no-shadow --infobox "$FOOTERTEXT" 5 160 \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --no-shadow \
 				--backtitle "PI WIZARD PRO VERSION" \
 				--title "[ PI WIZARD PRO VERSION Downloader ]" \
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -450,12 +450,12 @@ function gamesmenu_old(){
 				Exit "Exit Launcher" \
 				Back "Back to Previous Menu" 2>"$choiceGames"
 		else
-				$DIALOGGAMES  --keep-window --colors --begin $infotextline $infotextcol --infobox "$gamesMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
-				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
+				$DIALOGGAMES  --keep-window --colors --begin $infotextline $infotextcol --no-shadow --infobox "$gamesMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --no-shadow --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --no-shadow --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $footerline $footercol --no-shadow --infobox "$FOOTERTEXT" 5 160 \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --no-shadow \
 				--backtitle "PI WIZARD STANDARD VERSION" \
 				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -522,12 +522,12 @@ function musicmenu(){
 	while [ "$MUSICRUNNING" == "TRUE" ];	do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
 		if [ "$VIP" == "Yes" ]; then
-				$DIALOGMUSIC --keep-window --colors --begin $infotextline $infotextcol --infobox "$musicMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
-				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
+				$DIALOGMUSIC --keep-window --colors --begin $infotextline $infotextcol --no-shadow --infobox "$musicMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --no-shadow --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --no-shadow --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $footerline $footercol --no-shadow --infobox "$FOOTERTEXT" 5 160 \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --no-shadow \
 				--backtitle "PI WIZARD PRO MUSIC INSTALLER" \
 				--title "[ PI WIZARD PRO MUSIC SERVER ]" \
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -543,12 +543,12 @@ function musicmenu(){
 				Exit "Exit Launcher" \
 				Back "Back to Previous Menu" 2>"$choiceMusic"
 		else
-				$DIALOGMUSIC --keep-window --colors --begin $infotextline $infotextcol --infobox "$musicMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
-				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
+				$DIALOGMUSIC --keep-window --colors --begin $infotextline $infotextcol --no-shadow --infobox "$musicMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
+				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
+				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --no-shadow --infobox "$romcounter" 3 55 \
+				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:"--no-shadow --infobox "$announcements" 9 102 \
+				--and-widget --keep-window --colors --begin $footerline $footercol --no-shadow --infobox "$FOOTERTEXT" 5 160 \
+				--and-widget --begin $infotextline $menutextcol --no-cancel --no-shadow \
 				--backtitle "PIWIZARD STANDARD MUSIC INSTALLER" \
 				--title "[ PIWIZARD STANDARD MUSIC SERVER ]" \
 				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
@@ -597,6 +597,72 @@ function musicmenu(){
 
 ############################################################
 ##
+##  Config Menu
+##
+############################################################
+function configmenu(){
+	debugwrite ">>> configmenu - piwizard"
+	CONFIGRUNNING="TRUE"
+	DIALOGCONFIG=${DIALOGCONFIG=dialog}
+	choiceConfig=/tmp/dialogconfig-$$.$RANDOM; > $choiceConfig
+	trap "rm -f $choiceConfig" 0 1 2 5 15
+
+	while [ "$CONFIGRUNNING" == "TRUE" ]; do 
+		findcenter $DIALOGWIDTH $DIALOGHEIGHT
+			$DIALOGCONFIG --keep-window --colors --begin $infotextline $infotextcol --no-shadow --infobox "$configMenuText" $TXTBOXHEIGHT $TXTBOXWIDTH \
+			--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
+			--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --no-shadow --infobox "$romcounter" 3 55 \
+			--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --no-shadow --infobox "$announcements" 9 102 \
+			--and-widget --keep-window --colors --begin $footerline $footercol --no-shadow --infobox "$FOOTERTEXT" 5 160 \
+			--and-widget --begin $infotextline $menutextcol --no-shadow \
+			--backtitle "PI WIZARD" \
+			--title "[ PI WIZARD CONFIG ]" \
+			--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
+			bezelproject "Bezel Project" \
+			overclock "Overclock" \
+			removemedia "Remove Media" \
+			backgroundmusic "Background Music" \
+			videoloading "Video Loading" \
+			resetcontrollers "Reset Contollers" \
+			OverscanOn-Off "Overscan on-off" \
+			Music-Stop "Music Stop" \
+			Music-Start "Music Start"
+			__ "  " \
+			Reboot "Reboot" \
+			Exit "Exit Launcher" \
+			Back "Back to Previous Menu" 2>"$choiceConfig"
+
+		retval="$?"
+		choice=$(cat $choiceConfig)
+		echo "" > $choiceConfig
+
+		case $retval in
+			$DIALOG_ACTION)
+				if [ ! -z "$choice" ]; then
+					case $choice in
+						--) ;;
+						Reboot) rebt;;
+						Exit) exitLauncher;;
+						Back) COLORRUNNING="FALSE";;
+						*) processConfigScript "$choice";;
+					esac
+				fi
+				choice=""
+				;;
+			$DIALOG_CANCEL)
+				CONFIGRUNNING="FALSE";;
+			$DIALOG_ESC)
+				clear
+				[ -s $choiceOne ] && cat $choiceOne || echo "ESC Pressed"
+				CONFIGRUNNING="FALSE";;
+		esac
+	done
+	CONFIGRUNNING="TRUE"
+}
+
+
+############################################################
+##
 ##  Color Menu
 ##
 ############################################################
@@ -608,34 +674,34 @@ function colormenu(){
 	choiceColor=/tmp/dialogcolor-$$.$RANDOM; > $choiceColor
 	trap "rm -f $choiceColor" 0 1 2 5 15
 
-	while [ "$COLORRUNNING" == "TRUE" ];	do
+	while [ "$COLORRUNNING" == "TRUE" ]; do
 		findcenter $DIALOGWIDTH $DIALOGHEIGHT
-				$DIALOGCOLOR --keep-window --colors --begin $infotextline $infotextcol --infobox "$colorMenuText" $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
-				--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --shadow \
-				--backtitle "PI WIZARD PRO COLOR PICKER" \
-				--title "[ PI WIZARD COLOR PICKER ]" \
-				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
-				Blue-Light "Blue Background Light Menu" \
-				Blue-Dark "Blue Background Dark Menu" \
-				Red-Light "Red Background Light Menu" \
-				Red-Dark "Red Background Dark Menu" \
-				Yellow-Light "Yellow Background Light Menu" \
-				Yellow-Dark "Yellow Background Dark Menu" \
-				Green-Light "Green Background Light Menu" \
-				Green-Dark "Green Background Dark Menu" \
-				Magenta-Light "Magenta Background Light Menu" \
-				Magenta-Dark "Magenta Background Dark Menu" \
-				Cyan-Light "Cyan Background Light Menu" \
-				Cyan-Dark "Cyan Background Dark Menu" \
-				NoColor "Remove Color" \
-				__ "  " \
-				Reboot "Reboot" \
-				Exit "Exit Launcher" \
-				Back "Back to Previous Menu" 2>"$choiceColor"
+			$DIALOGCOLOR --keep-window --colors --begin $infotextline $infotextcol --no-shadow --infobox "$colorMenuText" $TXTBOXHEIGHT $TXTBOXWIDTH \
+			--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
+			--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --no-shadow --infobox "$romcounter" 3 55 \
+			--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --no-shadow --infobox "$announcements" 9 102 \
+			--and-widget --keep-window --colors --begin $footerline $footercol --no-shadow --infobox "$FOOTERTEXT" 5 160 \
+			--and-widget --begin $infotextline $menutextcol --no-shadow \
+			--backtitle "PI WIZARD PRO COLOR PICKER" \
+			--title "[ PI WIZARD COLOR PICKER ]" \
+			--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
+			Blue-Light "Blue Background Light Menu" \
+			Blue-Dark "Blue Background Dark Menu" \
+			Red-Light "Red Background Light Menu" \
+			Red-Dark "Red Background Dark Menu" \
+			Yellow-Light "Yellow Background Light Menu" \
+			Yellow-Dark "Yellow Background Dark Menu" \
+			Green-Light "Green Background Light Menu" \
+			Green-Dark "Green Background Dark Menu" \
+			Magenta-Light "Magenta Background Light Menu" \
+			Magenta-Dark "Magenta Background Dark Menu" \
+			Cyan-Light "Cyan Background Light Menu" \
+			Cyan-Dark "Cyan Background Dark Menu" \
+			NoColor "Remove Color" \
+			__ "  " \
+			Reboot "Reboot" \
+			Exit "Exit Launcher" \
+			Back "Back to Previous Menu" 2>"$choiceColor"
 
 		retval="$?"
 		choice=$(cat $choiceColor)
@@ -768,12 +834,12 @@ function scriptsmenu(){
 			unset cmd
 		fi
 
-		cmd=(dialog --keep-window --colors --begin $infotextline $infotextcol --title "[ Scripts - Instructions ]" --infobox "$scriptsMenuText" $TXTBOXHEIGHT $TXTBOXWIDTH \
-			--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 5 55 \
-			--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --infobox "$romcounter" 3 55 \
-			--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --infobox "$announcements" 9 102 \
-			--and-widget --keep-window --colors --begin $footerline $footercol --infobox "$FOOTERTEXT" 5 160 \
-			--and-widget --begin $infotextline $menutextcol --no-cancel --shadow \
+		cmd=(dialog --keep-window --colors --begin $infotextline $infotextcol --no-shadow --title "[ Scripts - Instructions ]" --infobox "$scriptsMenuText" $TXTBOXHEIGHT $TXTBOXWIDTH \
+			--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
+			--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --no-shadow --infobox "$romcounter" 3 55 \
+			--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --no-shadow --infobox "$announcements" 9 102 \
+			--and-widget --keep-window --colors --begin $footerline $footercol --no-shadow --infobox "$FOOTERTEXT" 5 160 \
+			--and-widget --begin $infotextline $menutextcol --no-cancel --no-shadow \
 			--backtitle "PIWIZARD SCRIPT RUNNER" \
 			--title "[ Available Scripts ]" \
 			--menu "You can use the UP/DOWN arrow keys, or the number\nkeys 1 -9 to choose an option.\nReboot and Back options available at the bottom of\nthe list.\n" $MENUHEIGHT $MENUWIDTH $MENUITEMS )
@@ -825,20 +891,20 @@ while [[ $# -gt 0 ]]
 	  key="$1"
 	  case $key in
 	      -h|--help)
-						debugwrite ">>>> key = $key - displaying help"
-						DISPLAYHELP="YES"
-	          shift # past argument
-	          ;;
+				debugwrite ">>>> key = $key - displaying help"
+				DISPLAYHELP="YES"
+	        	shift # past argument
+	            ;;
 	      -n|--noupgrade)
-						debugwrite ">>>> key = $key - not checking for updates"
-	          UPGRADECHECK="NO"
-	          shift # past argument
-	          ;;
+				debugwrite ">>>> key = $key - not checking for updates"
+	            UPGRADECHECK="NO"
+	        	shift # past argument
+	        	;;
 	      *)    # unknown option
-						debugwrite ">>>> key = $key - not sure what to do with this"
-	          POSITIONAL+=("$key") # save it in an array for later
-	          shift # past argument
-	          ;;
+				debugwrite ">>>> key = $key - not sure what to do with this"
+	        	POSITIONAL+=("$key") # save it in an array for later
+	        	shift # past argument
+	        	;;
 	  esac
 	done
 

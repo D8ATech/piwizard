@@ -207,6 +207,7 @@ function cleanupExit(){
   rmfile "$OUTPUT"
   rmfile "$INPUT"
   rmtextfiles
+  clear
   echo "$thanksPage"
   sleep 5
 }
@@ -227,8 +228,8 @@ function smallscreencheck(){
   	displaymsg=" The screen width is $MAXWIDTH which is less than 160.\n"
   fi
 
-  if [ $MAXHEIGHT -lt 55 ]; then
-  	displaymsg="$displaymsg The screen height is $MAXHEIGHT which is less than 55.\n"
+  if [ $MAXHEIGHT -lt 47 ]; then
+  	displaymsg="$displaymsg The screen height is $MAXHEIGHT which is less than 47.\n"
   fi
 
   if [ -n "$displaymsg" ]; then
@@ -595,7 +596,7 @@ function findcenter(){
   if [ $menuheight -gt $MAXHEIGHT ]; then
     MENUY=2
   else
-    MENUY=$(expr $(expr $MAXHEIGHT / 2) - $(expr $menuheight / 2))
+    MENUY=$(expr $(expr $(expr $MAXHEIGHT / 2) - $(expr $menuheight / 2)) - 1)
   fi
 
   if [ $MENUY -lt 1 ]; then
@@ -603,7 +604,7 @@ function findcenter(){
   fi
 
   infotextline=$MENUY
-  statustextline=$(expr $MENUY + 33)
+  statustextline=$(expr $MENUY + 31)
   infotextcol=$(expr $MENUX + 58)
   menutextcol=$MENUX
   countertextcol=$MENUX
@@ -611,7 +612,7 @@ function findcenter(){
   announcetxtcol=$infotextcol
   announcetxtline=$statustextline
   footercol=$menutextcol
-  footerline=$(expr $MAXHEIGHT - 7)
+  footerline=$(expr $MAXHEIGHT - 5)
   romcounter=$(curl -s http://thepiwizard.com/counter/counter.txt)
 }
 
@@ -805,6 +806,26 @@ function unzipprogress(){
     debugwrite "no filename passed"
   fi
 }
+
+function processConfigScript(){
+  debugwrite ">>> processConfigScript"
+  if [ -n "$1" ]; then
+    filetorun="/home/pi/RetroPie/roms/piwzard/p4scripts/$1.sc"
+    if [ -f "$filetorun" ]; then
+      sudo chmod +x $filetorun
+      source "$filetorun"
+      retcode=$?
+      if [ $retcode -eq 0 ]; then
+        display_output 10 40 "$1 was run successfully"
+      else
+        display_output 10 40 "The script failed to run and returned code: $retcode"
+      fi
+    fi
+  else
+    debugwrite "no script passed"
+  fi
+}
+
 
 function processScript(){
   debugwrite ">>> processScript"

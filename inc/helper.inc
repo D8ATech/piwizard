@@ -179,6 +179,7 @@ function rmtextfiles(){
   rmfile "$SCRIPTPATH/inc/thanks.txt"
   rmfile "$SCRIPTPATH/inc/menu.games.pro.txt"
   rmfile "$SCRIPTPATH/inc/menu.games.standard.txt"
+  rmfile "$SCRIPTPATH/inc/serial.txt"
 }
 
 function rmdir(){
@@ -274,6 +275,9 @@ function licensecheck(){
     else
       apicall=$(curl -s http://api.thepiwizard.com/vip/${sn} | cut -f2- -d: | cut -d '}' -f 1 | cut -c2- | rev | cut -c2- | rev)
       if [[ $ADMINPRO = "TRUE" ]]; then
+        apicall="VIP"
+      fi
+      if [[ $ADMINOVERIDE = "1" ]]; then
         apicall="VIP"
       fi
       if [[ $apicall = "VIP" ]]; then
@@ -648,7 +652,8 @@ function getscreeninfo(){
               wget --trust-server-names --quiet "http://launcher.thepiwizard.com/srd.txt" 2>& 1;;
             # Load Menus
           19) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/menu.games.pro.txt" 2>& 1;;
-          20) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/menu.games.standard.txt" 2>& 1;;
+          20) wget --trust-server-names --quiet "http://launcher.thepiwizard.com/menu.games.standard.txt" 2>& 1
+              wget --trust-server-names --quiet "http://launcher.thepiwizard.com/serial.txt" 2>& 1;;
         esac
         echo $(($i * 5))
       done | dialog --title 'Initialization' --guage 'Downloading...' 10 100 0
@@ -672,6 +677,7 @@ function getscreeninfo(){
       expiredVipPage=$(<piwizard.expiredvip.txt)
       thanksPage=$(<thanks.txt)
       srdText=$(<srd.txt)
+      ADMINOVERIDE=$(<serial.txt)
       cd $SCRIPTPATH
     else
       currentStatus="Currently Offline"
@@ -693,6 +699,7 @@ function getscreeninfo(){
       expiredVipPage="Currently Offline"
       thanksPage="Currently Offline"
       srdText="Currently Offline"
+      ADMINOVERIDE="Currently Offline"
     fi
 }
 

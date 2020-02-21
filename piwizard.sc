@@ -104,6 +104,7 @@ function main(){
 				[ -s $choiceMain ] && cat $choiceMain || echo "ESC Pressed"
 				exit 1;;
 	  esac
+	  retval=""
 	done
 }
 
@@ -219,6 +220,7 @@ function mainmenu(){
 			*)
 				retval="";;
 	  esac
+	  retvalue=""
 	done
 }
 
@@ -387,122 +389,7 @@ function gamesmenu(){
 				GAMESRUNNING="FALSE"
 			fi
 		done
-	done
-}
-
-
-###
-# old
-###
-function gamesmenu_old(){
-	debugwrite ">>> gamesmenu - piwizard"
-	DIALOGGAMES=${DIALOGGAMES=dialog}
-	choiceGames=/tmp/dialoggames-$$.$RANDOM; > $choiceGames
-	trap "rm -f $choiceGames" 0 1 2 5 15
-
-	while [ "$GAMESRUNNING" == "TRUE" ];	do
-		findcenter $DIALOGWIDTH $DIALOGHEIGHT
-		if [ "$VIP" == "Yes" ]; then
-				$DIALOGGAMES  --keep-window --colors --begin $infotextline $infotextcol --no-shadow --infobox "$gamesMenuVip" $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
-				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --no-shadow --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --no-shadow --infobox "$announcements" 9 102 \
-				--and-widget --keep-window --colors --begin $footerline $footercol --no-shadow --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --no-cancel --no-shadow \
-				--backtitle "PI WIZARD PRO VERSION" \
-				--title "[ PI WIZARD PRO VERSION Downloader ]" \
-				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
-				__ "= Atari Systems =" \
-				atari2600_pro "Atari 2600" \
-				atari5200_pro "Atari 5200" \
-				atari7800_pro "Atari 7800" \
-				atarilynx_pro "Atari Lynx" \
-				__ "= Nintendo Systems =" \
-				nes_pro "Nintendo Entertainment System" \
-				snes_pro "Super Nintendo" \
-				snesclassic_pro "Super Nintedo Classic" \
-				nds "Nintendos DS" \
-				n64_pro "Nintendo 64" \
-				gb_pro "Nintendo GameBoy" \
-				gbc_pro "Nintendo GameBoy Color" \
-				gba_pro "Nintendo GameBoy Advanced" \
-				famicom_pro "Famicom" \
-				fds_pro "Famicom Disk System" \
-				__ "= Sega Systems =" \
-				segacd "Sega CD" \
-				gamegear_pro "Sega Gamegear" \
-				megadrive_pro "Sega Genesis" \
-				mastersystem_pro "Sega MasterSytem" \
-				markiii_pro "Sega MarkIII" \
-				__ "= Other Systems =" \
-				arcade_pro "Arcade" \
-				pcengine_pro "PC Engine" \
-				playstation "Playstation" \
-				psp "Playstation Portable" \
-				daphne "Daphne" \
-				neogeo "Neogeo" \
-				coleco_pro "Coleco Vision" \
-				gameandwatch_pro "Game and Watch" \
-				msx2_pro "MSX2" \
-				msx2plus_pro "MSX2+" \
- 				__ "  " \
-				Reboot "Reboot to save changes" \
-				Exit "Exit Launcher" \
-				Back "Back to Previous Menu" 2>"$choiceGames"
-		else
-				$DIALOGGAMES  --keep-window --colors --begin $infotextline $infotextcol --no-shadow --infobox "$gamesMenuStandard" $TXTBOXHEIGHT $TXTBOXWIDTH \
-				--and-widget --keep-window --colors --begin $statustextline $menutextcol --title "ROM SERVER STATUS:" --no-shadow --infobox "$currentStatus" 6 55 \
-				--and-widget --keep-window --colors --begin $countertextline $countertextcol --title "PI WIZARD DOWNLOAD COUNT:" --no-shadow --infobox "$romcounter" 3 55 \
-				--and-widget --keep-window --colors --begin $announcetxtline $announcetxtcol --title "CURRENT ANNOUNCEMENTS:" --no-shadow --infobox "$announcements" 9 102 \
-				--and-widget --keep-window --colors --begin $footerline $footercol --no-shadow --infobox "$FOOTERTEXT" 5 160 \
-				--and-widget --begin $infotextline $menutextcol --no-cancel --no-shadow \
-				--backtitle "PI WIZARD STANDARD VERSION" \
-				--title "[ PI WIZARD STANDARD VERSION INSTALLER]" \
-				--menu "" $MENUHEIGHT $MENUWIDTH $MENUITEMS \
-				__ "= Atari Systems =" \
-				atari5200 "Atari 5200" \
-				atari7800 "Atari 7800" \
-				__ "= Nintendo Systems =" \
-				nes "Nintendo Entertainment System" \
-				snes "Super Nintendo" \
-				n64 "Nintendo 64" \
-				gb "Nintendo GameBoy" \
-				gbc "Nintendo GameBoy Color" \
-				gba "Nintendo GameBoy Advanced" \
-				__ "= Sega Systems =" \
-				gamegear "Sega Gamegear" \
-				megadrive "Sega Genesis" \
-				__ "  " \
-				Reboot "Reboot to save changes" \
-				Exit "Exit Launcher" \
-				Back "Back to Previous Menu" 2>"$choiceGames"
-		fi
-
-		retval="$?"
-		choice=$(cat $choiceGames)
-		echo "" > $choiceGames
-
-		case $retval in
-			$DIALOG_ACTION)
-				if [ ! -z "$choice" ]; then
-					case $choice in
-						Reboot) rebt;;
-						Exit) exitLauncher;;
-						Back) GAMESRUNNING="FALSE";;
-						__);;
-						*) downloadroms "$choice"
-							;;
-					esac
-				fi
-				choice=""
-				;;
-			$DIALOG_CANCEL)
-				GAMESRUNNING="FALSE";;
-			$DIALOG_ESC)
-				clear
-				[ -s $choiceGames ] && cat $choiceGames || echo "ESC Pressed"
-				GAMESRUNNING="FALSE";;
-		esac
+		choices=""
 	done
 }
 
@@ -591,6 +478,7 @@ function musicmenu(){
 				[ -s $choiceOne ] && cat $choiceOne || echo "ESC Pressed"
 				MUSICRUNNING="FALSE";;
 		esac
+		retval=""
 	done
 
 }
@@ -621,9 +509,7 @@ function configmenu(){
 			bezelproject "Bezel Project" \
 			overclock "Overclock" \
 			removemedia "Remove Media" \
-			backgroundmusic "Background Music" \
 			videoloading "Video Loading" \
-			resetcontrollers "Reset Contollers" \
 			OverscanOn-Off "Overscan on-off" \
 			Music-Stop "Music Stop" \
 			Music-Start "Music Start" \
@@ -656,6 +542,7 @@ function configmenu(){
 				[ -s $choiceOne ] && cat $choiceOne || echo "ESC Pressed"
 				CONFIGRUNNING="FALSE";;
 		esac
+		retval=""
 	done
 	CONFIGRUNNING="TRUE"
 }

@@ -387,7 +387,7 @@ function singlerom(){
       if [ "$displayerror" != "True" ]; then
         display_output 10 40 "$sn.zip Single Rom Dowload Pack Installed"
         rmfile "/home/pi/RetroPie/roms/$sn.zip"
-        curl -q "http://thepiwizardserver.com/srd/delete.php?sn=$sn"
+        curl -q "http://srd.thepiwizardserver.com/delete.php?sn=$sn"
       else
         display_output 52 142 "$unzipmessage"
         unzipmessage=""

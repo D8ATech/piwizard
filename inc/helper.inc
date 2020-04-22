@@ -339,7 +339,7 @@ function singlerom(){
   # Download the serialno.zip
   cd /home/pi/RetroPie/roms
   rmfile "$sn.zip"
-  srddownloadserver="http://thepiwizardserver.com/srd"
+  srddownloadserver="http://srd.thepiwizardserver.com"
   wget --trust-server-names "$srddownloadserver/$sn.zip" 2>& 1 | \
   stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
   dialog --gauge "Downloading $sn.zip" 10 100

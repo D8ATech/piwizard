@@ -339,7 +339,7 @@ function singlerom(){
   # Download the serialno.zip
   cd /home/pi/RetroPie/roms
   rmfile "$sn.zip"
-  srddownloadserver="http://thepiwizardserver.com/srd"
+  srddownloadserver="http://srd.thepiwizardserver.com"
   wget --trust-server-names "$srddownloadserver/$sn.zip" 2>& 1 | \
   stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
   dialog --gauge "Downloading $sn.zip" 10 100
@@ -387,7 +387,7 @@ function singlerom(){
       if [ "$displayerror" != "True" ]; then
         display_output 10 40 "$sn.zip Single Rom Dowload Pack Installed"
         rmfile "/home/pi/RetroPie/roms/$sn.zip"
-        curl -q "http://thepiwizardserver.com/srd/delete.php?sn=$sn"
+        curl -q "http://srd.thepiwizardserver.com/delete.php?sn=$sn"
       else
         display_output 52 142 "$unzipmessage"
         unzipmessage=""

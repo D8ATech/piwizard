@@ -395,11 +395,12 @@ function singlerom(){
       fi
   else
     # Did the Download Fail?  Abort
-    errormessage="$sn.zip was either not found or failed to download.\n"
-    errormessage+="If you have not received an email please try again after you get the email.\n"
-    errormessage+="If you have received the email and you are getting this message, \n"
-    errormessage+="did you get the email more than 24 hours ago?\n"
-    errormessage+="If you so you will need to start over.\n"
+    errormessage="$sn.zip was not found on the SRD Server.\n"
+    errormessage+=" \n"
+    errormessage+="Has it been longer than 24 Hours?\n"
+    errormessage+=" \n"
+    errormessage+="If so, you will need to start over.\n"
+    errormessage+=" \n"
     errormessage+="Otherwise, please contact support."
     display_output 10 80 "$errormessage"
   fi

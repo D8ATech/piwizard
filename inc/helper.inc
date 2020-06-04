@@ -887,7 +887,7 @@ if [ $updtype = "1" ]
 then
 wget --trust-server-names "http://update.thepiwizard.com/pi4/update.log" 2>& 1 | \
   stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
-  dialog --gauge "Downloading Updates" 10 100
+  dialog --gauge "Checking For Updates" 10 100
 fi
 
 if [ $updtype = "0" ]

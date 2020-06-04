@@ -873,9 +873,35 @@ function systemupdate(){
   rmfile  "$SCRIPTPATH/library/update.log"
   cd /home/pi/RetroPie/roms/piwizard/library
 
-  wget --trust-server-names "http://thepiwizard.com/upgrade/update.log" 2>& 1 | \
+## START UPDATE BASED ON BOARD ##
+FILE=/home/pi/RetroPie/roms/piwizard/inc/adminpanel.inc
+if [ -f "$FILE" ]; then
+    wget --trust-server-names "http://update.thepiwizard.com/xu4/update.log" 2>& 1 | \
   stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
   dialog --gauge "Checking For Updates" 10 100
+fi
+
+updtype=$(cat /proc/cpuinfo | grep Serial| cut -d ' ' -f 2| cut -b 1)
+
+if [ $updtype = "1" ]
+then
+wget --trust-server-names "http://update.thepiwizard.com/pi4/update.log" 2>& 1 | \
+  stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+  dialog --gauge "Downloading Updates" 10 100
+fi
+
+if [ $updtype = "0" ]
+then
+wget --trust-server-names "http://update.thepiwizard.com/pi3/update.log" 2>& 1 | \
+  stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+  dialog --gauge "Checking For Updates" 10 100
+fi
+
+## END UPDATE BASED ON BOARD ## 
+
+#  wget --trust-server-names "http://thepiwizard.com/upgrade/update.log" 2>& 1 | \
+#  stdbuf -o0 awk -F '%' '{ print $1 }' | awk -F ' ' '{ print $NF }' | \
+#  dialog --gauge "Checking For Updates" 10 100
 
   if [ -f "update.log" ]; then
     readarray -t remoteversion < update.log

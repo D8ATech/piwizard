@@ -22,6 +22,7 @@ unzipsuccess="True"
 unzipmessage="Unzip:"
 unzipmessage+="\n"
 turnOnMusicOnExit="True"
+onMusic="True"
 
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
@@ -31,6 +32,7 @@ ONLINE=1
 ROMPATH="/home/pi/RetroPie/roms"
 WIZARDPATH="$ROMPATH/piwizard"
 MUSICFILE="$ROMPATH/music/DisableMusic"
+NEWMUSIC="/home/pi/bgm"
 
 DIALOG_ACTION=0
 DIALOG_CANCEL=1

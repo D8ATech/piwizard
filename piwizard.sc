@@ -770,6 +770,7 @@ function scriptsmenu(){
 debugwrite ">>> BEGIN <<<"
 #for i in $(seq 0 1 100) ; do echo $i | dialog --guage "Please wait" 10 70 0; done
 turnoffMusic
+offMusic
 UPGRADECHECK="YES"
 POSITIONAL=()
 

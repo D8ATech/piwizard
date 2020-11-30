@@ -58,11 +58,31 @@ function turnoffMusic(){
 
 }
 
+function offMusic(){
+  # turn off the music new pi3b img
+  debugwrite ">>> offMusic"
+  if [ ! -f $NEWMUSIC ]; then
+     pkill -STOP mpg123
+    onMusic="True"
+  else
+    onMusic="False"
+  fi
+
+}
+
 function turnOnMusic(){
   # turn on the music
   debugwrite ">>> turnOnMusic"
   if [ "$turnOnMusicOnExit" = "True" ]; then
     rmfile "$MUSICFILE"
+  fi
+}
+
+function onMusic(){
+  # turn on the music
+  debugwrite ">>> onMusic"
+  if [ "$onMusic" = "True" ]; then
+    mpg123 -f 16384 -Z /home/pi/bgm/*.mp3 >/dev/null 2>&1 &
   fi
 }
 
@@ -707,7 +727,8 @@ function getscreeninfo(){
 function exitLauncher(){
   debugwrite ">>> exitLauncher"
   turnOnMusic
-  cleanupExit
+  onMusic 
+ cleanupExit
   exit 0
 }
 
@@ -721,6 +742,7 @@ function rebt(){
     closeAllDialogs
     cleanupExit
     turnOnMusic
+    onMusic
     sudo reboot now
   	exit 91
   	break

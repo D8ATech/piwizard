@@ -556,7 +556,7 @@ function downloader(){
       while [ $i -le $count ]
       do
         if [ "$VIP" == "Yes" ]; then
-            downloadserver="http://roms.piwizardgaming.com/pro"
+            downloadserver="http://roms.piwizardgaming.com/pro/media"
         else
             downloadserver="http://roms.piwizardgaming.com/standard/media"
         fi
